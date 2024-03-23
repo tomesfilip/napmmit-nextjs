@@ -1,6 +1,6 @@
 'use client';
 
-import { PasswordInputComponent } from '@/components/form/PasswordInput';
+import { PasswordInput } from '@/components/form/PasswordInput';
 import { SubmitButton } from '@/components/form/SubmitButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,7 +47,7 @@ export const Login = () => {
 
           <div className="space-y-2">
             <Label>Password</Label>
-            <PasswordInputComponent
+            <PasswordInput
               name="password"
               required
               autoComplete="current-password"

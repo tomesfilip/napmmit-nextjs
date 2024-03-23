@@ -5,7 +5,7 @@ import { forwardRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Input, type InputProps } from '../ui/input';
 
-export const PasswordInputComponent = forwardRef<HTMLInputElement, InputProps>(
+export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -35,4 +35,4 @@ export const PasswordInputComponent = forwardRef<HTMLInputElement, InputProps>(
   },
 );
 
-PasswordInputComponent.displayName = 'PasswordInput';
+PasswordInput.displayName = 'PasswordInput';

@@ -1,4 +1,3 @@
-import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -90,3 +89,19 @@ export const sessions = pgTable('sessions', {
 
 export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
+
+export const emailVerificationCodes = pgTable('email_verification_codes', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
+    .unique()
+    .notNull()
+    .references(() => users.id),
+  email: varchar('email', { length: 100 })
+    .notNull()
+    .references(() => users.email),
+  code: varchar('code', { length: 8 }).notNull(),
+  expiresAt: timestamp('expires_at', {
+    withTimezone: true,
+    mode: 'date',
+  }).notNull(),
+});

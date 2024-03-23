@@ -1,3 +1,5 @@
+'use server';
+
 import { lucia } from '@/lib/auth';
 import { Scrypt } from 'lucia';
 import { cookies } from 'next/headers';
@@ -37,7 +39,7 @@ export const login = async (
 
   if (!existingUser) {
     return {
-      formError: 'Incorrect email or password',
+      formError: 'Incorrect email',
     };
   }
 

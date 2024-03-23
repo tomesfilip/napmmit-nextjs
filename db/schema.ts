@@ -4,15 +4,16 @@ import {
   date,
   integer,
   pgTable,
+  serial,
+  text,
   timestamp,
-  uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: uuid('id').primaryKey(),
+  id: serial('id').primaryKey(),
   email: varchar('email', { length: 100 }).notNull(),
-  password: varchar('password', { length: 50 }).notNull(),
+  password: text('password').notNull(),
   username: varchar('username', { length: 50 }).notNull(),
   phoneNumber: varchar('phone_number', { length: 20 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -22,15 +23,15 @@ export const users = pgTable('users', {
 });
 
 export const cottages = pgTable('cottages', {
-  id: uuid('id').primaryKey(),
+  id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   location: varchar('location', { length: 255 }).notNull(),
   totalBeds: integer('total_beds').notNull(),
   availableBeds: integer('available_beds').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
-  lowPricePerNight: integer('low_price_per_night').notNull(),
-  breakfastPrice: integer('breakfast_price').notNull(),
-  dinnerPrice: integer('dinner_price').notNull(),
+  lowPricePerNight: integer('low_price_per_night'),
+  breakfastPrice: integer('breakfast_price'),
+  dinnerPrice: integer('dinner_price'),
   userId: integer('userId').notNull(),
   hasBreakfast: boolean('has_breakfast'),
   hasDinner: boolean('has_dinner'),
@@ -38,7 +39,7 @@ export const cottages = pgTable('cottages', {
 });
 
 export const reservations = pgTable('reservations', {
-  id: uuid('id').primaryKey(),
+  id: serial('id').primaryKey(),
   userId: integer('user_id').notNull(),
   cottageId: integer('cottage_id').notNull(),
   from: date('from').notNull(),

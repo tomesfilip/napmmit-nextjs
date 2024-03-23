@@ -1,3 +1,4 @@
+import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -75,3 +76,14 @@ export const reservationsRelations = relations(reservations, ({ one }) => ({
     references: [cottages.id],
   }),
 }));
+
+export const sessions = pgTable('sessions', {
+  id: text('id').primaryKey(),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id),
+  expiresAt: timestamp('expires_at', {
+    withTimezone: true,
+    mode: 'date',
+  }).notNull(),
+});

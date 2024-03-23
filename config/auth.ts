@@ -1,5 +1,5 @@
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
-import { Lucia } from 'lucia';
+import { DatabaseUser, Lucia } from 'lucia';
 
 import db from '../db/drizzle';
 import { sessions, users } from '../db/schema';
@@ -10,15 +10,33 @@ export const lucia = new Lucia(adapter, {
   sessionCookie: {
     expires: false,
     attributes: {
-      // set to `true` when using HTTPS
       secure: process.env.NODE_ENV === 'production',
     },
+  },
+  getUserAttributes: ({ username, email }) => {
+    return {
+      username,
+      email,
+    };
   },
 });
 
 declare module 'lucia' {
   interface Register {
     Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
     UserId: number;
   }
 }
+
+type DatabaseUserAttributes = {
+  id: number;
+  email: string;
+  password: string;
+  username: string;
+  phoneNumber: string;
+  createdAt: string;
+  updateAt: string;
+  emailVerifiedAt: Date;
+  role: string;
+};

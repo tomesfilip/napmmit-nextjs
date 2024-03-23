@@ -1,4 +1,5 @@
-export const EMAIL_SENDER = '"Napmmit" <noreply@napmmit.com>';
+export const APP_TITLE = 'Napmmit';
+export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
 
 export const redirects = {
   toLogin: '/login',

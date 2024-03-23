@@ -1,3 +1,5 @@
+export const ID_LENGTH = 21;
+
 export const APP_TITLE = 'Napmmit';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
 

@@ -1,3 +1,4 @@
+import { ID_LENGTH } from '@/lib/constants';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -11,7 +12,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: varchar('id', { length: ID_LENGTH }).primaryKey(),
   email: varchar('email', { length: 100 }).notNull(),
   password: text('password').notNull(),
   username: varchar('username', { length: 50 }).notNull(),
@@ -32,7 +33,7 @@ export const cottages = pgTable('cottages', {
   lowPricePerNight: integer('low_price_per_night'),
   breakfastPrice: integer('breakfast_price'),
   dinnerPrice: integer('dinner_price'),
-  userId: integer('userId').notNull(),
+  userId: varchar('userId', { length: ID_LENGTH }).notNull(),
   hasBreakfast: boolean('has_breakfast'),
   hasDinner: boolean('has_dinner'),
   hasShower: boolean('has_shower'),
@@ -40,7 +41,7 @@ export const cottages = pgTable('cottages', {
 
 export const reservations = pgTable('reservations', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull(),
+  userId: varchar('user_id', { length: ID_LENGTH }).notNull(),
   cottageId: integer('cottage_id').notNull(),
   from: date('from').notNull(),
   to: date('to').notNull(),
@@ -78,7 +79,7 @@ export const reservationsRelations = relations(reservations, ({ one }) => ({
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
-  userId: integer('user_id')
+  userId: varchar('user_id', { length: ID_LENGTH })
     .notNull()
     .references(() => users.id),
   expiresAt: timestamp('expires_at', {
@@ -91,8 +92,8 @@ export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 
 export const emailVerificationCodes = pgTable('email_verification_codes', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: varchar('id').primaryKey(),
+  userId: varchar('user_id', { length: ID_LENGTH })
     .unique()
     .notNull()
     .references(() => users.id),

@@ -87,3 +87,6 @@ export const sessions = pgTable('sessions', {
     mode: 'date',
   }).notNull(),
 });
+
+export type User = typeof users.$inferSelect;
+export type Cottage = typeof cottages.$inferSelect;

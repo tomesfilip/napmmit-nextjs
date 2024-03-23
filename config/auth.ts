@@ -1,22 +1,33 @@
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
-import { DatabaseUser, Lucia } from 'lucia';
+import { DatabaseUser, Lucia, TimeSpan } from 'lucia';
 
 import db from '../db/drizzle';
-import { sessions, users } from '../db/schema';
+import { sessions, users, type User as DbUser } from '../db/schema';
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
+    name: 'session',
     expires: false,
     attributes: {
       secure: process.env.NODE_ENV === 'production',
     },
   },
-  getUserAttributes: ({ username, email }) => {
+  sessionExpiresIn: new TimeSpan(30, 'd'),
+  getUserAttributes: ({
+    username,
+    email,
+    emailVerifiedAt,
+    createdAt,
+    updatedAt,
+  }) => {
     return {
       username,
       email,
+      emailVerifiedAt,
+      createdAt,
+      updatedAt,
     };
   },
 });
@@ -29,14 +40,4 @@ declare module 'lucia' {
   }
 }
 
-type DatabaseUserAttributes = {
-  id: number;
-  email: string;
-  password: string;
-  username: string;
-  phoneNumber: string;
-  createdAt: string;
-  updateAt: string;
-  emailVerifiedAt: Date;
-  role: string;
-};
+type DatabaseUserAttributes = Omit<DbUser, 'password'>;

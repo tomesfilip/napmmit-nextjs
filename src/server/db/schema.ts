@@ -13,7 +13,7 @@ import {
 
 export const users = pgTable('users', {
   id: varchar('id', { length: ID_LENGTH }).primaryKey(),
-  email: varchar('email', { length: 100 }).notNull(),
+  email: varchar('email', { length: 100 }).unique().notNull(),
   password: text('password').notNull(),
   username: varchar('username', { length: 50 }).notNull(),
   phoneNumber: varchar('phone_number', { length: 20 }).notNull(),
@@ -92,7 +92,7 @@ export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 
 export const emailVerificationCodes = pgTable('email_verification_codes', {
-  id: varchar('id').primaryKey(),
+  id: serial('id').primaryKey(),
   userId: varchar('user_id', { length: ID_LENGTH })
     .unique()
     .notNull()

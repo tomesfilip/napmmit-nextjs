@@ -21,7 +21,7 @@ const main = async () => {
 
     await db.insert(schema.users).values([
       {
-        id: 1,
+        id: '1',
         email: 'admin@example.com',
         password:
           'dc2408a56bac9ea737f8ed4aac2d1bcb319a1bc285caddb81ebed43fee6bfe66',
@@ -43,7 +43,7 @@ const main = async () => {
         lowPricePerNight: 80,
         breakfastPrice: 15,
         dinnerPrice: 20,
-        userId: 1,
+        userId: '1',
         hasBreakfast: true,
         hasDinner: true,
         hasShower: true,
@@ -56,7 +56,7 @@ const main = async () => {
         availableBeds: 3,
         pricePerNight: 120,
         lowPricePerNight: 100,
-        userId: 1,
+        userId: '1',
         hasBreakfast: false,
         hasDinner: false,
         hasShower: true,
@@ -71,7 +71,7 @@ const main = async () => {
         lowPricePerNight: 130,
         breakfastPrice: 20,
         dinnerPrice: 30,
-        userId: 1,
+        userId: '1',
         hasBreakfast: true,
         hasDinner: true,
         hasShower: true,
@@ -85,7 +85,7 @@ const main = async () => {
         pricePerNight: 200,
         lowPricePerNight: 180,
         dinnerPrice: 35,
-        userId: 1,
+        userId: '1',
         hasBreakfast: false,
         hasDinner: true,
         hasShower: true,

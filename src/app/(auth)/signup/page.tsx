@@ -1,4 +1,4 @@
-import { validateRequest } from '@/lib/auth/validate-request';
+import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirects } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { Signup } from './signup';

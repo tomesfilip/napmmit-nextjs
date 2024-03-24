@@ -16,6 +16,7 @@ export const lucia = new Lucia(adapter, {
   },
   sessionExpiresIn: new TimeSpan(30, 'd'),
   getUserAttributes: ({
+    id,
     username,
     email,
     emailVerifiedAt,
@@ -23,6 +24,7 @@ export const lucia = new Lucia(adapter, {
     updatedAt,
   }) => {
     return {
+      id,
       username,
       email,
       emailVerifiedAt,
@@ -36,7 +38,7 @@ declare module 'lucia' {
   interface Register {
     Lucia: typeof lucia;
     DatabaseUserAttributes: DatabaseUserAttributes;
-    UserId: number;
+    UserId: string;
   }
 }
 

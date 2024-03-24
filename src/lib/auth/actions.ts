@@ -6,12 +6,12 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { alphabet, generateRandomString } from 'oslo/crypto';
 
-import { sendMail } from '@/server/db/send-mail';
 import { eq } from 'drizzle-orm';
 import { TimeSpan, createDate } from 'oslo';
 import db from '../../server/db/drizzle';
 import { emailVerificationCodes, users } from '../../server/db/schema';
-import { redirects } from '../constants';
+import { sendMail } from '../../server/db/sendMail';
+import { ID_LENGTH, redirects } from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/emailVerification';
 import {
   LoginInput,
@@ -19,7 +19,7 @@ import {
   loginSchema,
   signupSchema,
 } from '../validators/auth';
-import { validateRequest } from './validate-request';
+import { validateRequest } from './validateRequest';
 
 export type ActionResponse<T> = {
   fieldError?: Partial<Record<keyof T, string | undefined>>;
@@ -111,7 +111,7 @@ export const signup = async (
     };
   }
 
-  const userId = Number(generateId(21));
+  const userId = generateId(ID_LENGTH);
   const hashedPassword = await new Scrypt().hash(password);
   await db.insert(users).values({
     id: userId,
@@ -158,7 +158,7 @@ export async function logout(): Promise<{ error: string } | void> {
 }
 
 const generateEmailVerificationCode = async (
-  userId: number,
+  userId: string,
   email: string,
 ): Promise<string> => {
   await db

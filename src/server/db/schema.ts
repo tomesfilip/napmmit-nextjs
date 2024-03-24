@@ -1,4 +1,4 @@
-import { ID_LENGTH } from '@/lib/constants';
+import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -12,7 +12,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: varchar('id', { length: ID_LENGTH }).primaryKey(),
+  id: varchar('id', { length: USER_ID_LENGTH }).primaryKey(),
   email: varchar('email', { length: 100 }).unique().notNull(),
   password: text('password').notNull(),
   username: varchar('username', { length: 50 }).notNull(),
@@ -33,7 +33,7 @@ export const cottages = pgTable('cottages', {
   lowPricePerNight: integer('low_price_per_night'),
   breakfastPrice: integer('breakfast_price'),
   dinnerPrice: integer('dinner_price'),
-  userId: varchar('userId', { length: ID_LENGTH }).notNull(),
+  userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
   hasBreakfast: boolean('has_breakfast'),
   hasDinner: boolean('has_dinner'),
   hasShower: boolean('has_shower'),
@@ -41,7 +41,7 @@ export const cottages = pgTable('cottages', {
 
 export const reservations = pgTable('reservations', {
   id: serial('id').primaryKey(),
-  userId: varchar('user_id', { length: ID_LENGTH }).notNull(),
+  userId: varchar('user_id', { length: USER_ID_LENGTH }).notNull(),
   cottageId: integer('cottage_id').notNull(),
   from: date('from').notNull(),
   to: date('to').notNull(),
@@ -79,7 +79,7 @@ export const reservationsRelations = relations(reservations, ({ one }) => ({
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
-  userId: varchar('user_id', { length: ID_LENGTH })
+  userId: varchar('user_id', { length: USER_ID_LENGTH })
     .notNull()
     .references(() => users.id),
   expiresAt: timestamp('expires_at', {
@@ -93,7 +93,7 @@ export type Cottage = typeof cottages.$inferSelect;
 
 export const emailVerificationCodes = pgTable('email_verification_codes', {
   id: serial('id').primaryKey(),
-  userId: varchar('user_id', { length: ID_LENGTH })
+  userId: varchar('user_id', { length: USER_ID_LENGTH })
     .unique()
     .notNull()
     .references(() => users.id),
@@ -101,6 +101,17 @@ export const emailVerificationCodes = pgTable('email_verification_codes', {
     .notNull()
     .references(() => users.email),
   code: varchar('code', { length: 8 }).notNull(),
+  expiresAt: timestamp('expires_at', {
+    withTimezone: true,
+    mode: 'date',
+  }).notNull(),
+});
+
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+  id: varchar('id', { length: PASSWORD_ID_LENGTH }).primaryKey(),
+  userId: varchar('user_id', { length: USER_ID_LENGTH })
+    .notNull()
+    .references(() => users.id),
   expiresAt: timestamp('expires_at', {
     withTimezone: true,
     mode: 'date',

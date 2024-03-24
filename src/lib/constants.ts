@@ -1,4 +1,5 @@
-export const ID_LENGTH = 21;
+export const USER_ID_LENGTH = 21;
+export const PASSWORD_ID_LENGTH = 40;
 
 export const APP_TITLE = 'Napmmit';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;

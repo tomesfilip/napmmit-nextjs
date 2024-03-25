@@ -19,7 +19,7 @@ export const users = pgTable('users', {
   phoneNumber: varchar('phone_number', { length: 20 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  emailVerifiedAt: date('email_verified_at'),
+  isEmailVerified: boolean('is_email_verified'),
   role: varchar('role', { length: 20 }).notNull(),
 });
 

@@ -27,7 +27,7 @@ const main = async () => {
           'dc2408a56bac9ea737f8ed4aac2d1bcb319a1bc285caddb81ebed43fee6bfe66',
         username: 'admin',
         phoneNumber: '123-456-7890',
-        emailVerifiedAt: null,
+        isEmailVerified: false,
         role: 'admin',
       },
     ]);

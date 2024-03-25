@@ -1,5 +1,5 @@
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
-import { DatabaseUser, Lucia, TimeSpan } from 'lucia';
+import { Lucia, TimeSpan } from 'lucia';
 
 import db from '../../server/db/drizzle';
 import { sessions, users, type User as DbUser } from '../../server/db/schema';
@@ -19,7 +19,7 @@ export const lucia = new Lucia(adapter, {
     id,
     username,
     email,
-    emailVerifiedAt,
+    isEmailVerified,
     createdAt,
     updatedAt,
   }) => {
@@ -27,7 +27,7 @@ export const lucia = new Lucia(adapter, {
       id,
       username,
       email,
-      emailVerifiedAt,
+      isEmailVerified,
       createdAt,
       updatedAt,
     };

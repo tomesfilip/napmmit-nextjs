@@ -1,16 +1,7 @@
 import { EMAIL_SENDER } from '@/lib/constants';
-import { createTransport, type TransportOptions } from 'nodemailer';
+import { Resend } from 'resend';
 
-const smtpConfig = {
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-};
-
-const transporter = createTransport(smtpConfig as TransportOptions);
+const resend = new Resend(process.env.SMTP_PASSWORD);
 
 export type MessageInfo = {
   to: string;
@@ -26,5 +17,5 @@ export const sendMail = async (message: MessageInfo) => {
     subject,
     html: body,
   };
-  return transporter.sendMail(mailOptions);
+  return resend.emails.send(mailOptions);
 };

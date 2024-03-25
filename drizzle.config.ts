@@ -7,7 +7,7 @@ if (!DB_URL) {
 }
 
 export default {
-  schema: './db/schema.ts',
+  schema: './src/server/db/schema.ts',
   out: './drizzle',
   driver: 'pg',
   dbCredentials: {

@@ -113,7 +113,7 @@ export const signup = async (
 
   if (existingUser) {
     return {
-      formError: 'Cannot create account with that email',
+      formError: 'User with this email already exists. Log in?',
     };
   }
 

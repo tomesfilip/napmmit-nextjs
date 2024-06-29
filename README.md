@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Napmmit
+
+Napmmit is a web platform designed to simplify the process of discovering and reserving mountain cottages.
+Cottage owners benefit from an intuitive management environment to effortlessly update and maintain their cottage information, ensuring a seamless experience for both hosts and guests.
+
+## Features
+
+### Stage 1
+
+- List of cottages: display mountain cottages with key details
+- Filtering: filter cottages by price, location, ...
+- Search: search cottages by location, name, ...
+- Cottage detail: name, location, occupancy limit, gallery, contact information
+- Social sharing: share listings on social media
 
 ## Getting Started
 

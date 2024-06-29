@@ -36,7 +36,7 @@ const main = async () => {
       {
         id: 1,
         name: 'Holubyho chata',
-        location: '48°51′27″S 17°40′55″V',
+        location: 'Vysoké Tatry',
         totalBeds: 10,
         availableBeds: 5,
         pricePerNight: 100,
@@ -51,7 +51,7 @@ const main = async () => {
       {
         id: 2,
         name: 'Chata na Grúni',
-        location: '',
+        location: 'Malá Fatra',
         totalBeds: 8,
         availableBeds: 3,
         pricePerNight: 120,
@@ -63,8 +63,8 @@ const main = async () => {
       },
       {
         id: 3,
-        name: 'Chata na Martinských holiach',
-        location: '',
+        name: 'Chata Martinské hole',
+        location: 'Malá Fatra',
         totalBeds: 6,
         availableBeds: 4,
         pricePerNight: 150,
@@ -79,7 +79,7 @@ const main = async () => {
       {
         id: 4,
         name: 'Chata pod Chlebom',
-        location: '',
+        location: 'Malá Fatra',
         totalBeds: 12,
         availableBeds: 10,
         pricePerNight: 200,
@@ -93,7 +93,7 @@ const main = async () => {
       {
         id: 5,
         name: 'Chata pod Kľačianskou Magurou',
-        location: '',
+        location: 'Malá Fatra',
         totalBeds: 12,
         availableBeds: 10,
         pricePerNight: 200,
@@ -107,7 +107,7 @@ const main = async () => {
       {
         id: 6,
         name: 'Chata Vrátna',
-        location: '',
+        location: 'Malá Fatra',
         totalBeds: 12,
         availableBeds: 10,
         pricePerNight: 200,
@@ -121,7 +121,7 @@ const main = async () => {
       {
         id: 7,
         name: 'Chata pod Kráľovou hoľou',
-        location: '',
+        location: 'Nízke Tatry',
         totalBeds: 12,
         availableBeds: 10,
         pricePerNight: 200,
@@ -135,7 +135,7 @@ const main = async () => {
       {
         id: 8,
         name: 'Chata generála M. R. Štefánika pod Ďumbierom',
-        location: '',
+        location: 'Nízke Tatry',
         totalBeds: 12,
         availableBeds: 10,
         pricePerNight: 200,

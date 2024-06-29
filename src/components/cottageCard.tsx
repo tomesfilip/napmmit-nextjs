@@ -17,7 +17,7 @@ type Props = {
 
 export const CottageCard = ({ cottage }: Props) => {
   return (
-    <Card className="w-full h-full max-w-md">
+    <Card className="w-full min-h-[280px] h-full max-w-md">
       <CardHeader>
         <CardTitle className="line-clamp-1 leading-8">{cottage.name}</CardTitle>
       </CardHeader>

@@ -69,9 +69,13 @@ export const CottageContent = ({ cottages }: Props) => {
               <Badge
                 key={name}
                 variant="secondary"
-                className={clsx('cursor-pointer text-base', {
-                  'bg-red-500': filterServices.includes(name),
-                })}
+                className={clsx(
+                  'cursor-pointer text-base transition-colors bg-slate-100 hover:bg-slate-400 duration-300 ease-in-out',
+                  {
+                    'bg-slate-400 hover:bg-slate-100':
+                      filterServices.includes(name),
+                  },
+                )}
                 onClick={() => handleSelectService(name)}
               >
                 {name}
@@ -81,7 +85,7 @@ export const CottageContent = ({ cottages }: Props) => {
         </div>
       </div>
       {filteredCottages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8 justify-center place-items-center bg-slate-200">
+        <div className="flex flex-wrap gap-8 py-8 px-4 w-full">
           {filteredCottages.map((cottage) => (
             <CottageCard key={cottage.id} cottage={cottage} />
           ))}

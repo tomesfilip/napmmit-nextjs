@@ -1,5 +1,10 @@
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
-import { relations } from 'drizzle-orm';
+import {
+  BuildQueryResult,
+  DBQueryConfig,
+  ExtractTablesWithRelations,
+  relations,
+} from 'drizzle-orm';
 import {
   boolean,
   date,
@@ -154,10 +159,3 @@ export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
-
-// type Schema = typeof schema;
-// type TSchema = ExtractTablesWithRelations<Shema>;
-
-// export type IncludeRelation<TableName extends keyof TSchema> DBQueryConfig<"one" | "many", boolean, TSchema, TSchema[TableName]>["with"]
-
-// export type InferResultType<TableName extends keyof TSchema, With extends IncludeRelation<TableName> | undefined = undefined> = BuildQueryResult<TSchema, TSchema[TableName],{with: With}

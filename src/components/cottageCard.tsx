@@ -1,4 +1,4 @@
-import { Cottage, Service } from '@/server/db/schema';
+import { CottageWithServices } from '@/lib/appTypes';
 import Image from 'next/image';
 import cottageFallbackImg from '../../public/cottage-fallback.webp';
 import { Badge } from './ui/badge';
@@ -12,9 +12,7 @@ import {
 } from './ui/card';
 
 type Props = {
-  cottage: Cottage & {
-    cottageServices: { service: Service }[];
-  };
+  cottage: CottageWithServices;
 };
 
 export const CottageCard = ({ cottage }: Props) => {
@@ -41,9 +39,9 @@ export const CottageCard = ({ cottage }: Props) => {
       </CardContent>
       <CardFooter className="flex w-full justify-between">
         <div className="flex gap-2">
-          {cottage.cottageServices.map(({ service }) => (
-            <Badge key={service.id} variant="secondary">
-              {service.name}
+          {cottage.cottageServices.map(({ id, name }) => (
+            <Badge key={id} variant="secondary">
+              {name}
             </Badge>
           ))}
         </div>

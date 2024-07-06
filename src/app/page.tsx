@@ -1,16 +1,28 @@
-import { CottageCard } from '@/components/cottageCard';
+import { CottageContent } from '@/components/CottageContent';
+import { getQueryClient } from '@/lib/query';
 import { getCottages } from '@/server/db/queries';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 const Home = async () => {
-  const cottages = await getCottages();
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['cottages'],
+    queryFn: async () => {
+      const cottages = await getCottages();
+      if (cottages.error) {
+        throw new Error(cottages.error);
+      }
+      if (cottages.success) {
+        return cottages.success;
+      }
+    },
+  });
 
   return (
-    <main>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8 justify-center place-items-center">
-        {cottages.map((cottage) => (
-          <CottageCard key={cottage.id} cottage={cottage} />
-        ))}
-      </div>
+    <main className="flex">
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <CottageContent />
+      </HydrationBoundary>
     </main>
   );
 };

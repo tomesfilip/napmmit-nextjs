@@ -1,10 +1,16 @@
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
-import { relations } from 'drizzle-orm';
+import {
+  BuildQueryResult,
+  DBQueryConfig,
+  ExtractTablesWithRelations,
+  relations,
+} from 'drizzle-orm';
 import {
   boolean,
   date,
   integer,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
@@ -26,6 +32,7 @@ export const users = pgTable('users', {
 export const cottages = pgTable('cottages', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
+  // TODO: location should be enum value - take values from constants
   location: varchar('location', { length: 255 }).notNull(),
   totalBeds: integer('total_beds').notNull(),
   availableBeds: integer('available_beds').notNull(),
@@ -34,9 +41,6 @@ export const cottages = pgTable('cottages', {
   breakfastPrice: integer('breakfast_price'),
   dinnerPrice: integer('dinner_price'),
   userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
-  hasBreakfast: boolean('has_breakfast'),
-  hasDinner: boolean('has_dinner'),
-  hasShower: boolean('has_shower'),
 });
 
 export const reservations = pgTable('reservations', {
@@ -67,6 +71,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const cottagesRelations = relations(cottages, ({ many, one }) => ({
   reservations: many(reservations),
   user: one(users, { fields: [cottages.userId], references: [users.id] }),
+  cottageServices: many(cottageServices),
 }));
 
 export const reservationsRelations = relations(reservations, ({ one }) => ({
@@ -87,9 +92,6 @@ export const sessions = pgTable('sessions', {
     mode: 'date',
   }).notNull(),
 });
-
-export type User = typeof users.$inferSelect;
-export type Cottage = typeof cottages.$inferSelect;
 
 export const emailVerificationCodes = pgTable('email_verification_codes', {
   id: serial('id').primaryKey(),
@@ -117,3 +119,44 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
     mode: 'date',
   }).notNull(),
 });
+
+export const services = pgTable('services', {
+  id: serial('id').primaryKey(),
+  name: varchar('name').unique().notNull(),
+});
+
+export const servicesRelations = relations(services, ({ many }) => ({
+  cottages: many(cottageServices),
+}));
+
+export const cottageServices = pgTable(
+  'cottage_services',
+  {
+    cottageId: integer('cottage_id')
+      .notNull()
+      .references(() => cottages.id),
+    serviceId: integer('service_id')
+      .notNull()
+      .references(() => services.id),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.cottageId, t.serviceId] }) }),
+);
+
+export const cottageServicesRelations = relations(
+  cottageServices,
+  ({ one }) => ({
+    cottage: one(cottages, {
+      fields: [cottageServices.cottageId],
+      references: [cottages.id],
+    }),
+    service: one(services, {
+      fields: [cottageServices.serviceId],
+      references: [services.id],
+    }),
+  }),
+);
+
+export type User = typeof users.$inferSelect;
+export type Cottage = typeof cottages.$inferSelect;
+export type Service = typeof services.$inferSelect;
+export type CottageService = typeof cottageServices.$inferSelect;

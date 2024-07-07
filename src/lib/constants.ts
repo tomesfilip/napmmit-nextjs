@@ -1,3 +1,5 @@
+import { CottageArea } from './appTypes';
+
 export const USER_ID_LENGTH = 21;
 export const PASSWORD_ID_LENGTH = 40;
 
@@ -12,3 +14,32 @@ export const redirects = {
   toVerify: '/verify-email',
   afterVerify: '/dashboard',
 } as const;
+
+export const SERVICES = [
+  { name: 'raňajky' },
+  { name: 'večera' },
+  { name: 'sprcha' },
+] as const;
+
+export const COTTAGE_AREAS: CottageArea[] = [
+  { name: 'Biele Karpaty' },
+  { name: 'Bukovské Vrchy' },
+  { name: 'Javorníky' },
+  { name: 'Kremnické vrchy' },
+  { name: 'Kysucké Beskydy' },
+  { name: 'Malá Fatra' },
+  { name: 'Muránska planin' },
+  { name: 'Nízke Tatry' },
+  { name: 'Oravská Magura a Oravské Beskydy' },
+  { name: 'Pieniny' },
+  { name: 'Poľana a Veporské vrchy' },
+  { name: 'Považský Inovec' },
+  { name: 'Slovenský raj' },
+  { name: 'Strážovské vrchy a Súľovské vrchy' },
+  { name: 'Vysoké Tatry', group: 'Tatry' },
+  { name: 'Belianske Tatry', group: 'Tatry' },
+  { name: 'Západné Tatry', group: 'Tatry' },
+  { name: 'Veľká Fatra a Starohorské vrchy' },
+  { name: 'Volovské vrchy' },
+  { name: 'Vtáčnik' },
+] as const;

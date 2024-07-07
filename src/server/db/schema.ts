@@ -32,6 +32,7 @@ export const users = pgTable('users', {
 export const cottages = pgTable('cottages', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
+  // TODO: location should be enum value - take values from constants
   location: varchar('location', { length: 255 }).notNull(),
   totalBeds: integer('total_beds').notNull(),
   availableBeds: integer('available_beds').notNull(),

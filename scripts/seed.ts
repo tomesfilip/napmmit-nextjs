@@ -2,7 +2,7 @@ import { neon } from '@neondatabase/serverless';
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/neon-http';
 
-import { SERVICES } from '@/server/db/constants';
+import { SERVICES } from '@/lib/constants';
 import * as schema from '../src/server/db/schema';
 
 const DB_URL = process.env.DB_URL;

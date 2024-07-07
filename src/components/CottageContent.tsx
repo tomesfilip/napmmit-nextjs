@@ -32,20 +32,20 @@ export const CottageContent = ({ cottages }: Props) => {
   const filterLocation = searchParams.get('location');
 
   const filteredCottages = useMemo(() => {
-    if (filterLocation) {
-      return cottages
-        .filter((cottage) =>
-          filterServices.every((service) =>
-            cottage.cottageServices.some(
-              (cottageService) => cottageService.name === service,
-            ),
-          ),
-        )
-        .filter(
-          (cottage) => !filterLocation || cottage.location === filterLocation,
-        );
+    if (!filterLocation && !filterServices) {
+      return cottages;
     }
-    return cottages;
+    return cottages
+      .filter((cottage) =>
+        filterServices.every((service) =>
+          cottage.cottageServices.some(
+            (cottageService) => cottageService.name === service,
+          ),
+        ),
+      )
+      .filter(
+        (cottage) => !filterLocation || cottage.location === filterLocation,
+      );
   }, [cottages, filterServices, filterLocation]);
 
   const handleSelectService = useCallback(

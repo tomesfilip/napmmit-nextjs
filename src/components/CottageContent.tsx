@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { CottageCard } from './cottageCard';
 import { Badge } from './ui/badge';
+import { Search } from './ui/search';
 import {
   Select,
   SelectContent,
@@ -30,9 +31,10 @@ export const CottageContent = ({ cottages }: Props) => {
   }, [searchParams]);
 
   const filterLocation = searchParams.get('location');
+  const searchQuery = searchParams.get('query');
 
   const filteredCottages = useMemo(() => {
-    if (!filterLocation && !filterServices) {
+    if (!filterLocation && !filterServices && !searchQuery) {
       return cottages;
     }
     return cottages
@@ -45,8 +47,14 @@ export const CottageContent = ({ cottages }: Props) => {
       )
       .filter(
         (cottage) => !filterLocation || cottage.location === filterLocation,
+      )
+      .filter(
+        (cottage) =>
+          !searchQuery ||
+          cottage.location.includes(searchQuery) ||
+          cottage.name.includes(searchQuery),
       );
-  }, [cottages, filterServices, filterLocation]);
+  }, [cottages, filterServices, filterLocation, searchQuery]);
 
   const handleSelectService = useCallback(
     (service: string) => {
@@ -89,6 +97,7 @@ export const CottageContent = ({ cottages }: Props) => {
     <>
       <div className="px-8 py-12 bg-white">
         <div className="space-y-8">
+          <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="space-y-4 mb-4">
             <h2 className="font-bold text-lg">Oblasť</h2>
             <Select onValueChange={handleSelectCottageArea}>

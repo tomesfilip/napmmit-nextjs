@@ -1,5 +1,6 @@
 import { CottageWithServices } from '@/lib/appTypes';
 import Image from 'next/image';
+import Link from 'next/link';
 import cottageFallbackImg from '../../public/cottage-fallback.webp';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -45,7 +46,9 @@ export const CottageCard = ({ cottage }: Props) => {
             </Badge>
           ))}
         </div>
-        <Button className="ml-auto">Viac</Button>
+        <Link className="ml-auto" href={`/cottage/${cottage.id}`}>
+          Viac
+        </Link>
       </CardFooter>
     </Card>
   );

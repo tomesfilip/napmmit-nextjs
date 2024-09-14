@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import cottageFallbackImg from '../../public/cottage-fallback.webp';
 import { Badge } from './ui/badge';
-import { Button } from './ui/button';
 import {
   Card,
   CardContent,
@@ -31,9 +30,9 @@ export const CottageCard = ({ cottage }: Props) => {
             className="w-40 h-full object-cover rounded-lg"
           />
           <div className="space-y-3">
-            <p>{cottage.location}</p>
+            <p>{cottage.mountainArea}</p>
             <p>
-              Voľné miesta: {cottage.availableBeds}/{cottage.totalBeds}
+              Voľné miesta: {cottage.availableBeds}/{cottage.capacity}
             </p>
           </div>
         </div>

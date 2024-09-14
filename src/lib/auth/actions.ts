@@ -133,7 +133,7 @@ export const signup = async (
   const { error } = await sendMail({
     to: email,
     subject: 'Verify your account',
-    body: renderVerificationCodeEmail({ code: verificationCode }),
+    body: await renderVerificationCodeEmail({ code: verificationCode }),
   });
   if (error) {
     console.error(error);
@@ -209,7 +209,7 @@ export const resendVerificationEmail = async (): Promise<{
   await sendMail({
     to: user.email,
     subject: 'Verify your account',
-    body: renderVerificationCodeEmail({ code: verificationCode }),
+    body: await renderVerificationCodeEmail({ code: verificationCode }),
   });
 
   return { success: true };
@@ -307,7 +307,7 @@ export const sendPasswordResetLink = async (
     await sendMail({
       to: user.email,
       subject: 'Reset your password',
-      body: renderResetPasswordEmail({ link: verificationLink }),
+      body: await renderResetPasswordEmail({ link: verificationLink }),
     });
 
     return { success: true };

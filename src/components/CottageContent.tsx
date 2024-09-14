@@ -46,12 +46,12 @@ export const CottageContent = ({ cottages }: Props) => {
         ),
       )
       .filter(
-        (cottage) => !filterLocation || cottage.location === filterLocation,
+        (cottage) => !filterLocation || cottage.mountainArea === filterLocation,
       )
       .filter(
         (cottage) =>
           !searchQuery ||
-          cottage.location.includes(searchQuery) ||
+          cottage.mountainArea.includes(searchQuery) ||
           cottage.name.includes(searchQuery),
       );
   }, [cottages, filterServices, filterLocation, searchQuery]);

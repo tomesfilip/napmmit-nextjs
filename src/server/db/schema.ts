@@ -1,10 +1,5 @@
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
-import {
-  BuildQueryResult,
-  DBQueryConfig,
-  ExtractTablesWithRelations,
-  relations,
-} from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
   boolean,
   date,
@@ -32,14 +27,18 @@ export const users = pgTable('users', {
 export const cottages = pgTable('cottages', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  // TODO: location should be enum value - take values from constants
-  location: varchar('location', { length: 255 }).notNull(),
-  totalBeds: integer('total_beds').notNull(),
+  description: varchar('description'),
+  address: varchar('address').notNull(),
+  mountainArea: varchar('mountain_area', { length: 255 }).notNull(),
+  capacity: integer('capacity').notNull(),
   availableBeds: integer('available_beds').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
-  lowPricePerNight: integer('low_price_per_night'),
-  breakfastPrice: integer('breakfast_price'),
-  dinnerPrice: integer('dinner_price'),
+  priceLowPerNight: integer('price_low_per_night'),
+  priceBreakfast: integer('price_breakfast'),
+  priceDinner: integer('price_dinner'),
+  phoneNumber: varchar('phone_number'),
+  email: varchar('email'),
+  website: varchar('website'),
   userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
 });
 

@@ -94,8 +94,8 @@ export const CottageContent = ({ cottages }: Props) => {
   };
 
   return (
-    <>
-      <div className="px-8 py-12 bg-white">
+    <div className="flex w-full gap-8">
+      <div className="py-12 bg-white">
         <div className="space-y-8">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="space-y-4 mb-4">
@@ -140,12 +140,12 @@ export const CottageContent = ({ cottages }: Props) => {
         </div>
       </div>
       {filteredCottages.length > 0 && (
-        <div className="flex flex-wrap gap-8 py-8 px-4 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 py-8 w-full">
           {filteredCottages.map((cottage) => (
             <CottageCard key={cottage.id} cottage={cottage} />
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };

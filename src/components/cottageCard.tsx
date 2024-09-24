@@ -1,7 +1,7 @@
+import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { CottageWithServices } from '@/lib/appTypes';
 import Image from 'next/image';
 import Link from 'next/link';
-import cottageFallbackImg from '../../public/cottage-fallback.webp';
 import { Badge } from './ui/badge';
 import {
   Card,
@@ -17,9 +17,10 @@ type Props = {
 
 export const CottageCard = ({ cottage }: Props) => {
   return (
-    <Card className="w-full max-w-md h-fit">
+    <Card className="w-full max-w-[400px] h-fit">
       <CardHeader>
         <CardTitle className="line-clamp-1 leading-8">{cottage.name}</CardTitle>
+        <p>{cottage.mountainArea}</p>
       </CardHeader>
       <CardContent>
         <div className="flex gap-6">
@@ -29,12 +30,12 @@ export const CottageCard = ({ cottage }: Props) => {
             placeholder="blur"
             className="w-40 h-full object-cover rounded-lg"
           />
-          <div className="space-y-3">
-            <p>{cottage.mountainArea}</p>
+          {/* TODO: show some basic availibility details after functional reservation system connection */}
+          {/* <div className="space-y-3">
             <p>
               Voľné miesta: {cottage.availableBeds}/{cottage.capacity}
             </p>
-          </div>
+          </div> */}
         </div>
       </CardContent>
       <CardFooter className="flex w-full justify-between">
@@ -45,7 +46,10 @@ export const CottageCard = ({ cottage }: Props) => {
             </Badge>
           ))}
         </div>
-        <Link className="ml-auto" href={`/cottage/${cottage.id}`}>
+        <Link
+          className="ml-auto bg-slate-100 px-4 py-1 rounded-lg font-medium"
+          href={`/cottage/${cottage.id}`}
+        >
           Viac
         </Link>
       </CardFooter>

@@ -1,16 +1,9 @@
-import Image from 'next/image';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Skeleton } from './ui/skeleton';
 
 export const SkeletonCard = () => {
   return (
-    <Card className="w-full min-h-[280px] h-full max-w-md">
+    <Card className="w-full min-h-[280px] h-full max-w-[400px]">
       <CardHeader>
         <Skeleton className="w-full h-8" />
       </CardHeader>

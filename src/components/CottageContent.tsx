@@ -2,6 +2,7 @@
 
 import { CottageWithServices } from '@/lib/appTypes';
 import { COTTAGE_AREAS, SERVICES } from '@/lib/constants';
+import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -33,6 +34,12 @@ export const CottageContent = ({ cottages }: Props) => {
   const filterLocation = searchParams.get('location');
   const searchQuery = searchParams.get('query');
 
+  const availableMountainAreas = useMemo(() => {
+    return Array.from(
+      new Set(cottages.map(({ mountainArea }) => mountainArea)),
+    );
+  }, [cottages]);
+
   const filteredCottages = useMemo(() => {
     if (!filterLocation && !filterServices && !searchQuery) {
       return cottages;
@@ -46,13 +53,18 @@ export const CottageContent = ({ cottages }: Props) => {
         ),
       )
       .filter(
-        (cottage) => !filterLocation || cottage.mountainArea === filterLocation,
+        (cottage) =>
+          !filterLocation ||
+          lowerCaseNoDiacriticsText(cottage.mountainArea) ===
+            lowerCaseNoDiacriticsText(filterLocation),
       )
       .filter(
         (cottage) =>
           !searchQuery ||
-          cottage.mountainArea.includes(searchQuery) ||
-          cottage.name.includes(searchQuery),
+          lowerCaseNoDiacriticsText(cottage.mountainArea).includes(
+            searchQuery,
+          ) ||
+          lowerCaseNoDiacriticsText(cottage.name).includes(searchQuery),
       );
   }, [cottages, filterServices, filterLocation, searchQuery]);
 
@@ -84,7 +96,7 @@ export const CottageContent = ({ cottages }: Props) => {
   const handleSelectCottageArea = (area: string) => {
     const params = new URLSearchParams(searchParams);
 
-    if (!COTTAGE_AREAS.some(({ name }) => name === area)) {
+    if (!availableMountainAreas.some((name) => name === area)) {
       params.delete('location');
     } else {
       params.set('location', area);
@@ -107,9 +119,9 @@ export const CottageContent = ({ cottages }: Props) => {
               <SelectContent>
                 <SelectGroup>
                   <SelectItem value="all">Všetky</SelectItem>
-                  {COTTAGE_AREAS.map(({ name, group }) => (
+                  {availableMountainAreas.map((name) => (
                     <SelectItem key={name} value={name}>
-                      {name} {group && ` (${group})`}
+                      {name}
                     </SelectItem>
                   ))}
                 </SelectGroup>

@@ -9,7 +9,7 @@ const Home = async () => {
     <>
       {error && <div>{error}</div>}
       {cottages && (
-        <div className="flex flex-col w-full pt-8 items-center">
+        <div className="flex flex-col size-full pt-8 items-center">
           {/* <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." /> */}
           <CottageContent cottages={cottages} />
         </div>

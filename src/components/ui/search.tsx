@@ -25,19 +25,19 @@ export const Search = ({ placeholder }: Props) => {
   }, 300);
 
   return (
-    <div className="relative flex w-full max-w-[400px]">
+    <div className="relative flex w-full max-w-[400px] rounded-md focus:shadow-md">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <input
-        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+        className="peer block w-full rounded-md border border-gray-200 py-3 pl-10 text-sm placeholder:text-gray-500 focus:shadow-md hover:shadow-md transition-all duration-200"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get('query')?.toString()}
       />
-      <LuSearch className="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+      <LuSearch className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
     </div>
   );
 };

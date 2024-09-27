@@ -20,9 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx('flex flex-col items-center', inter.className)}>
+      <body
+        className={clsx(
+          'flex flex-col size-full min-h-screen items-center',
+          inter.className,
+        )}
+      >
         <NavHeader />
-        <main className="flex flex-col px-4 w-full max-w-[1600px] items-center">
+        <main className="flex flex-col px-4 size-full max-w-[1600px] items-center">
           {children}
         </main>
       </body>

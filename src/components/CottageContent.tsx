@@ -6,6 +6,7 @@ import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
+import { FaFilter } from 'react-icons/fa';
 import { CottageCard } from './cottageCard';
 import { Badge } from './ui/badge';
 import { Search } from './ui/search';
@@ -17,6 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 
 type Props = {
   cottages: CottageWithServices[];
@@ -107,9 +116,8 @@ export const CottageContent = ({ cottages }: Props) => {
 
   return (
     <div className="flex w-full gap-8">
-      <div className="py-12 bg-white">
+      <div className="bg-slate-200 hidden lg:block">
         <div className="space-y-8">
-          <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="space-y-4 mb-4">
             <h2 className="font-bold text-lg">Oblasť</h2>
             <Select onValueChange={handleSelectCottageArea}>
@@ -152,10 +160,68 @@ export const CottageContent = ({ cottages }: Props) => {
         </div>
       </div>
       {filteredCottages.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 py-8 w-full">
-          {filteredCottages.map((cottage) => (
-            <CottageCard key={cottage.id} cottage={cottage} />
-          ))}
+        <div className="space-y-4 w-full">
+          <div className="flex gap-4 items-center w-full justify-center">
+            <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
+            <div className="block lg:hidden">
+              <Sheet>
+                <SheetTrigger
+                  className="bg-slate-200 size-10 flex items-center justify-center rounded-full"
+                  aria-label="Open filters"
+                >
+                  <FaFilter size={20} />
+                </SheetTrigger>
+                <SheetContent side="left" className="py-12">
+                  <div className="space-y-8">
+                    <div className="space-y-4 mb-4">
+                      <h2 className="font-bold text-lg">Oblasť</h2>
+                      <Select onValueChange={handleSelectCottageArea}>
+                        <SelectTrigger className="w-full max-w-[276px]">
+                          <SelectValue placeholder="Vysoké Tatry, Malá Fatra, ..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="all">Všetky</SelectItem>
+                            {availableMountainAreas.map((name) => (
+                              <SelectItem key={name} value={name}>
+                                {name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-4">
+                      <h2 className="font-bold text-lg">Extra služby</h2>
+                      <div className="flex gap-3 flex-wrap">
+                        {SERVICES.map(({ name }) => (
+                          <Badge
+                            key={name}
+                            variant="secondary"
+                            className={clsx(
+                              'cursor-pointer text-base transition-colors bg-slate-100 hover:bg-slate-400 duration-300 ease-in-out',
+                              {
+                                'bg-slate-400 hover:bg-slate-100':
+                                  filterServices.includes(name),
+                              },
+                            )}
+                            onClick={() => handleSelectService(name)}
+                          >
+                            {name}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 py-8 w-full place-items-center">
+            {filteredCottages.map((cottage) => (
+              <CottageCard key={cottage.id} cottage={cottage} />
+            ))}
+          </div>
         </div>
       )}
     </div>

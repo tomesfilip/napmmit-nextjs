@@ -1,5 +1,6 @@
 'use client';
 
+import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { LuSearch } from 'react-icons/lu';
 import { useDebouncedCallback } from 'use-debounce';
@@ -16,7 +17,7 @@ export const Search = ({ placeholder }: Props) => {
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
     if (term) {
-      params.set('query', term);
+      params.set('query', lowerCaseNoDiacriticsText(term));
     } else {
       params.delete('query');
     }

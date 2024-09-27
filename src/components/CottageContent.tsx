@@ -2,6 +2,7 @@
 
 import { CottageWithServices } from '@/lib/appTypes';
 import { COTTAGE_AREAS, SERVICES } from '@/lib/constants';
+import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -46,13 +47,18 @@ export const CottageContent = ({ cottages }: Props) => {
         ),
       )
       .filter(
-        (cottage) => !filterLocation || cottage.mountainArea === filterLocation,
+        (cottage) =>
+          !filterLocation ||
+          lowerCaseNoDiacriticsText(cottage.mountainArea) ===
+            lowerCaseNoDiacriticsText(filterLocation),
       )
       .filter(
         (cottage) =>
           !searchQuery ||
-          cottage.mountainArea.includes(searchQuery) ||
-          cottage.name.includes(searchQuery),
+          lowerCaseNoDiacriticsText(cottage.mountainArea).includes(
+            searchQuery,
+          ) ||
+          lowerCaseNoDiacriticsText(cottage.name).includes(searchQuery),
       );
   }, [cottages, filterServices, filterLocation, searchQuery]);
 

@@ -40,6 +40,7 @@ export const cottages = pgTable('cottages', {
   email: varchar('email'),
   website: varchar('website'),
   userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
+  locationURL: varchar('locationURL'),
 });
 
 export const reservations = pgTable('reservations', {

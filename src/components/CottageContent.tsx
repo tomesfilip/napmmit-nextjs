@@ -2,10 +2,11 @@
 
 import { CottageWithServices } from '@/lib/appTypes';
 import { lowerCaseNoDiacriticsText } from '@/lib/utils';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { FaFilter } from 'react-icons/fa';
 import { CottageCard } from './cottageCard';
+import { NoCottageFoundContent } from './NoCottageFoundContent';
 import { SideFiltersContent } from './SideFilters';
 import { Search } from './ui/search';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
@@ -16,6 +17,7 @@ type Props = {
 
 export const CottageContent = ({ cottages }: Props) => {
   const searchParams = useSearchParams();
+  const { replace } = useRouter();
 
   const filterLocation = searchParams.get('location');
   const searchQuery = searchParams.get('query');
@@ -58,6 +60,10 @@ export const CottageContent = ({ cottages }: Props) => {
       );
   }, [cottages, filterServices, filterLocation, searchQuery]);
 
+  const handleResetFilters = () => {
+    replace('/');
+  };
+
   return (
     <>
       <div className="hidden lg:block">
@@ -88,6 +94,9 @@ export const CottageContent = ({ cottages }: Props) => {
               <CottageCard key={cottage.id} cottage={cottage} />
             ))}
           </div>
+        )}
+        {filteredCottages.length < 1 && (
+          <NoCottageFoundContent handleResetFilters={handleResetFilters} />
         )}
       </div>
     </>

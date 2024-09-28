@@ -56,10 +56,10 @@ const main = async () => {
   try {
     console.log('Seeding the database');
 
-    await db.delete(schema.cottages);
     await db.delete(schema.users);
-    await db.delete(schema.services);
     await db.delete(schema.cottageServices);
+    await db.delete(schema.services);
+    await db.delete(schema.cottages);
 
     await db.insert(schema.users).values(userData);
     await db.insert(schema.cottages).values(cottageData);

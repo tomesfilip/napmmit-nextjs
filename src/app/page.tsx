@@ -1,5 +1,4 @@
 import { CottageContent } from '@/components/CottageContent';
-import { Search } from '@/components/ui/search';
 import { getCottages } from '@/server/db/queries';
 
 const Home = async () => {

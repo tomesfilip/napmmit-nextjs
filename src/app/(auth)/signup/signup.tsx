@@ -62,7 +62,7 @@ export function Signup() {
           ) : null}
           <div>
             <Link href="/login">
-              <span className="p-0 text-xs font-medium hover:underline underline-offset-4">
+              <span className="p-0 text-sm font-medium hover:underline underline-offset-4">
                 Already signed up? Login instead.
               </span>
             </Link>

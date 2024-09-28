@@ -2,10 +2,10 @@ import { NavHeader } from '@/components/navHeader';
 import { Toaster } from '@/components/ui/sonner';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Work_Sans } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const workSans = Work_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Napmmit | Mountain cottage list in Slovakia',
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={clsx(
           'flex flex-col size-full min-h-screen items-center',
-          inter.className,
+          workSans.className,
         )}
       >
         <NavHeader />

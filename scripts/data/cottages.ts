@@ -16,6 +16,7 @@ export const cottageData = [
     email: 'bilikch@azet.sk',
     website: 'http://www.vysoketatry.com/chaty/bchata/bchata.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/pebezuhuza',
   },
   {
     id: 2,
@@ -34,6 +35,7 @@ export const cottageData = [
     email: 'reservation@hotelhrebienok.sk',
     website: 'http://www.vysoketatry.com/chaty/hhhrebienok/hhhrebienok.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/nezojuceno',
   },
   {
     id: 3,
@@ -52,6 +54,7 @@ export const cottageData = [
     email: null,
     website: 'http://www.chatapodrysmi.com/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/medakamome',
   },
   {
     id: 4,
@@ -71,6 +74,7 @@ export const cottageData = [
     email: 'info@chatasolisko.sk',
     website: 'http://chatasolisko.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/fafopovafa',
   },
   {
     id: 5,
@@ -89,6 +93,7 @@ export const cottageData = [
     email: 'recepcia@popradskepleso.sk',
     website: 'http://www.popradskepleso.com',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/fatabokozo',
   },
   {
     id: 6,
@@ -107,6 +112,7 @@ export const cottageData = [
     email: 'tatry@chataprizelenomplese.sk',
     website: 'http://chataprizelenomplese.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/hukeguvura',
   },
   {
     id: 7,
@@ -126,10 +132,11 @@ export const cottageData = [
     email: 'recepcia@sliezskydom.sk',
     website: 'http://www.sliezskydom.sk',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/mulasamose',
   },
   {
     id: 8,
-    name: 'Teryho chata',
+    name: 'Téryho chata',
     description:
       'Teryho chata se nachází v atraktivní lokalitě u Pěti spišských jezer ve výšce 2 015 m n. m. Je proto nejvýše položenou celoročně otevřenou chatou ve Vysokých Tatrách. První chata zde byla postavena v roce 1899, poslední úpravy proběhly v roce 2009. Pitnou vodu lze na chatě koupit. Kapacita ubytování je 24 míst, ale podle potřeby je možné ji navýšit.',
     address: 'Malá Studená dolina, 0621 01, Slovensko, Vysoké Tatry',
@@ -144,6 +151,7 @@ export const cottageData = [
     email: 'teryhochata007@gmail.com',
     website: 'http://www.teryhochata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/lobumageku',
   },
   {
     id: 9,
@@ -163,6 +171,7 @@ export const cottageData = [
     email: 'zamka@zamka.sk',
     website: 'http://www.zamka.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/jetotuzapu',
   },
   {
     id: 10,
@@ -182,6 +191,7 @@ export const cottageData = [
     email: 'rezervacie@zbojnickachata.sk',
     website: 'http://zbojnickachata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/labonafano',
   },
   {
     id: 11,
@@ -200,6 +210,7 @@ export const cottageData = [
     email: 'chatarka@chatachleb.sk',
     website: 'http://www.chatachleb.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/hekesebufe',
   },
   {
     id: 12,
@@ -218,6 +229,7 @@ export const cottageData = [
     email: 'info@chatapodsuchym.sk',
     website: 'http://www.chatapodsuchym.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/duhameraso',
   },
   {
     id: 13,
@@ -237,6 +249,7 @@ export const cottageData = [
     email: 'chatanagruni@gmail.com',
     website: 'http://www.chatanagruni.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/cajanesefa',
   },
   {
     id: 14,
@@ -255,6 +268,7 @@ export const cottageData = [
     email: 'fabricius.chatamrs@gmail.com',
     website: 'http://www.chatamrs.sk/home.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/kazupohobu',
   },
   {
     id: 15,
@@ -273,6 +287,7 @@ export const cottageData = [
     email: 'kamienka@kamennachata.sk',
     website: 'http://nova.kamennachata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/jozapasafo',
   },
   {
     id: 16,
@@ -292,6 +307,7 @@ export const cottageData = [
     email: 'chatakosodrevina@gmail.com',
     website: 'http://chatakosodrevina.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/remafapezu',
   },
   {
     id: 17,
@@ -310,6 +326,7 @@ export const cottageData = [
     email: 'chatatrangoska@gmail.com',
     website: 'http://trangoska.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/cerazacase',
   },
   {
     id: 18,
@@ -328,6 +345,7 @@ export const cottageData = [
     email: null,
     website: 'http://durkova.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/negefuvate',
   },
   {
     id: 19,
@@ -346,6 +364,7 @@ export const cottageData = [
     email: 'ziarskachata@gmail.com',
     website: 'http://www.ziarskachata.com/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/nupagofaka',
   },
   {
     id: 20,
@@ -364,6 +383,7 @@ export const cottageData = [
     email: 'zverovka@chatazverovka.sk',
     website: 'http://www.chatazverovka.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/ladobahenu',
   },
   {
     id: 21,
@@ -383,6 +403,7 @@ export const cottageData = [
     email: 'dikantj@gmail.com',
     website: 'http://www.chatacervenec.sk/index.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/pudumokece',
   },
   {
     id: 22,
@@ -401,5 +422,6 @@ export const cottageData = [
     email: null,
     website: null,
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/dagagufona',
   },
 ];

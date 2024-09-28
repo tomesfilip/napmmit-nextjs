@@ -45,15 +45,19 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               height="360"
             ></iframe>
           </div>
-          <div className="w-full flex gap-6 justify-between">
-            <div className="flex items-center gap-2">
-              <FaPhone className="size-7 flex-shrink-0" />
-              <a href={`tel:${cottage.phoneNumber}`}>{cottage.phoneNumber}</a>
-            </div>
-            <div className="flex items-center gap-2">
-              <MdEmail className="size-7 flex-shrink-0" />
-              <a href={`mailto:${cottage.email}`}>{cottage.email}</a>
-            </div>
+          <div className="w-full flex flex-wrap gap-6 lg:gap-12">
+            {cottage.phoneNumber && (
+              <div className="flex items-center gap-2">
+                <FaPhone className="size-7 flex-shrink-0" />
+                <a href={`tel:${cottage.phoneNumber}`}>{cottage.phoneNumber}</a>
+              </div>
+            )}
+            {cottage.email && (
+              <div className="flex items-center gap-2">
+                <MdEmail className="size-7 flex-shrink-0" />
+                <a href={`mailto:${cottage.email}`}>{cottage.email}</a>
+              </div>
+            )}
             {cottage.website && (
               <div className="flex items-center gap-2">
                 <FaLink className="size-7 flex-shrink-0" />

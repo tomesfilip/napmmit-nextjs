@@ -1,5 +1,13 @@
 import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 import { DetailSection } from '@/components/ui/detail-section';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { getCottage } from '@/server/db/queries';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +17,8 @@ import { MdEmail } from 'react-icons/md';
 
 const CottageDetail = async ({ params }: { params: { id: number } }) => {
   const { success: cottage, error } = await getCottage(params.id);
+
+  const img = cottage?.images[0].url ?? cottageFallbackImg;
 
   return (
     <>
@@ -22,13 +32,37 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               </h1>
               <p className="lg:text-lg">{cottage.description}</p>
             </div>
-            <Image
-              className="object-cover"
-              src={cottage.images[0].url ?? cottageFallbackImg}
-              alt="Cottage detail image"
-              width={540}
-              height={360}
-            />
+            <Dialog>
+              <DialogTrigger>
+                <Image
+                  className="object-cover"
+                  src={img}
+                  alt="Cottage detail image"
+                  width={540}
+                  height={360}
+                />
+              </DialogTrigger>
+              <DialogContent>
+                <Carousel className="size-screen">
+                  <CarouselContent>
+                    {cottage.images.map((img) => (
+                      <CarouselItem key={img.id}>
+                        <Image
+                          key={img.id}
+                          className="object-cover"
+                          src={img.url}
+                          alt="Cottage detail image"
+                          width={1080}
+                          height={720}
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </DialogContent>
+            </Dialog>
           </DetailSection>
           <DetailSection>
             <div className="space-y-4">

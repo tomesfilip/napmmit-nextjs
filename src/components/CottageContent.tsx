@@ -1,6 +1,6 @@
 'use client';
 
-import { CottageWithServices } from '@/lib/appTypes';
+import { CottageDetailType } from '@/lib/appTypes';
 import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
@@ -12,7 +12,7 @@ import { Search } from './ui/search';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 type Props = {
-  cottages: CottageWithServices[];
+  cottages: CottageDetailType[];
 };
 
 export const CottageContent = ({ cottages }: Props) => {

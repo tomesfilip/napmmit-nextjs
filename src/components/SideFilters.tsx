@@ -91,10 +91,9 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
               key={name}
               variant="secondary"
               className={clsx(
-                'cursor-pointer text-base transition-colors bg-slate-100 hover:bg-slate-400 duration-300 ease-in-out',
+                'cursor-pointer text-base transition-colors bg-slate-100 hover:bg-slate-400 hover:text-white duration-300 ease-in-out',
                 {
-                  'bg-slate-400 hover:bg-slate-100':
-                    filterServices.includes(name),
+                  'bg-slate-400 text-white': filterServices.includes(name),
                 },
               )}
               onClick={() => handleSelectService(name)}

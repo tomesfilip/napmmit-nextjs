@@ -40,6 +40,7 @@ export const cottages = pgTable('cottages', {
   email: varchar('email'),
   website: varchar('website'),
   userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
+  locationURL: varchar('locationURL'),
 });
 
 export const reservations = pgTable('reservations', {
@@ -71,6 +72,7 @@ export const cottagesRelations = relations(cottages, ({ many, one }) => ({
   reservations: many(reservations),
   user: one(users, { fields: [cottages.userId], references: [users.id] }),
   cottageServices: many(cottageServices),
+  images: many(images),
 }));
 
 export const reservationsRelations = relations(reservations, ({ one }) => ({
@@ -155,7 +157,24 @@ export const cottageServicesRelations = relations(
   }),
 );
 
+export const images = pgTable('images', {
+  id: serial('id').primaryKey(),
+  cottageId: integer('cottage_id')
+    .notNull()
+    .references(() => cottages.id, { onDelete: 'cascade' }),
+  url: varchar('url', { length: 255 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const imagesRelations = relations(images, ({ one }) => ({
+  cottages: one(cottages, {
+    fields: [images.cottageId],
+    references: [cottages.id],
+  }),
+}));
+
 export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
+export type Image = typeof images.$inferSelect;

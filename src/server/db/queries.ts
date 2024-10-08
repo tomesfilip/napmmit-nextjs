@@ -1,19 +1,21 @@
 'use server';
 
-import { CottageWithServices } from '@/lib/appTypes';
+import { CottageDetailType } from '@/lib/appTypes';
 import { cache } from 'react';
 import db from './drizzle';
 
 export const getCottages = cache(
-  async (): Promise<{ success?: CottageWithServices[]; error?: string }> => {
+  async (): Promise<{ success?: CottageDetailType[]; error?: string }> => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Uncomment the following line to simulate a delay for testing purposes
+      // await new Promise((resolve) => setTimeout(resolve, 3000));
       const data = await db.query.cottages.findMany({
         with: {
           cottageServices: {
             columns: { serviceId: false },
             with: { service: { columns: { id: true, name: true } } },
           },
+          images: { columns: { id: true, url: true } },
         },
       });
 
@@ -21,6 +23,9 @@ export const getCottages = cache(
         ...cottage,
         cottageServices: cottage.cottageServices.map((cs) => ({
           ...cs.service,
+        })),
+        images: cottage.images.map((img) => ({
+          ...img,
         })),
       }));
 
@@ -34,13 +39,14 @@ export const getCottages = cache(
 export const getCottage = cache(
   async (
     id: number,
-  ): Promise<{ success?: CottageWithServices; error?: string }> => {
+  ): Promise<{ success?: CottageDetailType; error?: string }> => {
     try {
       const data = await db.query.cottages.findFirst({
         with: {
           cottageServices: {
             with: { service: { columns: { id: true, name: true } } },
           },
+          images: { columns: { id: true, url: true } },
         },
         where: (table, funcs) => funcs.eq(table.id, Number(id)),
       });
@@ -53,6 +59,9 @@ export const getCottage = cache(
         ...data,
         cottageServices: data.cottageServices.map((cs) => ({
           ...cs.service,
+        })),
+        images: data.images.map((img) => ({
+          ...img,
         })),
       };
 

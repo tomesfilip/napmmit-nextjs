@@ -3,7 +3,7 @@ export const cottageData = [
     id: 1,
     name: 'Bilíkova chata',
     description:
-      'Horský hotel Bilíkova chata se nachází ve Studené dolině, kousek od horského střediska Hrebienok. Historie chaty začíná v roce 1875, kdy zde byla postavena Růženina chata. Chata byla postupně rošiřována, ale také několikrát vyhořela. Současná chata zde stojí od roku 1934. Na chatě je k dispozici restaurace, je zde možné i doplnit zásoby vody. Chata je v provozu celý rok, neboť se nachází kousek od lanovky na Hrebienok. Ubytovací kapacita je cca 40 lidí.',
+      'Horský hotel Bilíkova chata sa nachádza v Studenej doline, kúsok od horského strediska Hrebienok. História chaty sa začína v roku 1875, keď tu bola postavená Růženina chata. Chata bola postupne rozširovaná, ale aj niekoľkokrát vyhorela. Súčasná chata tu stojí od roku 1934. V chate je k dispozícii reštaurácia a je možné doplniť si zásoby vody. Chata je v prevádzke po celý rok, pretože sa nachádza kúsok od lanovky na Hrebienok. Ubytovacia kapacita je približne 40 ľudí.',
     address: 'Hrebienok, 062 01 Starý Smokovec, Vysoké Tatry, Slovensko',
     mountainArea: 'Vysoké Tatry',
     capacity: 40,
@@ -16,12 +16,13 @@ export const cottageData = [
     email: 'bilikch@azet.sk',
     website: 'http://www.vysoketatry.com/chaty/bchata/bchata.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/pebezuhuza',
   },
   {
     id: 2,
     name: 'Horský hotel Hrebienok',
     description:
-      'Horský hotel Hrebienok se nachází ve výšce 1 285 m n. m.. Je součástí horského lyžařského střediska. Od roku 1908 vede ze Starého Smokovce na Hrebienok pozemní lanová dráha. Hrebienok je vhodný jako výchozí bod pro výlety do Malé a Velké Studené doliny. V hotelu se nachází restaurace, je zde možné doplnit zásoby vody. Hotel je v provozu po celý rok. Kapacita na spaní je zhruba 100 míst.',
+      'Horský hotel Hrebienok sa nachádza vo výške 1 285 m n. m. Je súčasťou horského lyžiarskeho strediska. Od roku 1908 vedie zo Starého Smokovca na Hrebienok pozemná lanová dráha. Hrebienok je vhodný ako východiskový bod pre výlety do Malej a Veľkej Studenej doliny. V hoteli sa nachádza reštaurácia a je možné doplniť si zásoby vody. Hotel je v prevádzke po celý rok. Kapacita na spanie je približne 100 miest.',
     address: 'Hrebienok, 062 01 Starý Smokovec, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
     capacity: 100,
@@ -34,12 +35,13 @@ export const cottageData = [
     email: 'reservation@hotelhrebienok.sk',
     website: 'http://www.vysoketatry.com/chaty/hhhrebienok/hhhrebienok.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/nezojuceno',
   },
   {
     id: 3,
     name: 'Chata pod Rysmi',
     description:
-      'Horsá chata pod Rysmi (Rysy) je nejvýše položenou chatou ve Vysokých Tatrách (2 250 m n. m.). Zároveň se jedná i o nejmladší chatu, neboť byla postavena v roce 1933. Chata leží na turistickém chodníku, který vede na horu Rysy, proto je chata velmi oblíbená a navštěvovaná. Pitnou vodu lze na chatě koupit. Chata je otevřená od 15.6 do 31.10. Rezervaci pro ubytování je nutné provést pomocí sms a zaplatit zálohu - viz info web.',
+      'Horská chata pod Rysmi (Rysy) je najvyššie položenou chatou vo Vysokých Tatrách (2 250 m n. m.). Zároveň ide aj o najmladšiu chatu, pretože bola postavená v roku 1933. Chata leží na turistickom chodníku, ktorý vedie na horu Rysy, preto je veľmi obľúbená a často navštevovaná. Pitnú vodu je možné na chate kúpiť. Chata je otvorená od 15.6 do 31.10. Rezerváciu na ubytovanie je potrebné vykonať pomocou SMS a zaplatiť zálohu - viď info na webe.',
     address: '059 85 Štrbské pleso, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
     capacity: 14,
@@ -52,12 +54,13 @@ export const cottageData = [
     email: null,
     website: 'http://www.chatapodrysmi.com/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/medakamome',
   },
   {
     id: 4,
     name: 'Chata pod Soliskom',
     description:
-      'Horská chata pod Soliskom je jednou z nejmladších chat ve Vysokých Tatrách. Nachází se ve výšce 1 840 m n. m. na svahu hory Predné Solisko. Byla postavena až v roce 1944 jako odpočinkové místo pro lyžaře. Současná podoba chaty vznikla v roce 2003, kdy byla zcela nově postavená. Chata nabízí ubytování v noclehárně, případně nouzově na zemi v jídelně. Chata je otevřená celý rok.',
+      ' Horská chata pod Soliskom je jednou z najmladších chát vo Vysokých Tatrách. Nachádza sa vo výške 1 840 m n. m. na svahu hory Predné Solisko. Bola postavená v roku 1944 ako odpočinkové miesto pre lyžiarov. Súčasná podoba chaty vznikla v roku 2003, kedy bola úplne nanovo postavená. Chata ponúka ubytovanie v nocľahárni, prípadne v prípade núdze na zemi v jedálni. Chata je otvorená celoročne.',
     address:
       'Štefániková Marcela, 059 41 Tatranská Štrba 1132, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
@@ -71,12 +74,13 @@ export const cottageData = [
     email: 'info@chatasolisko.sk',
     website: 'http://chatasolisko.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/fafopovafa',
   },
   {
     id: 5,
     name: 'Hotel pri Popradskom plese',
     description:
-      'Horský hotel pri Popradskom plese se nachází v Mangusovskej doline na břehu Popradského jezera ve výšce 1 494 m n. m. Ze Štrbského plesa k němu vede asfaltová cesta, kterou lze využívat pouze s povolením. Bez povolení je vjezd na tuto cestu považován za trestný čin. První chata na tomto místě byla postavena v roce 1879.',
+      'Horský hotel pri Popradskom plese sa nachádza v Mangusovskej doline na brehu Popradského jazera vo výške 1 494 m n. m. Zo Štrbského plesa k nemu vedie asfaltová cesta, ktorú je možné využívať iba s povolením. Bez povolenia je vjazd na túto cestu považovaný za trestný čin. Prvá chata na tomto mieste bola postavená v roku 1879.',
     address: 'P.O.Box 12, 059 85 Štrbské pleso, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
     capacity: 165,
@@ -89,12 +93,13 @@ export const cottageData = [
     email: 'recepcia@popradskepleso.sk',
     website: 'http://www.popradskepleso.com',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/fatabokozo',
   },
   {
     id: 6,
     name: 'Chata pri Zelenom plese',
     description:
-      'Horská chata pri Zelenom plese se nachází ve výšce 1 551 m n. m. na břehu Zeleného plesa. První útulna v této lokalitě byla postavena v roce 1876. Na současném místě stojí chata do roku 1897. Chata je otevřená celoročně. Ubytování je nutné předem rezervovat. Kapacita ubytování je cca. 60 míst. Na chatě je možné doplnit zásoby pitné vody.',
+      'Horská chata pri Zelenom plese sa nachádza vo výške 1 551 m n. m. na brehu Zeleného plesa. Prvá útulňa v tejto lokalite bola postavená v roku 1876. Na súčasnom mieste stojí chata od roku 1897. Chata je otvorená celoročne. Ubytovanie je potrebné rezervovať vopred. Kapacita ubytovania je približne 60 miest. Na chate je možné doplniť zásoby pitnej vody.',
     address: 'Tatranská Lomnica, 059 60, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
     capacity: 60,
@@ -107,12 +112,13 @@ export const cottageData = [
     email: 'tatry@chataprizelenomplese.sk',
     website: 'http://chataprizelenomplese.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/hukeguvura',
   },
   {
     id: 7,
     name: 'Hotel Sliezsky dom',
     description:
-      'Horský hotel Sliezsky dom se nachází ve výšce 1 670 m n. m. na břehu Velického plesa. Jeho historie začíná v roce 1871, kdy na břehu jezera byla postavena první chatka. Postupem času se budova několikrát přestavěla až v roce 1968 vznikl současný hotel. Ten nabízí ubytování v 43 pokojích a jedné turistické místnosti. Je zde možné doplnit zásoby pitné vody. Hotel je využíván jako základna pro výstup na Gerlachovský štít.',
+      'Horský hotel Sliezsky dom sa nachádza vo výške 1 670 m n. m. na brehu Velického plesa. Jeho história sa začína v roku 1871, kedy na brehu jazera bola postavená prvá chatka. Postupom času sa budova niekoľkokrát prestavala, až v roku 1968 vznikol súčasný hotel. Ten ponúka ubytovanie v 43 izbách a jednej turistickej miestnosti. Je tu možné doplniť zásoby pitnej vody. Hotel slúži ako základňa pre výstup na Gerlachovský štít.',
     address:
       'Horský hotel Sliezsky dom, Tatranská Polianka 32, 062 01, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
@@ -126,12 +132,13 @@ export const cottageData = [
     email: 'recepcia@sliezskydom.sk',
     website: 'http://www.sliezskydom.sk',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/mulasamose',
   },
   {
     id: 8,
-    name: 'Teryho chata',
+    name: 'Téryho chata',
     description:
-      'Teryho chata se nachází v atraktivní lokalitě u Pěti spišských jezer ve výšce 2 015 m n. m. Je proto nejvýše položenou celoročně otevřenou chatou ve Vysokých Tatrách. První chata zde byla postavena v roce 1899, poslední úpravy proběhly v roce 2009. Pitnou vodu lze na chatě koupit. Kapacita ubytování je 24 míst, ale podle potřeby je možné ji navýšit.',
+      'Téryho chata sa nachádza v atraktívnej lokalite pri Piatich spišských plesách vo výške 2 015 m n. m. Je preto najvyššie položenou celoročne otvorenou chatou vo Vysokých Tatrách. Prvá chata tu bola postavená v roku 1899, posledné úpravy prebehli v roku 2009. Pitnú vodu je možné na chate kúpiť. Kapacita ubytovania je 24 miest, no podľa potreby sa dá navýšiť.',
     address: 'Malá Studená dolina, 0621 01, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
     capacity: 24,
@@ -144,12 +151,13 @@ export const cottageData = [
     email: 'teryhochata007@gmail.com',
     website: 'http://www.teryhochata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/lobumageku',
   },
   {
     id: 9,
     name: 'Zamkovského chata',
     description:
-      'Zamkovského chata leží v nižší lesnaté části Malé Studené doliny ve výšce 1 475 m n. m. Chatu nechal v letech 1942-1943 postavit Štefan Zamkovský, který působil jako chatař na Teryho chatě. Během války působila jako útočiště pro pronásledované obyvatelstvo. Chata je velmi oblíbená pro turisty, kteří přecházejí Tatranskou magistrálu. Na chatě je možné doplnit zásoby pitné vody a občerstvit se.',
+      'Zamkovského chata leží v nižšej lesnatej časti Malej Studenej doliny vo výške 1 475 m n. m. Chatu nechal v rokoch 1942-1943 postaviť Štefan Zamkovský, ktorý pôsobil ako chatár na Téryho chate. Počas vojny slúžila ako útočisko pre prenasledované obyvateľstvo. Chata je veľmi obľúbená pre turistov, ktorí prechádzajú Tatranskou magistrálou. Na chate je možné doplniť zásoby pitnej vody a občerstviť sa.',
     address:
       'Zamkovského chata, 062 01 Starý Smokovec, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
@@ -163,12 +171,13 @@ export const cottageData = [
     email: 'zamka@zamka.sk',
     website: 'http://www.zamka.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/jetotuzapu',
   },
   {
     id: 10,
     name: 'Zbojnícka chata',
     description:
-      'Zbojnícka chata se nachází ve Velké Studené dolině ve výšce 1 960 m n. m. V této dolině se nachází 26 horský jezer. Chata má celoroční provoz. Pro ubytované je zde k dispozici malá kuchyňka, kde si mohou připravit vlastní jídla. Je také možné si objednat jídlo z místní kuchyně. Na chatě je možné doplnit pitnou vodu. Kapacita ubytování je 16 míst.',
+      'Zbojnícka chata sa nachádza vo Veľkej Studenej doline vo výške 1 960 m n. m. V tejto doline sa nachádza 26 horských jazier. Chata je celoročne v prevádzke. Pre ubytovaných je k dispozícii malá kuchynka, kde si môžu pripraviť vlastné jedlá. Je tiež možné objednať si jedlo z miestnej kuchyne. Na chate je možné doplniť pitnú vodu. Kapacita ubytovania je 16 miest.',
     address:
       'Velká Studená dolina, 062 01 Starý Smokovec, Slovensko, Vysoké Tatry',
     mountainArea: 'Vysoké Tatry',
@@ -182,12 +191,13 @@ export const cottageData = [
     email: 'rezervacie@zbojnickachata.sk',
     website: 'http://zbojnickachata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/labonafano',
   },
   {
     id: 11,
     name: 'Chata pod Chlebom',
     description:
-      'Horská Chata pod Chlebom leží v nadmořské výšce 1 408 m n. m. v národním parku Malá Fatra. Chata leží na turisticky oblíbeném hřebeni Malé Fatry. Nejčastější túra na Chatu pod Chlebom začíná v Bielem Potoku a pokračuje po naučném chodníku Nové a Horné Diery. Dále přes Velký Rozsutec (1 609 m n. m.) a horu Stoh (1 608 m n. m.). Další, jednodušší, možností jak se na chatu dostat je využít lanovky z Vrátne. Chata disponuje 23 lůžky ve třech společných pokojích, nebo možností přespání ve vlasntím spacáku v noclehárně. Když neseženete místo v chatě, je možnost za 1 Euro stanovat na připraveném plácku u chaty. Na Chatě pod Chlebom se můžete také dobře najíst a napít.',
+      'Horská Chata pod Chlebom leží v nadmorskej výške 1 408 m n. m. v národnom parku Malá Fatra. Chata sa nachádza na turisticky obľúbenom hrebeni Malej Fatry. Najčastejšia túra na Chatu pod Chlebom začína v Bielom Potoku a pokračuje po náučnom chodníku Nové a Horné Diery, ďalej cez Veľký Rozsutec (1 609 m n. m.) a horu Stoh (1 608 m n. m.). Ďalšou, jednoduchšou možnosťou, ako sa dostať na chatu, je využiť lanovku z Vrátnej. Chata disponuje 23 lôžkami v troch spoločných izbách, alebo možnosťou prespania vo vlastnom spacáku v nocľahárni. Ak nezískate miesto v chate, môžete za 1 euro stanovať na pripravenom mieste pri chate. Na Chate pod Chlebom sa môžete tiež dobre najesť a napiť.',
     address: 'GPS: 49.1812236N, 19.0493131E, Slovensko, Malá Fatra',
     mountainArea: 'Malá Fatra',
     capacity: 23,
@@ -200,12 +210,13 @@ export const cottageData = [
     email: 'chatarka@chatachleb.sk',
     website: 'http://www.chatachleb.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/hekesebufe',
   },
   {
     id: 12,
     name: 'Chata pod Suchým',
     description:
-      'Horská Chata pod Suchým leží v nadmořské výšce 1075 m n. m. v národním parku Malá Fatra. Na chatu lze jako na startovací bod hřebenové túry po Malé Fatře dojít ze Strečna, nebo z Varína či Kľačianskej Magury. Ubytovat se zde můžete ve 4 dvoulůžkových a 4 čtyřlůžkových pokojích se sociálním zařízením. Dále je možnost využít noclehárnu (24 míst) s matracemi, kde je nutností vlastní spacák. V noclehárně se vyspíte za 10 Eur / noc, v pokoji pak za 12 Eur / noc. Na chatě se vaří.',
+      'Horská Chata pod Suchým leží v nadmorskej výške 1 075 m n. m. v národnom parku Malá Fatra. Na chatu je možné doraziť ako na štartovací bod hrebeňovej túry po Malej Fatre zo Strečna, z Varína alebo z Kľačianskej Magury. Ubytovať sa tu môžete v 4 dvojlôžkových a 4 štvorlôžkových izbách so sociálnym zariadením. Ďalej je možnosť využiť nocľaháreň (24 miest) s matracmi, kde je potrebný vlastný spacák. V nocľahárni sa vyspíte za 10 Eur/noc, v izbe za 12 Eur/noc. Na chate sa varí.',
     address: 'GPS: 49.1763872N, 18.9353544E, Slovensko, Malá Fatra',
     mountainArea: 'Malá Fatra',
     capacity: 24,
@@ -218,12 +229,13 @@ export const cottageData = [
     email: 'info@chatapodsuchym.sk',
     website: 'http://www.chatapodsuchym.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/duhameraso',
   },
   {
     id: 13,
     name: 'Chata na Grúni',
     description:
-      'Horská chata na Grúni leží ve výšce 973 m n. m. a je tak nejvýše položená chata ve Vrátné dolině. U chaty je křižovatka čtyř turistických chodníků. Chata byla postavena v roce 1949. Poslední rekonstrukce proběhla v roce 2010. Chata je celoročně otevřená. Je vhodná i pro pořádání větších skupinových akcí.',
+      'Horská chata na Grúni leží vo výške 973 m n. m. a je tak najvyššie položenou chatou vo Vrátnej doline. Pri chate je križovatka štyroch turistických chodníkov. Chata bola postavená v roku 1949. Posledná rekonštrukcia prebehla v roku 2010. Chata je otvorená celoročne a vhodná aj na usporiadanie väčších skupinových akcií.',
     address:
       'Chata na Grúni, Vladimír Vallo, 013 06 Terchová, Slovenská republika',
     mountainArea: 'Vrátná dolina',
@@ -237,12 +249,13 @@ export const cottageData = [
     email: 'chatanagruni@gmail.com',
     website: 'http://www.chatanagruni.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/cajanesefa',
   },
   {
     id: 14,
     name: 'Chata generála M. R. Štefánika',
     description:
-      'Horská chata M. R. Štefánika leží ve výšce 1 740 m n. m. pod nejvyšší horou Nízkých Tater Ďumbierem. Zprovozněná byla v roce 1928. Chata je otevřená po celý rok. Na chatě je možné doplnit zásoby pitné vody. Pod chatou se nachází jedna z nejhlubších jeskyň na Slovensku - Jeskyně mrtvých netopírů, kterou můžou navštívit turisté.',
+      'Horská chata M. R. Štefánika sa nachádza vo výške 1 740 m n. m. pod najvyšším vrchom Nízkych Tatier, Ďumbierom. Bola uvedená do prevádzky v roku 1928. Chata je otvorená po celý rok. Na chate je možné doplniť zásoby pitnej vody. Pod chatou sa nachádza jedna z najhlbších jaskýň na Slovensku - Jaskyňa mŕtvych netopierov, ktorú môžu navštíviť turisti.',
     address: 'Igor Fabricius, 977 01 Brezno, Slovensko, Nízke Tatry',
     mountainArea: 'Nízke Tatry',
     capacity: 68,
@@ -255,12 +268,13 @@ export const cottageData = [
     email: 'fabricius.chatamrs@gmail.com',
     website: 'http://www.chatamrs.sk/home.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/kazupohobu',
   },
   {
     id: 15,
     name: 'Kamenná chata pod Chopkom',
     description:
-      'Kamenná chata pod Chopkom leží ve výšce 2 000 m n. m., těsně pod vrcholem třetí nejvyšší hory Nízkých Tater, Chopku. Byla vybudována v roce 1950, původně jako přístřešek pro dělníky, kteří stavěli lanovku. Chata je velmi oblíbená v letní i zimní sezoně, neboť leží jen kousek od lanovek, které z údolí vyvezou lyžaře na hřeben Nízkých Tater. Chata je celoročně otevřená. Na chatě není pitná voda, ale lze si ji zde koupit.',
+      'Kamenná chata pod Chopkom leží vo výške 2 000 m n. m., tesne pod vrcholom tretej najvyššej hory Nízkych Tatier, Chopku. Bola vybudovaná v roku 1950, pôvodne ako prístrešok pre robotníkov, ktorí stavali lanovku. Chata je veľmi obľúbená v letnej aj zimnej sezóne, lebo leží len kúsok od lanoviek, ktoré vyvezú lyžiarov z údolia na hrebeň Nízkych Tatier. Chata je celoročne otvorená. Na chate nie je pitná voda, ale dá sa kúpiť.',
     address: 'Kamenna chata pod Chopkom, 977 01 Brezno, Slovensko, Nízke Tatry',
     mountainArea: 'Nízke Tatry',
     capacity: 22,
@@ -273,12 +287,13 @@ export const cottageData = [
     email: 'kamienka@kamennachata.sk',
     website: 'http://nova.kamennachata.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/jozapasafo',
   },
   {
     id: 16,
     name: 'Chata Kosodrevina',
     description:
-      'Horská chata Kosodrevina leží na jižních svazích Nízkých Tater ve výšce 1 510 m n. m. hned u sjezdových tratích. Je často využívaná při výstupech z jihu na Chopok a Ďumbier. Chata nabízí ubytování až pro 240 lidí. Často se zde pořádají festivaly nebo koncerty. Na chatě jsou dva bufety. Je zde možné doplnit zásoby pitné vody. Chata je otevřena podle sezony, nepravidelně.',
+      'Horská chata Kosodrevina sa nachádza na južných svahoch Nízkych Tatier vo výške 1 510 m n. m. priamo pri zjazdovkách. Je často využívaná pri výstupoch z juhu na Chopok a Ďumbier. Chata ponúka ubytovanie až pre 240 ľudí. Často sa tu organizujú festivaly alebo koncerty. Na chate sú dva bufety. Je tu možné doplniť zásoby pitnej vody. Chata je otvorená sezónne, nepravidelne.',
     address:
       'Chata Kosodrevina, Bystrá dolina, Chopok Juh, 977 01 Bystrá, Slovensko, Nízke Tatry',
     mountainArea: 'Nízke Tatry',
@@ -292,12 +307,13 @@ export const cottageData = [
     email: 'chatakosodrevina@gmail.com',
     website: 'http://chatakosodrevina.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/remafapezu',
   },
   {
     id: 17,
     name: 'Chata Trangoška',
     description:
-      'Horská chata Trangoška leží v horní části Bystré doliny v Nízkých Tatrách. Jedná se o novější chatu, postavena byla v roce 1983. K chatě je možné dojet autem, přímo u chaty je parkoviště. Od chaty vedou turistické cesty na nejvyšší vrcholy Nízkých Tater. Chata je otevřena celoročně. Většina pokojů má společné sociální zařízení na chodbě. Na chatě je možné doplnit zásoby pitné vody. V chatě je možné se bezplatně připojit na wi-fi.',
+      'Horská chata Trangoška leží v hornej časti Bystrá doliny v Nízkych Tatrách. Je to novšia chata, postavená bola v roku 1983. K chate sa dá prísť autom, priamo pri chate je parkovisko. Od chaty vedú turistické trasy na najvyššie vrcholy Nízkych Tatier. Chata je celoročne otvorená. Väčšina izieb má spoločné sociálne zariadenia na chodbe. Na chate je možné doplniť zásoby pitnej vody a bezplatne sa pripojiť na wi-fi.',
     address: 'Chopek-juh, 977 01 Bystrá, Nízke Tatry, Slovensko',
     mountainArea: 'Nízke Tatry',
     capacity: 97,
@@ -310,12 +326,13 @@ export const cottageData = [
     email: 'chatatrangoska@gmail.com',
     website: 'http://trangoska.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/cerazacase',
   },
   {
     id: 18,
     name: 'Turistická útulňa Ďurková pod Chabencom',
     description:
-      'Turistická útulňa pod Chabencom, známá spíše jako Ďurková, se nachází ve výšce 1 623 m n. m. těsně pod hlavním hřebenem Nízkých Tater. Je postavená na místě bývalých salaší. Útulna má celoroční provoz. Postupně je přestavovaná na klasickou horskou chatu. Je zde omezená kuchyně. Pramen vody je asi 150 metrů od chaty. Spaní je ve společné místnosti pro 33 lidí. V nouzi je možné spaní v jídelně pro 20 lidí.',
+      'Turistická útulňa pod Chabencom, známa skôr ako Ďurková, sa nachádza vo výške 1 623 m n. m., tesne pod hlavným hrebeňom Nízkych Tatier. Je postavená na mieste bývalých salašov. Útulňa má celoročnú prevádzku a postupne sa prerába na klasickú horskú chatu. Je tu obmedzená kuchyňa. Prameň vody je asi 150 metrov od chaty. Ubytovanie je vo spoločnej miestnosti pre 33 ľudí. V prípade núdze je možné spať v jedálni pre 20 ľudí.',
     address: 'Útulňa Ďurková, 976 75 Jasenie, Nízke Tatry, Slovensko',
     mountainArea: 'Nízke Tatry',
     capacity: 33,
@@ -328,12 +345,13 @@ export const cottageData = [
     email: null,
     website: 'http://durkova.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/negefuvate',
   },
   {
     id: 19,
     name: 'Žiarska chata',
     description:
-      'Žiarská chata je jediná horská chata, která leží na jižní straně Západních Tater (Roháče). Proto je velmi vyhledávaným cílem turistů. Leží ve výšce 1 325 m n. m. ve Žiarské dolině. K chatě vede 6 km asfaltová cesta, vjezd je povolen jen pro ubytované hosty na chatě. Chata byla postavena v roce 1939 a několikrát rekonstruována. V roce 2006 byla postavena současná chata. Na chatě je možné doplnit zásoby pitné vody. Chata je otevřená celoročně.',
+      'Žiarska chata je jediná horská chata, ktorá sa nachádza na južnej strane Západných Tatier (Roháče). Preto je veľmi vyhľadávaným cieľom turistov. Leží vo výške 1 325 m n. m. v Žiarskej doline. K chate vedie 6 km asfaltová cesta, vjazd je povolený len pre ubytovaných hostí. Chata bola postavená v roku 1939 a viackrát rekonštruovaná. V roku 2006 bola postavená súčasná chata. Na chate je možné doplniť zásoby pitnej vody. Chata je otvorená celoročne.',
     address: 'Žiarska dolina 226, 032 05 Žiar, Slovensko, Západné Tatry',
     mountainArea: 'Západné Tatry',
     capacity: 40,
@@ -346,12 +364,13 @@ export const cottageData = [
     email: 'ziarskachata@gmail.com',
     website: 'http://www.ziarskachata.com/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/nupagofaka',
   },
   {
     id: 20,
     name: 'Chata Zverovka',
     description:
-      'Horská chata Zverovka se nachází ve výšce 1 037 m n. m. na poľaně Zverovka. První chata v této lokalitě vznikla v roce 1923 a byla modernizována. V roce 1963 byly k chatě přistavěny samostatné sruby. Chata je oblíbená v letní i zimní sezoně, neboť se nachází kousek od sjezdových tratí. Chata je celoročně otevřená.',
+      'Horská chata Zverovka sa nachádza vo výške 1 037 m n. m. na poľane Zverovka. Prvá chata v tejto lokalite vznikla v roku 1923 a bola modernizovaná. V roku 1963 boli k chate pristavené samostatné zruby. Chata je obľúbená v letnej aj zimnej sezóne, keďže sa nachádza kúsok od zjazdových tratí. Chata je celoročne otvorená.',
     address: 'Chata Zverovka, 027 32 Zuberec, Západné Tatry, Slovensko',
     mountainArea: 'Západné Tatry',
     capacity: 95,
@@ -364,12 +383,13 @@ export const cottageData = [
     email: 'zverovka@chatazverovka.sk',
     website: 'http://www.chatazverovka.sk/',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/ladobahenu',
   },
   {
     id: 21,
     name: 'Chata Pod Náružím - Červenec',
     description:
-      'Chata pod náružím - Červenec je méně známá chata v Roháčích. Historie sahá do meziválečného období, kdy byla postavena první chata, kterou vypálili Němci během 2. světové války. Další chata byla postavena v letech 1953 - 1955, ale také lehla popelem. V roce 1969 byla postavena stávající chata, kterou vlastní obec Bobrovec. Otevřena je většinou jen o víkendech, ale v letních měsících funguje celý týden. Přenocování je nutné si rezervovat telefonicky. Chata nezajišťuje stravu, ale je možné si zde uvařit svépomocí. Psi mají na chatu zákaz.',
+      'Chata pod Náružím - Červenec je menej známa chata v Roháčoch. Jej história siaha do medzivojnového obdobia, keď bola postavená prvá chata, ktorú vypálili Nemci počas 2. svetovej vojny. Ďalšia chata bola postavená v rokoch 1953 – 1955, ale tiež zhorela. V roku 1969 bola postavená súčasná chata, ktorú vlastní obec Bobrovec. Chata je otvorená väčšinou len cez víkendy, ale v letných mesiacoch funguje celý týždeň. Prenocovanie je nutné si rezervovať telefonicky. Chata nezabezpečuje stravu, ale je možné si tu variť svojpomocne. Psy majú na chatu zákaz.',
     address:
       'Chata Pod Náružím - Červenec, Bobrovec 959, Okres Liptovský Mikuláš, Žilinský kraj, Slovensko',
     mountainArea: 'Roháče',
@@ -383,12 +403,13 @@ export const cottageData = [
     email: 'dikantj@gmail.com',
     website: 'http://www.chatacervenec.sk/index.html',
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/pudumokece',
   },
   {
     id: 22,
     name: 'Chata pod Borišovom',
     description:
-      'Horská chata pod Borišovom se nachází ve výšce 1 300 m n. m. na hlavním hřebeni Velké Fatry v sedle mezi horami Ploská a Borišov. Chata byla otevřena v roce 1942 a v poslední době prošla řadou rekonstrukcí, které výrazně zkvalitnily služby pro návštěvníky. Chata je celoročně otevřená. Na chatě je možné doplnit zásoby pitné vody.',
+      'Horská chata pod Borišovom sa nachádza vo výške 1 300 m n. m. na hlavnom hrebeni Veľkej Fatry v sedle medzi vrchmi Ploská a Borišov. Chata bola otvorená v roku 1942 a v poslednom čase prešla viacerými rekonštrukciami, ktoré výrazne zlepšili služby pre návštevníkov. Chata je celoročne otvorená. Na chate je možné doplniť zásoby pitnej vody.',
     address: 'Chata pod Borišovom, 038 12 Necpaly, Slovensko, Velká Fatra',
     mountainArea: 'Velká Fatra',
     capacity: 20,
@@ -401,5 +422,6 @@ export const cottageData = [
     email: null,
     website: null,
     userId: '1',
+    locationURL: 'https://sk.frame.mapy.cz/s/dagagufona',
   },
 ];

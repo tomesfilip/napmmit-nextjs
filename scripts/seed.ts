@@ -5,6 +5,7 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import { SERVICES } from '@/lib/constants';
 import * as schema from '../src/server/db/schema';
 import { cottageData } from './data/cottages';
+import { imageData } from './data/images';
 
 const DB_URL = process.env.DB_URL;
 if (!DB_URL) {
@@ -56,13 +57,15 @@ const main = async () => {
   try {
     console.log('Seeding the database');
 
-    await db.delete(schema.cottages);
     await db.delete(schema.users);
-    await db.delete(schema.services);
     await db.delete(schema.cottageServices);
+    await db.delete(schema.services);
+    await db.delete(schema.images);
+    await db.delete(schema.cottages);
 
     await db.insert(schema.users).values(userData);
     await db.insert(schema.cottages).values(cottageData);
+    await db.insert(schema.images).values(imageData);
     await db
       .insert(schema.services)
       .values(

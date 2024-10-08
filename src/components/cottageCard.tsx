@@ -1,5 +1,5 @@
 import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
-import { CottageWithServices } from '@/lib/appTypes';
+import { CottageDetailType } from '@/lib/appTypes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from './ui/badge';
@@ -12,7 +12,7 @@ import {
 } from './ui/card';
 
 type Props = {
-  cottage: CottageWithServices;
+  cottage: CottageDetailType;
 };
 
 export const CottageCard = ({ cottage }: Props) => {

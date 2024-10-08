@@ -11,8 +11,8 @@ export const SkeletonCard = () => {
         <div className="flex gap-6">
           <Skeleton className="w-40 h-24 rounded-lg" />
           <div className="space-y-3">
-            <Skeleton className="w-20 h-4"></Skeleton>
-            <Skeleton className="w-32 h-4"></Skeleton>
+            <Skeleton className="w-20 h-4" />
+            <Skeleton className="w-32 h-4" />
           </div>
         </div>
       </CardContent>

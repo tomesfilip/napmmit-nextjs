@@ -24,7 +24,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
             </div>
             <Image
               className="object-cover"
-              src={cottageFallbackImg}
+              src={cottage.images[0].url ?? cottageFallbackImg}
               alt="Cottage detail image"
               width={540}
               height={360}

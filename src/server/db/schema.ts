@@ -162,7 +162,7 @@ export const images = pgTable('images', {
   cottageId: integer('cottage_id')
     .notNull()
     .references(() => cottages.id, { onDelete: 'cascade' }),
-  imageUrl: varchar('image_url', { length: 255 }).notNull(),
+  url: varchar('url', { length: 255 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

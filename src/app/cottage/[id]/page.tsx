@@ -1,11 +1,10 @@
-import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { DetailSection } from '@/components/ui/detail-section';
 import { getCottage } from '@/server/db/queries';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaLink, FaLocationDot, FaPhone } from 'react-icons/fa6';
-
 import { MdEmail } from 'react-icons/md';
+
+import DetailGallery from '@/components/cottageDetail/DetailGallery';
 
 const CottageDetail = async ({ params }: { params: { id: number } }) => {
   const { success: cottage, error } = await getCottage(params.id);
@@ -14,25 +13,21 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
     <>
       {error && <div>{error}</div>}
       {cottage && (
-        <div className="w-full flex flex-col items-center gap-16 py-20">
+        <div className="flex w-full flex-col items-center gap-16 py-20">
           <DetailSection>
-            <div className="space-y-6 max-w-[600px]">
-              <h1 className="text-4xl lg:text-6xl font-semibold">
+            <div className="max-w-[600px] space-y-6">
+              <h1 className="text-4xl font-semibold lg:text-6xl">
                 {cottage.name}
               </h1>
               <p className="lg:text-lg">{cottage.description}</p>
             </div>
-            <Image
-              className="object-cover"
-              src={cottage.images[0].url ?? cottageFallbackImg}
-              alt="Cottage detail image"
-              width={540}
-              height={360}
-            />
+            {cottage.images && cottage.images.length > 1 && (
+              <DetailGallery images={cottage.images} />
+            )}
           </DetailSection>
           <DetailSection>
             <div className="space-y-4">
-              <div className="flex gap-2 flex-wrap items-center max-w-[600px]">
+              <div className="flex max-w-[600px] flex-wrap items-center gap-2">
                 {/* replace by corresponding */}
                 <FaLocationDot className="size-8" />
                 <p className="lg:text-lg">{cottage.address}</p>
@@ -40,6 +35,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
             </div>
             {cottage.locationURL && (
               <iframe
+                className="w-full rounded-lg"
                 style={{ border: 'none' }}
                 src={cottage.locationURL}
                 width="740"
@@ -47,7 +43,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               />
             )}
           </DetailSection>
-          <div className="w-full flex flex-wrap gap-6 lg:gap-12">
+          <div className="flex w-full flex-wrap gap-6 lg:gap-12">
             {cottage.phoneNumber && (
               <div className="flex items-center gap-2">
                 <FaPhone className="size-7 flex-shrink-0" />
@@ -64,7 +60,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               <div className="flex items-center gap-2">
                 <FaLink className="size-7 flex-shrink-0" />
                 <Link
-                  className="max-w-[230px] lg:max-w-[360px] overflow-ellipsis overflow-hidden"
+                  className="max-w-[230px] overflow-hidden overflow-ellipsis lg:max-w-[360px]"
                   target="_blank"
                   href={cottage.website}
                 >

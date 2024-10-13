@@ -17,7 +17,7 @@ type Props = {
 
 export const CottageCard = ({ cottage }: Props) => {
   return (
-    <Card className="w-full max-w-[400px] h-fit">
+    <Card className="h-fit w-full max-w-[400px]">
       <CardHeader>
         <CardTitle className="line-clamp-1 leading-8">{cottage.name}</CardTitle>
         <p>{cottage.mountainArea}</p>
@@ -28,7 +28,7 @@ export const CottageCard = ({ cottage }: Props) => {
             src={cottageFallbackImg}
             alt={`image ${cottage.name}`}
             placeholder="blur"
-            className="w-40 h-full object-cover rounded-lg"
+            className="h-full w-40 rounded-lg object-cover"
           />
           {/* TODO: show some basic availibility details after functional reservation system connection */}
           {/* <div className="space-y-3">
@@ -47,7 +47,7 @@ export const CottageCard = ({ cottage }: Props) => {
           ))}
         </div>
         <Link
-          className="ml-auto bg-slate-100 px-4 py-1 rounded-lg font-medium"
+          className="ml-auto rounded-lg bg-slate-100 px-4 py-1 font-medium"
           href={`/cottage/${cottage.id}`}
         >
           Viac

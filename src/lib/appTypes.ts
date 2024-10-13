@@ -1,8 +1,8 @@
-import { Cottage, Image, Service } from '@/server/db/schema';
+import { Cottage, ImageType, Service } from '@/server/db/schema';
 
 export type CottageDetailType = Cottage & {
   cottageServices: Service[];
-  images: Pick<Image, 'id' | 'url'>[];
+  images: ImageType[];
 };
 
 export type CottageArea = {

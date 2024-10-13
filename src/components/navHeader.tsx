@@ -2,16 +2,16 @@ import Link from 'next/link';
 
 export const NavHeader = () => {
   return (
-    <header className="border-b-[1px] py-3 flex justify-between w-full px-4 max-w-[1600px]">
-      <Link href="/" className="text-xl font-bold uppercase w-max">
+    <header className="flex w-full max-w-[1600px] justify-between border-b-[1px] px-4 py-3">
+      <Link href="/" className="w-max text-xl font-bold uppercase">
         Napmmit
       </Link>
-      <nav className="w-full flex justify-end">
+      <nav className="flex w-full justify-end">
         <ul>
           <li>
             <Link
               href="/login"
-              className="bg-slate-100 px-4 py-2 rounded-lg font-semibold text-lg"
+              className="rounded-lg bg-slate-100 px-4 py-2 text-lg font-semibold"
             >
               Prihlásiť sa
             </Link>

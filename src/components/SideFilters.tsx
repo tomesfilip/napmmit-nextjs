@@ -64,9 +64,9 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
     replace(`${pathname}?${params.toString()}`);
   };
   return (
-    <div className="space-y-8 h-full">
-      <div className="space-y-4 mb-4">
-        <h2 className="font-bold text-lg">Oblasť</h2>
+    <div className="h-full space-y-8">
+      <div className="mb-4 space-y-4">
+        <h2 className="text-lg font-bold">Oblasť</h2>
         <Select onValueChange={handleSelectCottageArea}>
           <SelectTrigger className="w-[276px]">
             <SelectValue placeholder="Vysoké Tatry, Malá Fatra, ..." />
@@ -84,14 +84,14 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
         </Select>
       </div>
       <div className="space-y-4">
-        <h2 className="font-bold text-lg">Extra služby</h2>
+        <h2 className="text-lg font-bold">Extra služby</h2>
         <div className="flex gap-3">
           {SERVICES.map(({ name }) => (
             <Badge
               key={name}
               variant="secondary"
               className={clsx(
-                'cursor-pointer text-base transition-colors bg-slate-100 hover:bg-slate-400 hover:text-white duration-300 ease-in-out',
+                'cursor-pointer bg-slate-100 text-base transition-colors duration-300 ease-in-out hover:bg-slate-400 hover:text-white',
                 {
                   'bg-slate-400 text-white': filterServices.includes(name),
                 },

@@ -69,13 +69,13 @@ export const CottageContent = ({ cottages }: Props) => {
       <div className="hidden lg:block">
         <SideFiltersContent availableMountainAreas={availableMountainAreas} />
       </div>
-      <div className="space-y-4 w-full">
-        <div className="flex gap-4 items-center w-full justify-center lg:justify-start">
+      <div className="w-full space-y-4">
+        <div className="flex w-full items-center justify-center gap-4 lg:justify-start">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="block lg:hidden">
             <Sheet>
               <SheetTrigger
-                className="bg-slate-200 size-10 flex items-center justify-center rounded-full"
+                className="flex size-10 items-center justify-center rounded-full bg-slate-200"
                 aria-label="Open filters"
               >
                 <FaFilter size={20} />
@@ -89,7 +89,7 @@ export const CottageContent = ({ cottages }: Props) => {
           </div>
         </div>
         {filteredCottages.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 py-8 w-full place-items-center lg:place-items-start">
+          <div className="grid w-full grid-cols-1 place-items-center gap-8 py-8 lg:grid-cols-2 lg:place-items-start 2xl:grid-cols-3">
             {filteredCottages.map((cottage) => (
               <CottageCard key={cottage.id} cottage={cottage} />
             ))}

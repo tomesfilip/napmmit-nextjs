@@ -4,8 +4,6 @@ import { getCottages } from '@/server/db/queries';
 const Home = async () => {
   const { success: cottages, error } = await getCottages();
 
-  console.log(cottages);
-
   return (
     <>
       {error && <div>{error}</div>}

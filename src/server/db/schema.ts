@@ -162,7 +162,9 @@ export const images = pgTable('images', {
   cottageId: integer('cottage_id')
     .notNull()
     .references(() => cottages.id, { onDelete: 'cascade' }),
-  url: varchar('url', { length: 255 }).notNull(),
+  src: varchar('src', { length: 255 }).notNull(),
+  width: integer('width').notNull(),
+  height: integer('height').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
@@ -177,4 +179,4 @@ export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
-export type Image = typeof images.$inferSelect;
+export type ImageType = typeof images.$inferSelect;

@@ -15,7 +15,7 @@ export const getCottages = cache(
             columns: { serviceId: false },
             with: { service: { columns: { id: true, name: true } } },
           },
-          images: { columns: { id: true, url: true } },
+          images: {},
         },
       });
 
@@ -46,7 +46,7 @@ export const getCottage = cache(
           cottageServices: {
             with: { service: { columns: { id: true, name: true } } },
           },
-          images: { columns: { id: true, url: true } },
+          images: {},
         },
         where: (table, funcs) => funcs.eq(table.id, Number(id)),
       });

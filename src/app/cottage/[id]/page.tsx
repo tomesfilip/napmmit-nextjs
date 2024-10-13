@@ -35,6 +35,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
             </div>
             {cottage.locationURL && (
               <iframe
+                className="w-full rounded-lg"
                 style={{ border: 'none' }}
                 src={cottage.locationURL}
                 width="740"

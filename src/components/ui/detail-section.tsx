@@ -6,7 +6,7 @@ interface Props {
 
 export const DetailSection = ({ children }: Props) => {
   return (
-    <div className="w-full flex justify-between flex-wrap gap-6">
+    <div className="flex w-full flex-wrap justify-between gap-6">
       {children}
     </div>
   );

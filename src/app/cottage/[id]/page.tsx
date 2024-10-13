@@ -13,10 +13,10 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
     <>
       {error && <div>{error}</div>}
       {cottage && (
-        <div className="w-full flex flex-col items-center gap-16 py-20">
+        <div className="flex w-full flex-col items-center gap-16 py-20">
           <DetailSection>
-            <div className="space-y-6 max-w-[600px]">
-              <h1 className="text-4xl lg:text-6xl font-semibold">
+            <div className="max-w-[600px] space-y-6">
+              <h1 className="text-4xl font-semibold lg:text-6xl">
                 {cottage.name}
               </h1>
               <p className="lg:text-lg">{cottage.description}</p>
@@ -27,7 +27,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
           </DetailSection>
           <DetailSection>
             <div className="space-y-4">
-              <div className="flex gap-2 flex-wrap items-center max-w-[600px]">
+              <div className="flex max-w-[600px] flex-wrap items-center gap-2">
                 {/* replace by corresponding */}
                 <FaLocationDot className="size-8" />
                 <p className="lg:text-lg">{cottage.address}</p>
@@ -42,7 +42,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               />
             )}
           </DetailSection>
-          <div className="w-full flex flex-wrap gap-6 lg:gap-12">
+          <div className="flex w-full flex-wrap gap-6 lg:gap-12">
             {cottage.phoneNumber && (
               <div className="flex items-center gap-2">
                 <FaPhone className="size-7 flex-shrink-0" />
@@ -59,7 +59,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
               <div className="flex items-center gap-2">
                 <FaLink className="size-7 flex-shrink-0" />
                 <Link
-                  className="max-w-[230px] lg:max-w-[360px] overflow-ellipsis overflow-hidden"
+                  className="max-w-[230px] overflow-hidden overflow-ellipsis lg:max-w-[360px]"
                   target="_blank"
                   href={cottage.website}
                 >

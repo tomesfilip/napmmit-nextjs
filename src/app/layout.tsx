@@ -22,12 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={clsx(
-          'flex flex-col size-full min-h-screen items-center',
+          'flex size-full min-h-screen flex-col items-center',
           workSans.className,
         )}
       >
         <NavHeader />
-        <main className="flex flex-col px-4 size-full max-w-[1600px] items-center">
+        <main className="flex size-full max-w-[1600px] flex-col items-center px-4">
           {children}
         </main>
       </body>

@@ -17,14 +17,14 @@ const DetailGallery = ({ images }: Props) => {
 
   return (
     <>
-      <ul className="grid grid-cols-3 gap-4 flex-1 grid-rows-2 items-stretch content-stretch max-h-[400px] relative overflow-hidden rounded-lg">
+      <ul className="relative grid max-h-[400px] flex-1 grid-cols-3 grid-rows-2 content-stretch items-stretch gap-4 overflow-hidden rounded-lg">
         {images.map((img, index) => (
           <li
             key={img.id}
-            className="first:col-span-2 first:row-span-2 &:nth-child(n+3)]:hidden"
+            className="&:nth-child(n+3)]:hidden relative size-full outline-none after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:z-[2] after:bg-black after:opacity-0 after:transition-opacity first:col-span-2 first:row-span-2 hover:after:opacity-15 focus:after:opacity-15"
           >
             <button
-              className="outline-none border-none cursor-pointer size-full"
+              className="size-full cursor-pointer border-none outline-none"
               onClick={() => setIndex(index)}
             >
               <Image
@@ -32,7 +32,7 @@ const DetailGallery = ({ images }: Props) => {
                 width={600}
                 height={600}
                 alt=""
-                className="bg-gray-400 w-full aspect-[4/3] object-cover h-full self-stretch"
+                className="aspect-[4/3] h-full w-full self-stretch bg-gray-400 object-cover"
               />
             </button>
           </li>

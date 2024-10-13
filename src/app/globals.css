@@ -76,5 +76,5 @@
 }
 main,
 nav {
-  @apply max-w-screen-2xl mx-auto px-4;
+  @apply mx-auto max-w-screen-2xl px-4;
 }

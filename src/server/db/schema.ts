@@ -180,3 +180,4 @@ export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
 export type ImageType = typeof images.$inferSelect;
+export type SessionType = typeof sessions.$inferSelect;

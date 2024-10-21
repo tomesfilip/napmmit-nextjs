@@ -249,17 +249,14 @@ export const verifyEmail = async (
     return redirect(redirects.toLogin);
   }
 
-  const dbCode = await db.transaction(async (tx) => {
-    const item = await tx.query.emailVerificationCodes.findFirst({
-      where: (table, { eq }) => eq(table.userId, user.id),
-    });
-    if (item) {
-      await tx
-        .delete(emailVerificationCodes)
-        .where(eq(emailVerificationCodes.id, item.id));
-    }
-    return item;
+  const dbCode = await db.query.emailVerificationCodes.findFirst({
+    where: (table, { eq }) => eq(table.userId, user.id),
   });
+  if (dbCode) {
+    await db
+      .delete(emailVerificationCodes)
+      .where(eq(emailVerificationCodes.id, dbCode.id));
+  }
 
   if (!dbCode || dbCode.code !== code)
     return { error: 'Invalid verification code' };

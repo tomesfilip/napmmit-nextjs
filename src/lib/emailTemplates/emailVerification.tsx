@@ -10,9 +10,7 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 
-type Props = {
-  code: string;
-};
+type Props = { code: string };
 
 export const VerificationCodeEmail = ({ code }: Props) => {
   return (
@@ -23,7 +21,7 @@ export const VerificationCodeEmail = ({ code }: Props) => {
       </Preview>
       <Body style={main}>
         <Container style={container}>
-          <Section>
+          <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>Hi,</Text>
             <Text style={text}>
@@ -34,7 +32,7 @@ export const VerificationCodeEmail = ({ code }: Props) => {
             <Text style={codePlaceholder}>{code}</Text>
 
             <Text style={text}>Have a nice day!</Text>
-          </Section>
+          </div>
         </Container>
       </Body>
     </Html>
@@ -44,10 +42,7 @@ export const VerificationCodeEmail = ({ code }: Props) => {
 export const renderVerificationCodeEmail = ({ code }: Props) =>
   render(<VerificationCodeEmail code={code} />);
 
-const main = {
-  backgroundColor: '#f6f9fc',
-  padding: '10px 0',
-};
+const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 
 const container = {
   backgroundColor: '#ffffff',

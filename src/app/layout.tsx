@@ -30,8 +30,8 @@ export default function RootLayout({
         <main className="flex size-full max-w-[1600px] flex-col items-center px-4">
           {children}
         </main>
+        <Toaster />
       </body>
-      <Toaster />
     </html>
   );
 }

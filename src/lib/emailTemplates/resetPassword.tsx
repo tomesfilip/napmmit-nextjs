@@ -22,7 +22,7 @@ export const ResetPasswordEmail = ({ link }: Props) => {
       <Preview>Reset your password</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Section>
+          <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>Hi,</Text>
             <Text style={text}>
@@ -41,7 +41,7 @@ export const ResetPasswordEmail = ({ link }: Props) => {
               to anyone.
             </Text>
             <Text style={text}>Have a nice day!</Text>
-          </Section>
+          </div>
         </Container>
       </Body>
     </Html>
@@ -51,10 +51,7 @@ export const ResetPasswordEmail = ({ link }: Props) => {
 export const renderResetPasswordEmail = ({ link }: Props) =>
   render(<ResetPasswordEmail link={link} />);
 
-const main = {
-  backgroundColor: '#f6f9fc',
-  padding: '10px 0',
-};
+const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 
 const container = {
   backgroundColor: '#ffffff',

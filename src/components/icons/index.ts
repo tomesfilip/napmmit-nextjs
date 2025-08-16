@@ -1,0 +1,6 @@
+export { default as ArrowRight } from './arrowRight'
+export { default as Breakfast } from './breakfast'
+export { default as Food } from './food'
+export { default as Location } from './location'
+export { default as Shower } from './shower'
+export { default as User } from './user'

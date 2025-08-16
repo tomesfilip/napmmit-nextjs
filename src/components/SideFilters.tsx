@@ -1,10 +1,8 @@
 'use client';
 
 import { SERVICES } from '@/lib/constants';
-import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
-import { Badge } from './ui/badge';
 import {
   Select,
   SelectContent,
@@ -13,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import { ServiceBadge } from './shared/serviceBadge';
 
 interface Props {
   availableMountainAreas: string[];
@@ -86,20 +85,18 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
       <div className="space-y-4">
         <h2 className="text-lg font-bold">Extra služby</h2>
         <div className="flex gap-3">
-          {SERVICES.map(({ name }) => (
-            <Badge
+          {SERVICES.map(({ name, icon }) => (
+            <ServiceBadge
               key={name}
-              variant="secondary"
-              className={clsx(
-                'cursor-pointer bg-slate-100 text-base transition-colors duration-300 ease-in-out hover:bg-slate-400 hover:text-white',
-                {
-                  'bg-slate-400 text-white': filterServices.includes(name),
-                },
-              )}
               onClick={() => handleSelectService(name)}
+              isActive={filterServices.includes(name)}
+              serviceBadge={{ name, icon }}
+              aria-label={name}
+              tabIndex={0}
+              className="px-3 py-2"
             >
               {name}
-            </Badge>
+            </ServiceBadge>
           ))}
         </div>
       </div>

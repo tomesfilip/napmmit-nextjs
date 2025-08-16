@@ -2,57 +2,55 @@ import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { CottageDetailType } from '@/lib/appTypes';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Badge } from './ui/badge';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { ServiceBadge } from './shared/serviceBadge';
+import { Icon } from './shared/Icon';
 
 type Props = {
   cottage: CottageDetailType;
 };
 
 export const CottageCard = ({ cottage }: Props) => {
+  console.log('cottageCard: ', cottage);
+
   return (
-    <Card className="h-fit w-full max-w-[400px]">
-      <CardHeader>
-        <CardTitle className="line-clamp-1 leading-8">{cottage.name}</CardTitle>
-        <p>{cottage.mountainArea}</p>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-6">
-          <Image
-            src={cottageFallbackImg}
-            alt={`image ${cottage.name}`}
-            placeholder="blur"
-            className="h-full w-40 rounded-lg object-cover"
-          />
-          {/* TODO: show some basic availibility details after functional reservation system connection */}
-          {/* <div className="space-y-3">
-            <p>
-              Voľné miesta: {cottage.availableBeds}/{cottage.capacity}
-            </p>
-          </div> */}
-        </div>
-      </CardContent>
-      <CardFooter className="flex w-full justify-between">
-        <div className="flex gap-2">
-          {cottage.cottageServices.map(({ id, name }) => (
-            <Badge key={id} variant="secondary">
-              {name}
-            </Badge>
-          ))}
-        </div>
-        <Link
-          className="ml-auto rounded-lg bg-slate-100 px-4 py-1 font-medium"
-          href={`/cottage/${cottage.id}`}
-        >
-          Viac
-        </Link>
-      </CardFooter>
+    <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden">
+      <Image
+        src={cottageFallbackImg}
+        alt={`image ${cottage.name}`}
+        placeholder="blur"
+        className="absolute left-0 top-0 z-0 size-full rounded-lg object-cover"
+      />
+      <div className="relative z-[1] size-full rounded-md p-2">
+        <CardHeader className="space-y-3 p-0">
+          <div className="glass-bg flex max-w-max items-center gap-2 bg-black/30 px-3 py-1 text-white">
+            <Icon icon="Location" className="size-4 fill-white" />
+            <p className="font-medium">{cottage.mountainArea}</p>
+          </div>
+
+          <div className="flex gap-2">
+            {cottage.cottageServices.map(({ id, name, icon }) => (
+              <ServiceBadge
+                key={id}
+                serviceBadge={{ name, icon }}
+                aria-label={name}
+              />
+            ))}
+          </div>
+        </CardHeader>
+        <CardFooter className="absolute bottom-2 left-0 flex w-full justify-between gap-8 p-0 px-2">
+          <CardTitle className="glass-bg relative z-[1] line-clamp-1 bg-black/30 px-3 py-1 text-xl leading-8 text-white">
+            {cottage.name}
+          </CardTitle>
+          <Link
+            className="ml-auto flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
+            href={`/cottage/${cottage.id}`}
+          >
+            Viac
+            <Icon icon="ArrowRight" className="size-4 fill-black" />
+          </Link>
+        </CardFooter>
+      </div>
     </Card>
   );
 };

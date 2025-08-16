@@ -25,12 +25,12 @@ export const Search = ({ placeholder }: Props) => {
   }, 300);
 
   return (
-    <div className="relative flex w-full max-w-[400px] rounded-md focus:shadow-md">
+    <div className="relative flex w-full rounded-md focus:shadow-md lg:max-w-[400px]">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <input
-        className="peer block w-full rounded-md border border-gray-200 py-3 pl-10 text-sm transition-all duration-200 placeholder:text-gray-500 hover:shadow-md focus:shadow-md"
+        className="peer block w-full rounded-md border border-gray-200 py-3 pl-10 pr-4 text-sm transition-all duration-200 placeholder:text-gray-500 hover:shadow-md focus:shadow-md"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

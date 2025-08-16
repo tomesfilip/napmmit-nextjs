@@ -1,3 +1,4 @@
+import type * as Icons from '@/components/icons/index';
 import { Cottage, ImageType, Service } from '@/server/db/schema';
 
 export type CottageDetailType = Cottage & {
@@ -9,3 +10,10 @@ export type CottageArea = {
   name: string;
   group?: string;
 };
+
+export type ServiceBadgeType = {
+  name: string;
+  icon: keyof typeof Icons;
+};
+
+export type IconType = keyof typeof Icons;

@@ -70,7 +70,7 @@ export const CottageContent = ({ cottages }: Props) => {
         <SideFiltersContent availableMountainAreas={availableMountainAreas} />
       </div>
       <div className="w-full space-y-4">
-        <div className="flex w-full items-center justify-center gap-4 lg:justify-start">
+        <div className="sticky top-0 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 p-4 backdrop-blur-sm transition-all md:p-0 lg:relative lg:justify-start lg:bg-none lg:backdrop-blur-none">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="block lg:hidden">
             <Sheet>

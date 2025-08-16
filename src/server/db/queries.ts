@@ -13,7 +13,9 @@ export const getCottages = cache(
         with: {
           cottageServices: {
             columns: { serviceId: false },
-            with: { service: { columns: { id: true, name: true } } },
+            with: {
+              service: { columns: { id: true, name: true, icon: true } },
+            },
           },
           images: {},
         },
@@ -44,7 +46,9 @@ export const getCottage = cache(
       const data = await db.query.cottages.findFirst({
         with: {
           cottageServices: {
-            with: { service: { columns: { id: true, name: true } } },
+            with: {
+              service: { columns: { id: true, name: true, icon: true } },
+            },
           },
           images: {},
         },

@@ -1,4 +1,4 @@
-import { CottageArea } from './appTypes';
+import { CottageArea, ServiceBadgeType } from './appTypes';
 
 export const USER_ID_LENGTH = 21;
 export const PASSWORD_ID_LENGTH = 40;
@@ -15,10 +15,10 @@ export const redirects = {
   afterVerify: '/dashboard',
 } as const;
 
-export const SERVICES = [
-  { name: 'raňajky' },
-  { name: 'večera' },
-  { name: 'sprcha' },
+export const SERVICES: ServiceBadgeType[] = [
+  { name: 'raňajky', icon: 'Breakfast' },
+  { name: 'večera', icon: 'Food' },
+  { name: 'sprcha', icon: 'Shower' },
 ] as const;
 
 export const COTTAGE_AREAS: CottageArea[] = [

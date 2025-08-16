@@ -69,7 +69,11 @@ const main = async () => {
     await db
       .insert(schema.services)
       .values(
-        SERVICES.map(({ name }, index) => ({ id: index + 1, name: name })),
+        SERVICES.map(({ name, icon }, index) => ({
+          id: index + 1,
+          name: name,
+          icon: icon,
+        })),
       );
     await db.insert(schema.cottageServices).values(cottageServiceData);
 

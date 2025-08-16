@@ -1,3 +1,4 @@
+import { IconType } from '@/lib/appTypes';
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
 import { relations } from 'drizzle-orm';
 import {
@@ -124,6 +125,7 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   name: varchar('name').unique().notNull(),
+  icon: varchar('icon').notNull().$type<IconType>(),
 });
 
 export const servicesRelations = relations(services, ({ many }) => ({

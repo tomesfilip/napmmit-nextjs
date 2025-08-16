@@ -149,13 +149,12 @@ export const signup = async (
   return redirect(redirects.toVerify);
 };
 
-export async function logout(): Promise<{ error: string } | void> {
+export async function logout(): Promise<void> {
   const { session } = await validateRequest();
   if (!session) {
-    return {
-      error: 'No session found',
-    };
+    throw new Error('No session found');
   }
+
   await lucia.invalidateSession(session.id);
   const sessionCookie = lucia.createBlankSessionCookie();
   cookies().set(

@@ -3,7 +3,7 @@ import Link from 'next/link';
 export const NavHeader = () => {
   return (
     <header className="flex w-full max-w-[1600px] justify-between border-b-[1px] px-4 py-3">
-      <Link href="/" className="w-max text-xl font-bold uppercase">
+      <Link href="/" className="font-alatsi w-max text-xl uppercase">
         Napmmit
       </Link>
       <nav className="flex w-full justify-end">

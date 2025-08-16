@@ -34,8 +34,8 @@ export const ServiceBadge = ({
       <Icon
         icon={serviceBadge.icon}
         className={clsx(
-          'size-5 fill-white group-hover/badge:fill-gray-900',
-          isActive && 'fill-gray-900',
+          'size-5 group-hover/badge:fill-gray-900',
+          isActive ? 'fill-gray-900' : 'fill-white',
         )}
       />
     </Badge>

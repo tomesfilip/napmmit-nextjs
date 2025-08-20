@@ -15,12 +15,12 @@ interface Props {
   images: ImageType[];
 }
 
-const DetailGallery = ({ images }: Props) => {
+export const DetailGallery = ({ images }: Props) => {
   const [index, setIndex] = useState(-1);
 
   return (
-    <>
-      <ul className="relative grid flex-1 grid-cols-2 content-stretch items-stretch gap-2 overflow-hidden rounded-lg sm:max-h-[400px] sm:grid-cols-3 sm:grid-rows-2 sm:gap-4">
+    <div className="hidden lg:block">
+      <ul className="relative grid flex-1 content-stretch items-stretch overflow-hidden rounded-lg sm:max-h-[400px] lg:grid-cols-3 lg:grid-rows-2 lg:gap-4">
         {images.map((img, index) => (
           <li
             key={img.id}
@@ -30,7 +30,7 @@ const DetailGallery = ({ images }: Props) => {
             )}
           >
             {index === 2 && images.length > 3 && (
-              <p className="pointer-events-none absolute z-[3] select-none text-xl font-medium text-white lg:text-3xl">
+              <p className="pointer-events-none absolute z-[3] hidden select-none text-xl font-medium text-white lg:block lg:text-3xl">
                 +{images.length - 3} fotky
               </p>
             )}
@@ -57,7 +57,6 @@ const DetailGallery = ({ images }: Props) => {
         slides={images}
         render={{ slide: NextImage }}
       />
-    </>
+    </div>
   );
 };
-export default DetailGallery;

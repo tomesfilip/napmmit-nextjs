@@ -33,7 +33,7 @@ export default function RootLayout({
         )}
       >
         <NavHeader />
-        <main className="flex size-full max-w-[1600px] flex-col items-center px-4">
+        <main className="flex size-full max-w-[1600px] flex-col items-center">
           {children}
         </main>
         <Toaster />

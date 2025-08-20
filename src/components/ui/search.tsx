@@ -30,6 +30,7 @@ export const Search = ({ placeholder }: Props) => {
         Search
       </label>
       <input
+        id="search"
         className="peer block w-full rounded-md border border-gray-200 py-3 pl-10 pr-4 text-sm transition-all duration-200 placeholder:text-gray-500 hover:shadow-md focus:shadow-md"
         placeholder={placeholder}
         onChange={(e) => {

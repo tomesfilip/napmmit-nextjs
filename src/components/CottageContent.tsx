@@ -70,12 +70,12 @@ export const CottageContent = ({ cottages }: Props) => {
         <SideFiltersContent availableMountainAreas={availableMountainAreas} />
       </div>
       <div className="w-full space-y-4">
-        <div className="sticky top-0 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 p-4 backdrop-blur-sm transition-all md:p-0 lg:relative lg:justify-start lg:bg-none lg:backdrop-blur-none">
+        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all md:p-0 lg:relative lg:justify-start lg:bg-none lg:backdrop-blur-none">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="block lg:hidden">
             <Sheet>
               <SheetTrigger
-                className="flex size-10 items-center justify-center rounded-full bg-slate-200"
+                className="flex size-10 items-center justify-center rounded-full bg-slate-100"
                 aria-label="Open filters"
               >
                 <FaFilter size={20} />

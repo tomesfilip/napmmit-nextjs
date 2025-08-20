@@ -93,7 +93,7 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
               serviceBadge={{ name, icon }}
               aria-label={name}
               tabIndex={0}
-              className="px-3 py-2"
+              className="cursor-pointer px-3 py-2 hover:shadow-lg"
             >
               {name}
             </ServiceBadge>

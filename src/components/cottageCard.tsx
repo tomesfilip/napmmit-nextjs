@@ -11,8 +11,6 @@ type Props = {
 };
 
 export const CottageCard = ({ cottage }: Props) => {
-  console.log('cottageCard: ', cottage);
-
   return (
     <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden">
       <Image
@@ -38,8 +36,8 @@ export const CottageCard = ({ cottage }: Props) => {
             ))}
           </div>
         </CardHeader>
-        <CardFooter className="absolute bottom-2 left-0 flex w-full justify-between gap-8 p-0 px-2">
-          <CardTitle className="glass-bg relative z-[1] line-clamp-1 bg-black/30 px-3 py-1 text-xl leading-8 text-white">
+        <CardFooter className="absolute bottom-2 left-0 flex w-full items-end justify-between gap-8 p-0 px-2">
+          <CardTitle className="glass-bg relative z-[1] bg-black/30 px-3 py-1 text-lg leading-8 text-white lg:line-clamp-1 lg:text-xl">
             {cottage.name}
           </CardTitle>
           <Link

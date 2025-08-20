@@ -6,7 +6,7 @@ interface Props {
 
 export const DetailSection = ({ children }: Props) => {
   return (
-    <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid w-full grid-cols-1 gap-6 px-4 lg:grid-cols-2">
       {children}
     </div>
   );

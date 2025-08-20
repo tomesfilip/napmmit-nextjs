@@ -8,7 +8,7 @@ const Home = async () => {
     <>
       {error && <div>{error}</div>}
       {cottages && (
-        <div className="flex size-full w-full gap-8 pt-8">
+        <div className="flex size-full w-full gap-8 px-4 pt-8">
           <CottageContent cottages={cottages} />
         </div>
       )}

@@ -2,7 +2,7 @@ import { CottageContent } from '@/components/cottage-content';
 import { getCottages } from '@/server/db/queries';
 
 const Home = async () => {
-  // await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   const { success: cottages, error } = await getCottages();
 

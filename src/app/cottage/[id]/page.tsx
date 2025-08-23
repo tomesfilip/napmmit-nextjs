@@ -9,7 +9,7 @@ import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
 const CottageDetail = async ({ params }: { params: { id: number } }) => {
   const { success: cottage, error } = await getCottage(params.id);
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
 
   return (
     <>

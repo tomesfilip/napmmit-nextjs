@@ -68,7 +68,10 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
       <div className="mb-4 space-y-4">
         <h2 className="text-lg font-bold">Oblasť</h2>
         <Select onValueChange={handleSelectCottageArea}>
-          <SelectTrigger className="w-[276px]">
+          <SelectTrigger
+            className="w-[276px]"
+            aria-label="Vybrať horskú oblasť"
+          >
             <SelectValue placeholder="Vysoké Tatry, Malá Fatra, ..." />
           </SelectTrigger>
           <SelectContent>

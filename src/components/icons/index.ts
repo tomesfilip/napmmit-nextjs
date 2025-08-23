@@ -1,5 +1,6 @@
 export { default as ArrowRight } from './arrowRight'
 export { default as Breakfast } from './breakfast'
+export { default as Filter } from './filter'
 export { default as Food } from './food'
 export { default as Link } from './link'
 export { default as Location } from './location'

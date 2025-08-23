@@ -12,12 +12,14 @@ type Props = {
 
 export const CottageCard = ({ cottage }: Props) => {
   return (
-    <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden">
+    <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
       <Image
         src={cottageFallbackImg}
         alt={`image ${cottage.name}`}
         placeholder="blur"
         className="absolute left-0 top-0 z-0 size-full rounded-lg object-cover"
+        width={926}
+        height={520}
       />
       <div className="relative z-[1] size-full rounded-md p-2">
         <CardHeader className="space-y-3 p-0">

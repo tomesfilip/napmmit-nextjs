@@ -1,12 +1,12 @@
+import { Icon } from '@/components/shared/icon';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FaFilter } from 'react-icons/fa';
 
 const loading = () => {
   return (
     <div className="flex size-full w-full gap-8 px-4 pt-8 lg:px-12">
       {/* SKELETON: side filters */}
-      <div className="hidden lg:block">
+      <div className="hidden xl:block">
         <div className="h-full space-y-8">
           <div className="mb-4 space-y-4">
             <h2 className="text-lg font-bold">Oblasť</h2>
@@ -20,11 +20,11 @@ const loading = () => {
       </div>
 
       <div className="w-full space-y-4">
-        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all md:p-0 lg:relative lg:justify-start lg:bg-none lg:backdrop-blur-none">
+        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all md:p-0 xl:relative xl:justify-start xl:bg-none xl:backdrop-blur-none">
           <Skeleton className="h-[46px] w-full rounded-md lg:max-w-[400px]" />
-          <div className="block lg:hidden">
+          <div className="block xl:hidden">
             <div className="flex size-10 items-center justify-center rounded-full bg-slate-100">
-              <FaFilter size={20} />
+              <Icon icon="Filter" className="size-5 fill-black" />
             </div>
           </div>
         </div>

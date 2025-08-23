@@ -8,7 +8,7 @@ import {
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirects } from '@/lib/constants';
 import { redirect } from 'next/navigation';
-import { SendResetEmail } from '../sendResetEmail';
+import { SendResetEmail } from '../send-reset-email';
 
 export const metadata = {
   title: 'Forgot Password',

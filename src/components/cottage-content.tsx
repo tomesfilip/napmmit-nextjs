@@ -5,9 +5,9 @@ import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { FaFilter } from 'react-icons/fa';
-import { CottageCard } from './cottageCard';
-import { NoCottageFoundContent } from './NoCottageFoundContent';
-import { SideFiltersContent } from './SideFilters';
+import { CottageCard } from './cottage-card';
+import { NoCottageFoundContent } from './no-cottage-found-content';
+import { SideFiltersContent } from './side-filters';
 import { Search } from './ui/search';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 

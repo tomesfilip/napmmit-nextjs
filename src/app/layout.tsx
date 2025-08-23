@@ -1,4 +1,4 @@
-import { NavHeader } from '@/components/navHeader';
+import { NavHeader } from '@/components/nav-header';
 import { Toaster } from '@/components/ui/sonner';
 import clsx from 'clsx';
 import type { Metadata } from 'next';

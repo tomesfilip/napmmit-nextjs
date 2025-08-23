@@ -6,11 +6,11 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Counter from 'yet-another-react-lightbox/plugins/counter';
-import NextImage from '../NextImage';
+import NextImage from '../next-image';
 
 import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/styles.css';
-import { Icon } from '../shared/Icon';
+import { Icon } from '../shared/icon';
 import Link from 'next/link';
 
 interface Props {

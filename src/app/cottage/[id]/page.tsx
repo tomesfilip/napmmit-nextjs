@@ -1,10 +1,10 @@
 import { DetailSection } from '@/components/ui/detail-section';
 import { getCottage } from '@/server/db/queries';
 
-import { DetailGallery } from '@/components/cottageDetail/DetailGallery';
-import { LocationSection } from '@/components/cottageDetail/LocationSection';
-import { ContactSection } from '@/components/cottageDetail/ContactSection';
-import { MobileGallery } from '@/components/cottageDetail/MobileGallery';
+import { DetailGallery } from '@/components/cottageDetail/detail-gallery';
+import { LocationSection } from '@/components/cottageDetail/location-section';
+import { ContactSection } from '@/components/cottageDetail/contact-section';
+import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
 
 const CottageDetail = async ({ params }: { params: { id: number } }) => {
   const { success: cottage, error } = await getCottage(params.id);

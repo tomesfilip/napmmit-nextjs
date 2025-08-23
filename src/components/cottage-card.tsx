@@ -3,8 +3,8 @@ import { CottageDetailType } from '@/lib/appTypes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { ServiceBadge } from './shared/serviceBadge';
-import { Icon } from './shared/Icon';
+import { ServiceBadge } from './shared/service-badge';
+import { Icon } from './shared/icon';
 
 type Props = {
   cottage: CottageDetailType;

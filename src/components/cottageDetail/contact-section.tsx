@@ -2,7 +2,7 @@ import { CottageDetailType } from '@/lib/appTypes';
 import Link from 'next/link';
 import { FaLink, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { Icon } from '../shared/Icon';
+import { Icon } from '../shared/icon';
 
 export const ContactSection = ({
   phoneNumber,

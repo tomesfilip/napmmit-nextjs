@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { ServiceBadge } from './shared/serviceBadge';
+import { ServiceBadge } from './shared/service-badge';
 
 interface Props {
   availableMountainAreas: string[];

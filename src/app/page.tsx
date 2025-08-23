@@ -1,4 +1,4 @@
-import { CottageContent } from '@/components/CottageContent';
+import { CottageContent } from '@/components/cottage-content';
 import { getCottages } from '@/server/db/queries';
 
 const Home = async () => {

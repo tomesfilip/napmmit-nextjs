@@ -1,4 +1,4 @@
-import { SkeletonCard } from '@/components/skeletonCard';
+import { SkeletonCard } from '@/components/skeleton-card';
 
 const loading = () => {
   return (

@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import type { ButtonProps } from '../ui/button';
-import { LoadingButton } from './LoadingButton';
+import { LoadingButton } from './loading-button';
 
 export const SubmitButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, children, ...props }, ref) => {

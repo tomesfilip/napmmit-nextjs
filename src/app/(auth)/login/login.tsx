@@ -1,7 +1,7 @@
 'use client';
 
-import { PasswordInput } from '@/components/form/PasswordInput';
-import { SubmitButton } from '@/components/form/SubmitButton';
+import { PasswordInput } from '@/components/form/password-input';
+import { SubmitButton } from '@/components/form/submit-button';
 import { Button } from '@/components/ui/button';
 import {
   Card,

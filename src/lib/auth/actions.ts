@@ -17,8 +17,8 @@ import {
 } from '../../server/db/schema';
 import { sendMail } from '../../server/db/sendMail';
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH, redirects } from '../constants';
-import { renderVerificationCodeEmail } from '../emailTemplates/emailVerification';
-import { renderResetPasswordEmail } from '../emailTemplates/resetPassword';
+import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
+import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
   LoginInput,
   SignupInput,

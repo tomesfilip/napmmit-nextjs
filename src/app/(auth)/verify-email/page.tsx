@@ -8,7 +8,7 @@ import {
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirects } from '@/lib/constants';
 import { redirect } from 'next/navigation';
-import { VerifyCode } from './verifyCode';
+import { VerifyCode } from './verify-code';
 
 export const metadata = {
   title: 'Verify Email',

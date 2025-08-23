@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 import { Work_Sans, Alatsi } from 'next/font/google';
 import './globals.css';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const workSans = Work_Sans({ subsets: ['latin'] });
 const alatsi = Alatsi({
@@ -34,7 +35,7 @@ export default function RootLayout({
       >
         <NavHeader />
         <main className="flex size-full max-w-[1600px] flex-col items-center">
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </main>
         <Toaster />
       </body>

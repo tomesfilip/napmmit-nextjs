@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { ServiceBadge } from './shared/service-badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 interface Props {
   availableMountainAreas: string[];
@@ -86,17 +87,19 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
         <h2 className="text-lg font-bold">Extra služby</h2>
         <div className="flex gap-3">
           {SERVICES.map(({ name, icon }) => (
-            <ServiceBadge
-              key={name}
-              onClick={() => handleSelectService(name)}
-              isActive={filterServices.includes(name)}
-              serviceBadge={{ name, icon }}
-              aria-label={name}
-              tabIndex={0}
-              className="cursor-pointer px-3 py-2 hover:shadow-lg"
-            >
-              {name}
-            </ServiceBadge>
+            <Tooltip key={name}>
+              <TooltipTrigger>
+                <ServiceBadge
+                  onClick={() => handleSelectService(name)}
+                  isActive={filterServices.includes(name)}
+                  serviceBadge={{ name, icon }}
+                  aria-label={name}
+                  tabIndex={0}
+                  className="cursor-pointer px-3 py-2 hover:shadow-lg"
+                />
+              </TooltipTrigger>
+              <TooltipContent>{name}</TooltipContent>
+            </Tooltip>
           ))}
         </div>
       </div>

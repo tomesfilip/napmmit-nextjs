@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Badge, BadgeProps } from '../ui/badge';
 import { ServiceBadgeType } from '@/lib/appTypes';
-import { Icon } from '@/components/shared/icon';
+import { Icon } from './icon';
 
 interface Props extends BadgeProps {
   isActive?: boolean;

@@ -9,13 +9,15 @@ import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
 const CottageDetail = async ({ params }: { params: { id: number } }) => {
   const { success: cottage, error } = await getCottage(params.id);
 
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   return (
     <>
       {error && <div>{error}</div>}
       {cottage && (
         <div className="flex w-full flex-col items-center gap-10 lg:gap-16 lg:py-20">
           <MobileGallery images={cottage.images} />
-          <DetailSection className="">
+          <DetailSection>
             <div className="max-w-[600px] space-y-6">
               <h1 className="text-4xl font-semibold lg:text-6xl">
                 {cottage.name}

@@ -1,7 +1,6 @@
 'use client';
 
 import { ImageType } from '@/server/db/schema';
-import clsx from 'clsx';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
@@ -10,8 +9,8 @@ import NextImage from '../next-image';
 
 import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/styles.css';
-import { Icon } from '../shared/icon';
 import Link from 'next/link';
+import { Icon } from '../shared/icon';
 
 interface Props {
   images: ImageType[];

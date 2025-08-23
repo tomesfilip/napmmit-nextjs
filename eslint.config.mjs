@@ -14,6 +14,7 @@ const eslintConfig = [
     rules: {
       semi: 'error',
       quotes: ['error', 'double'],
+      'import/no-unresolved': ['error', { caseSensitive: true }],
     },
   }),
 ];

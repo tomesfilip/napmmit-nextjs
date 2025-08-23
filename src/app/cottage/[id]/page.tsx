@@ -15,7 +15,7 @@ const CottageDetail = async ({ params }: { params: { id: number } }) => {
       {cottage && (
         <div className="flex w-full flex-col items-center gap-10 lg:gap-16 lg:py-20">
           <MobileGallery images={cottage.images} />
-          <DetailSection>
+          <DetailSection className="">
             <div className="max-w-[600px] space-y-6">
               <h1 className="text-4xl font-semibold lg:text-6xl">
                 {cottage.name}

@@ -10,6 +10,8 @@ import NextImage from '../NextImage';
 
 import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/styles.css';
+import { Icon } from '../shared/Icon';
+import Link from 'next/link';
 
 interface Props {
   images: ImageType[];
@@ -40,9 +42,15 @@ export const MobileGallery = ({ images }: Props) => {
   return (
     <div className="lg:hidden">
       <div className="relative">
+        <Link
+          href="/"
+          className="absolute left-4 top-4 z-[2] rounded-full bg-slate-100 p-2"
+        >
+          <Icon icon="ArrowRight" className="size-6 rotate-180 fill-black" />
+        </Link>
         <ul
           ref={scrollRef}
-          className="flex snap-x snap-mandatory overflow-x-auto rounded-b-lg"
+          className="flex max-h-[640px] snap-x snap-mandatory overflow-x-auto rounded-b-lg"
         >
           {images.map((img, index) => (
             <li

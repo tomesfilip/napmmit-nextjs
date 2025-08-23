@@ -13,6 +13,7 @@ export const redirects = {
   afterLogout: '/',
   toVerify: '/verify-email',
   afterVerify: '/dashboard',
+  cottageDetail: '/cottage',
 } as const;
 
 export const SERVICES: ServiceBadgeType[] = [

@@ -7,7 +7,7 @@ interface Props {
 
 export const LocationSection = ({ address, locationURL }: Props) => {
   return (
-    <section className="w-full space-y-4 px-4">
+    <section className="w-full space-y-4 px-4 lg:px-12">
       <div className="flex gap-2">
         <Icon icon="Location" className="size-6 flex-shrink-0 fill-black" />
         <p className="lg:text-lg">{address}</p>

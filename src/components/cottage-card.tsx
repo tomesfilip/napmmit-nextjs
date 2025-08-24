@@ -5,12 +5,15 @@ import Link from 'next/link';
 import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { ServiceBadge } from './shared/service-badge';
 import { Icon } from './shared/icon';
+import { useTranslations } from 'next-intl';
 
 type Props = {
   cottage: CottageDetailType;
 };
 
 export const CottageCard = ({ cottage }: Props) => {
+  const t = useTranslations('Home');
+
   return (
     <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
       <Image
@@ -42,7 +45,7 @@ export const CottageCard = ({ cottage }: Props) => {
             className="ml-auto flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
             href={`/cottage/${cottage.id}`}
           >
-            Viac
+            {t('CottageList.CottageListItemCTA')}
             <Icon icon="ArrowRight" className="size-4 fill-black" />
           </Link>
         </CardFooter>

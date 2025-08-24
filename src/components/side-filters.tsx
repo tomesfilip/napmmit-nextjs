@@ -13,6 +13,7 @@ import {
 } from './ui/select';
 import { ServiceBadge } from './shared/service-badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   availableMountainAreas: string[];
@@ -22,6 +23,8 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+
+  const t = useTranslations('Home');
 
   const filterServices = useMemo(() => {
     return searchParams.get('service')?.split('-') || [];
@@ -66,7 +69,7 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
   return (
     <div className="h-full space-y-8">
       <div className="mb-4 space-y-4">
-        <h2 className="text-lg font-bold">Oblasť</h2>
+        <h2 className="text-lg font-bold">{t('Filters.Area')}</h2>
         <Select onValueChange={handleSelectCottageArea}>
           <SelectTrigger
             className="w-[276px]"
@@ -87,7 +90,7 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
         </Select>
       </div>
       <div className="space-y-4">
-        <h2 className="text-lg font-bold">Extra služby</h2>
+        <h2 className="text-lg font-bold">{t('Filters.Services')}</h2>
         <div className="flex gap-3">
           {SERVICES.map(({ name, icon }) => (
             <Tooltip key={name}>

@@ -1,19 +1,22 @@
 import { Icon } from '@/components/shared/icon';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslations } from 'next-intl';
 
 const loading = () => {
+  const t = useTranslations('Home');
+
   return (
     <div className="flex size-full w-full gap-8 px-4 pt-8 lg:px-12">
       {/* SKELETON: side filters */}
       <div className="hidden xl:block">
         <div className="h-full space-y-8">
           <div className="mb-4 space-y-4">
-            <h2 className="text-lg font-bold">Oblasť</h2>
+            <h2 className="text-lg font-bold">{t('Filters.Area')}</h2>
             <Skeleton className="h-10 w-[276px]" />
           </div>
           <div className="space-y-4">
-            <h2 className="text-lg font-bold">Extra služby</h2>
+            <h2 className="text-lg font-bold">{t('Filters.Services')}</h2>
             <Skeleton className="h-10 w-full" />
           </div>
         </div>

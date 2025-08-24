@@ -1,17 +1,12 @@
-import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
+import { Card, CardFooter, CardHeader } from './ui/card';
 import { Skeleton } from './ui/skeleton';
 
 export const SkeletonCard = () => {
   return (
-    <Card className="relative aspect-video h-full w-full">
+    <Card className="relative flex aspect-video h-full w-full flex-col justify-between">
       <CardHeader>
         <Skeleton className="h-8 w-1/2" />
       </CardHeader>
-      <CardContent>
-        <div className="flex gap-6">
-          <Skeleton className="size-full rounded-lg" />
-        </div>
-      </CardContent>
       <CardFooter className="flex w-full justify-between">
         <Skeleton className="h-8 w-40" />
         <Skeleton className="h-8 w-20" />

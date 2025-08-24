@@ -1,9 +1,12 @@
 import { Icon } from '@/components/shared/icon';
 import { DetailSection } from '@/components/ui/detail-section';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 const loading = () => {
+  const t = useTranslations('CottageDetail');
+
   return (
     <div className="flex w-full flex-col items-center gap-10 lg:gap-16 lg:py-20">
       {/* MOBILE GALLERY */}
@@ -47,7 +50,7 @@ const loading = () => {
       {/* CONTACT SECTION */}
       <section className="w-full space-y-4 px-4 lg:px-12">
         <hr />
-        <h2 className="text-lg font-medium lg:text-xl">Kontakt</h2>
+        <h2 className="text-lg font-medium lg:text-xl">{t('ContactTitle')}</h2>
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-12">
           <Skeleton className="h-7 w-80" />
           <Skeleton className="h-7 w-80" />

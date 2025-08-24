@@ -1,0 +1,19 @@
+{
+  "Home": {
+    "Filters": {
+      "Area": "Oblasť",
+      "Services": "Extra služby"
+    },
+    "CottageList": {
+      "CottageListItemCTA": "Viac"
+    }
+  },
+  "CottageDetail": {
+    "ContactTitle": "Kontakt",
+    "Address": "Adresa",
+    "Phone": "Telefón",
+    "Email": "Email",
+    "Website": "Webová stránka"
+  },
+  "Footer": {}
+}

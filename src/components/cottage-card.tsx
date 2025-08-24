@@ -30,11 +30,7 @@ export const CottageCard = ({ cottage }: Props) => {
 
           <div className="flex gap-2">
             {cottage.cottageServices.map(({ id, name, icon }) => (
-              <ServiceBadge
-                key={id}
-                serviceBadge={{ name, icon }}
-                aria-label={name}
-              />
+              <ServiceBadge key={id} serviceBadge={{ name, icon }} />
             ))}
           </div>
         </CardHeader>

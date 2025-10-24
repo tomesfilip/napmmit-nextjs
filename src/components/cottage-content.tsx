@@ -6,10 +6,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { CottageCard } from './cottage-card';
 import { NoCottageFoundContent } from './no-cottage-found-content';
+import { Icon } from './shared/icon';
 import { SideFiltersContent } from './side-filters';
 import { Search } from './ui/search';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { Icon } from './shared/icon';
 
 type Props = {
   cottages: CottageDetailType[];
@@ -70,7 +70,7 @@ export const CottageContent = ({ cottages }: Props) => {
         <SideFiltersContent availableMountainAreas={availableMountainAreas} />
       </div>
       <div className="w-full space-y-4">
-        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all md:p-0 xl:relative xl:justify-start xl:bg-none xl:backdrop-blur-none">
+        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all xl:relative xl:justify-start xl:bg-none xl:p-0 xl:backdrop-blur-none">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="block xl:hidden">
             <Sheet>
@@ -89,7 +89,7 @@ export const CottageContent = ({ cottages }: Props) => {
           </div>
         </div>
         {filteredCottages.length > 0 && (
-          <div className="grid w-full grid-cols-1 place-items-center gap-8 py-8 lg:grid-cols-2 lg:place-items-start 2xl:grid-cols-3">
+          <div className="grid w-full grid-cols-1 place-items-center gap-8 pb-6 md:grid-cols-2 md:place-items-start lg:py-8 2xl:grid-cols-3">
             {filteredCottages.map((cottage) => (
               <CottageCard key={cottage.id} cottage={cottage} />
             ))}

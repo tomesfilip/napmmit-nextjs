@@ -7,7 +7,7 @@ const loading = () => {
   const t = useTranslations('Home');
 
   return (
-    <div className="flex size-full w-full gap-8 px-4 pt-8 lg:px-12">
+    <div className="flex size-full w-full gap-8 px-4 pt-4 lg:px-12 lg:pt-8">
       {/* SKELETON: side filters */}
       <div className="hidden xl:block">
         <div className="h-full space-y-8">
@@ -32,7 +32,7 @@ const loading = () => {
           </div>
         </div>
 
-        <div className="grid w-full grid-cols-1 place-items-center gap-8 py-8 lg:grid-cols-2 lg:place-items-start 2xl:grid-cols-3">
+        <div className="grid w-full grid-cols-1 place-items-center gap-8 pb-6 md:grid-cols-2 md:place-items-start lg:py-8 2xl:grid-cols-3">
           {Array.from(Array(9).keys()).map((_, index) => (
             <SkeletonCard key={index} />
           ))}

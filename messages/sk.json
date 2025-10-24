@@ -15,5 +15,11 @@
     "Email": "Email",
     "Website": "Webová stránka"
   },
-  "Footer": {}
+  "Footer": {},
+  "404": {
+    "Title": "Ups! Zablúdili ste mimo chodníka.",
+    "Subtitle": "Nepodarilo sa nám nájsť stránku, ktorú hľadáte.",
+    "ErrorCode": "Chybový kód: 404",
+    "ReturnHomeButton": "Úvodná stránka"
+  }
 }

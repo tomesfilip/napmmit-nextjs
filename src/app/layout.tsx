@@ -1,12 +1,15 @@
 import { NavHeader } from '@/components/nav-header';
+import { CookieConsent } from '@/components/shared/cookie-modal';
+import { Footer } from '@/components/shared/footer';
 import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { getCookieConsent } from '@/lib/getCookieConsent';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { Work_Sans, Alatsi } from 'next/font/google';
-import './globals.css';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { getLocale } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
+import { Alatsi, Work_Sans } from 'next/font/google';
+import './globals.css';
 
 const workSans = Work_Sans({ subsets: ['latin'] });
 const alatsi = Alatsi({
@@ -27,6 +30,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const consent = getCookieConsent();
+
+  console.log('Consent: ', consent);
 
   return (
     <html lang={locale}>
@@ -42,7 +48,9 @@ export default async function RootLayout({
           <main className="flex size-full max-w-[1600px] flex-col items-center">
             <TooltipProvider>{children}</TooltipProvider>
           </main>
+          <Footer />
           <Toaster />
+          <CookieConsent />
         </body>
       </NextIntlClientProvider>
     </html>

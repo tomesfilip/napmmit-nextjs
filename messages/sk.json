@@ -15,11 +15,40 @@
     "Email": "Email",
     "Website": "Webová stránka"
   },
-  "Footer": {},
+  "Footer": {
+    "Navigation": {
+      "Home": "Domov",
+      "Cottages": "Chaty",
+      "AboutUs": "O nás",
+      "Blog": "Blog"
+    },
+    "Contact": "Kontakt",
+    "Legal": {
+      "PrivacyPolicy": "Zásady ochrany osobných údajov",
+      "CookiePolicy": "Zásady používania súborov cookie",
+      "TermsOfUse": "Obchodné podmienky",
+      "CookieSettings": "Nastavenia súborov cookie"
+    },
+    "AllRightsReserved": "Všetky práva vyhradené."
+  },
   "404": {
     "Title": "Ups! Zablúdili ste mimo chodníka.",
     "Subtitle": "Nepodarilo sa nám nájsť stránku, ktorú hľadáte.",
     "ErrorCode": "Chybový kód: 404",
     "ReturnHomeButton": "Úvodná stránka"
+  },
+  "CookieModal": {
+    "Title": "Súbory cookie",
+    "Description": "Tento web používa súbory cookie na správne fungovanie a analýzu návštevnosti. Viac informácií nájdete v",
+    "PolicyLink": "zásadách používania súborov cookie",
+    "Reject": "Odmietnuť",
+    "Settings": "Nastavenia",
+    "AcceptAll": "Prijať všetko",
+    "SettingsTitle": "Nastavenia cookies",
+    "Necessary": "Nevyhnutné – potrebné pre fungovanie webu",
+    "Analytics": "Analytické – pomáhajú zlepšovať web",
+    "Marketing": "Marketingové – umožňujú personalizovaný obsah",
+    "Back": "Späť",
+    "SaveSettings": "Uložiť nastavenia"
   }
 }

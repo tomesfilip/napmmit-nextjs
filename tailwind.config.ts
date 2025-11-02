@@ -22,6 +22,7 @@ const config = {
         alatsi: 'var(--font-alatsi)',
       },
       colors: {
+        grey: '#f1f1f1',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

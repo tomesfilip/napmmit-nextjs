@@ -17,3 +17,9 @@ export type ServiceBadgeType = {
 };
 
 export type IconType = keyof typeof Icons;
+
+export type CookieConsentType = {
+  necessary: boolean;
+  analytics: boolean;
+  marketing: boolean;
+};

@@ -44,3 +44,5 @@ export const COTTAGE_AREAS: CottageArea[] = [
   { name: 'Volovské vrchy' },
   { name: 'Vtáčnik' },
 ] as const;
+
+export const COOKIE_KEY = 'napmmit_cookie_preferences';

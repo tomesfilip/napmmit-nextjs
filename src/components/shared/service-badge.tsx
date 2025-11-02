@@ -1,6 +1,6 @@
+import { ServiceBadgeType } from '@/lib/appTypes';
 import clsx from 'clsx';
 import { Badge, BadgeProps } from '../ui/badge';
-import { ServiceBadgeType } from '@/lib/appTypes';
 import { Icon } from './icon';
 
 interface Props extends BadgeProps {
@@ -19,7 +19,7 @@ export const ServiceBadge = ({
     <Badge
       variant="secondary"
       className={clsx(
-        'glass-bg group/badge flex items-center gap-2 bg-black/30 font-normal text-white transition-all duration-200 hover:text-black',
+        'glass-bg group/badge flex items-center gap-2 bg-black/30 font-normal text-white ring-0 transition-all duration-200 hover:text-black',
         isActive && 'bg-secondary/80 text-black shadow-lg',
         className,
       )}
@@ -34,7 +34,7 @@ export const ServiceBadge = ({
       <Icon
         icon={serviceBadge.icon}
         className={clsx(
-          'size-5 transition-colors duration-200 group-hover/badge:fill-gray-900',
+          'group-hover/badge:fill-gray-900 size-5 transition-colors duration-200',
           isActive ? 'fill-gray-900' : 'fill-white',
         )}
       />

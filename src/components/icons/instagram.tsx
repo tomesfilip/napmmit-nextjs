@@ -1,0 +1,4 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+const SvgInstagram = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" {...props}><path fill="currentColor" d="M6.5 1.668h7a4.837 4.837 0 0 1 4.834 4.833v7a4.833 4.833 0 0 1-4.834 4.834h-7A4.837 4.837 0 0 1 1.667 13.5v-7A4.833 4.833 0 0 1 6.5 1.668m-.166 1.667a3 3 0 0 0-3 3v7.333c0 1.658 1.341 3 3 3h7.333a3 3 0 0 0 3-3V6.335c0-1.659-1.342-3-3-3zm8.041 1.25a1.042 1.042 0 1 1 0 2.083 1.042 1.042 0 0 1 0-2.083M10 5.835a4.167 4.167 0 1 1 0 8.333 4.167 4.167 0 0 1 0-8.333M10 7.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5" /></svg>;
+export default SvgInstagram;

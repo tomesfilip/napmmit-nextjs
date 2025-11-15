@@ -30,9 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
-  const consent = getCookieConsent();
-
-  console.log('Consent: ', consent);
+  // const consent = getCookieConsent();
 
   return (
     <html lang={locale}>

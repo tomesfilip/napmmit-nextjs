@@ -7,7 +7,7 @@ export const Footer = () => {
   const t = useTranslations('Footer');
 
   return (
-    <footer className="w-full bg-grey px-4 py-8 lg:px-12">
+    <footer className="mt-auto w-full bg-grey px-4 py-8 lg:px-12">
       <div className="mx-auto w-full max-w-[1600px] space-y-16">
         <div className="space-y-8 text-center lg:text-left">
           <Link href="/" className="w-max font-alatsi text-2xl uppercase">

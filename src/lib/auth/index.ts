@@ -22,6 +22,7 @@ export const lucia = new Lucia(adapter, {
     isEmailVerified,
     createdAt,
     updatedAt,
+    role,
   }) => {
     return {
       id,
@@ -30,6 +31,7 @@ export const lucia = new Lucia(adapter, {
       isEmailVerified,
       createdAt,
       updatedAt,
+      role,
     };
   },
 });

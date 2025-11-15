@@ -9,7 +9,8 @@
     }
   },
   "NavHeader": {
-    "Login": "Prihlásiť sa"
+    "Login": "Prihlásiť sa",
+    "Logout": "Odhlásiť sa"
   },
   "CottageDetail": {
     "ContactTitle": "Kontakt",
@@ -81,6 +82,13 @@
     "Submit": "Obnoviť heslo",
     "Cancel": "Zrušiť",
     "SuccessMessage": "Odkaz na obnovenie hesla bol zaslaný na váš e-mail."
+  },
+  "Dashboard": {
+    "NoCottages": {
+      "Title": "Zatiaľ nemáte žiadne chaty",
+      "Description": "Vytvorte svoj prvý inzerát a začnite prenajímať svoju chatu návštevníkom.",
+      "CreateButton": "Vytvoriť inzerát"
+    }
   },
   "Shared": {
     "EmailField": {

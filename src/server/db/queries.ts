@@ -75,3 +75,38 @@ export const getCottage = cache(
     }
   },
 );
+
+export const getMyCottages = cache(
+  async (
+    userId: string,
+  ): Promise<{ success?: CottageDetailType[]; error?: string }> => {
+    try {
+      const data = await db.query.cottages.findMany({
+        with: {
+          cottageServices: {
+            columns: { serviceId: false },
+            with: {
+              service: { columns: { id: true, name: true, icon: true } },
+            },
+          },
+          images: {},
+        },
+        where: (table, funcs) => funcs.eq(table.userId, userId),
+      });
+
+      const normalizedData = data.map((cottage) => ({
+        ...cottage,
+        cottageServices: cottage.cottageServices.map((cs) => ({
+          ...cs.service,
+        })),
+        images: cottage.images.map((img) => ({
+          ...img,
+        })),
+      }));
+
+      return { success: normalizedData };
+    } catch (err) {
+      return { error: "Couldn't find any cottages." };
+    }
+  },
+);

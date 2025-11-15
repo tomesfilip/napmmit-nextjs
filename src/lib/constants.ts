@@ -5,6 +5,7 @@ export const PASSWORD_ID_LENGTH = 40;
 
 export const APP_TITLE = 'Napmmit';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
+export const EMAIL_SENDER_RESEND = 'onboarding@resend.dev';
 
 export const redirects = {
   toLogin: '/login',

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { sendPasswordResetLink } from '@/lib/auth/actions';
 import { redirects } from '@/lib/constants';
 import { MailWarningIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -16,10 +17,12 @@ import { toast } from 'sonner';
 export const SendResetEmail = () => {
   const [state, formAction] = useFormState(sendPasswordResetLink, null);
   const router = useRouter();
+  const t = useTranslations('ResetPasswordPage');
+  const tShared = useTranslations('Shared');
 
   useEffect(() => {
     if (state?.success) {
-      toast('A password reset link has been sent to your email.');
+      toast(t('SuccessMessage'));
       router.push(redirects.toLogin);
     }
     if (state?.error) {
@@ -27,15 +30,15 @@ export const SendResetEmail = () => {
         icon: <MailWarningIcon className="h-5 w-5 text-destructive" />,
       });
     }
-  }, [state?.error, state?.success]);
+  }, [state?.error, state?.success, t, router]);
 
   return (
     <form className="space-y-4" action={formAction}>
       <div className="space-y-2">
-        <Label>Your Email</Label>
+        <Label>{tShared('EmailField.Label')}</Label>
         <Input
           required
-          placeholder="email@example.com"
+          placeholder={tShared('EmailField.Placeholder')}
           autoComplete="email"
           name="email"
           type="email"
@@ -45,14 +48,14 @@ export const SendResetEmail = () => {
       <div className="flex flex-wrap justify-between">
         <Link href={redirects.toSignup}>
           <Button variant={'link'} size={'sm'} className="p-0">
-            Not signed up? Sign up now
+            {t('SignupText')}
           </Button>
         </Link>
       </div>
 
-      <SubmitButton className="w-full">Reset Password</SubmitButton>
+      <SubmitButton className="w-full">{t('Submit')}</SubmitButton>
       <Button variant="outline" className="w-full" asChild>
-        <Link href="/">Cancel</Link>
+        <Link href="/">{t('Cancel')}</Link>
       </Button>
     </form>
   );

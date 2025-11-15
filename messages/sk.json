@@ -8,6 +8,9 @@
       "CottageListItemCTA": "Viac"
     }
   },
+  "NavHeader": {
+    "Login": "Prihlásiť sa"
+  },
   "CottageDetail": {
     "ContactTitle": "Kontakt",
     "Address": "Adresa",
@@ -50,5 +53,45 @@
     "Marketing": "Marketingové – umožňujú personalizovaný obsah",
     "Back": "Späť",
     "SaveSettings": "Uložiť nastavenia"
+  },
+  "LoginPage": {
+    "Title": "Prihlásenie správcu chaty",
+    "Description": "Prihláste sa do svojho účtu a spravujte informácie o vašej chate.",
+    "SignupText": "Nemáte účet? Zaregistrujte sa.",
+    "ForgotPassword": "Zabudnuté heslo?",
+    "Submit": "Prihlásiť sa",
+    "Cancel": "Zrušiť",
+    "OrDivider": "alebo",
+    "Errors": {
+      "FormError": "Prihlasovanie zlyhalo. Skúste to znova.",
+      "FieldErrors": "Vyplňte prosím všetky požadované údaje."
+    }
+  },
+  "SignupPage": {
+    "Title": "Registrácia",
+    "Description": "Zaregistrujte sa a začnite používať aplikáciu",
+    "LoginText": "Už máte účet? Prihláste sa.",
+    "Submit": "Registrovať sa",
+    "Cancel": "Zrušiť"
+  },
+  "ResetPasswordPage": {
+    "Title": "Zabudnuté heslo?",
+    "Description": "Odkaz na obnovenie hesla bude zaslaný na váš e-mail.",
+    "SignupText": "Nie ste zaregistrovaný? Zaregistrujte sa",
+    "Submit": "Obnoviť heslo",
+    "Cancel": "Zrušiť",
+    "SuccessMessage": "Odkaz na obnovenie hesla bol zaslaný na váš e-mail."
+  },
+  "Shared": {
+    "EmailField": {
+      "Label": "E-mail",
+      "Placeholder": "email@example.com"
+    },
+    "PasswordField": {
+      "Label": "Heslo",
+      "Placeholder": "********",
+      "Show": "Zobraziť",
+      "Hide": "Skryť"
+    }
   }
 }

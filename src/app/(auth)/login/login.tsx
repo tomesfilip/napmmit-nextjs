@@ -13,32 +13,34 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login } from '@/lib/auth/actions';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
 
 export const Login = () => {
   const [state, formAction] = useFormState(login, null);
 
+  const t = useTranslations('LoginPage');
+  const tShared = useTranslations('Shared');
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle>Log In</CardTitle>
-        <CardDescription>
-          Log in to your account to access your dashboard
-        </CardDescription>
+        <CardTitle>{t('Title')}</CardTitle>
+        <CardDescription>{t('Description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="my-2 flex items-center">
           <div className="flex-grow border-t border-muted" />
-          <div className="mx-2 text-muted-foreground">or</div>
+          <div className="mx-2 text-muted-foreground">{t('OrDivider')}</div>
           <div className="flex-grow border-t border-muted" />
         </div>
         <form action={formAction} className="grid gap-4">
           <div className="space-y-2">
-            <Label>Email</Label>
+            <Label htmlFor="email">{tShared('EmailField.Label')}</Label>
             <Input
               required
-              placeholder="email@example.com"
+              placeholder={tShared('EmailField.Placeholder')}
               autoComplete="email"
               name="email"
               type="email"
@@ -46,21 +48,21 @@ export const Login = () => {
           </div>
 
           <div className="space-y-2">
-            <Label>Password</Label>
+            <Label htmlFor="password">{tShared('PasswordField.Label')}</Label>
             <PasswordInput
               name="password"
               required
               autoComplete="current-password"
-              placeholder="********"
+              placeholder={tShared('PasswordField.Placeholder')}
             />
           </div>
 
           <div className="flex flex-wrap justify-between">
             <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/signup">Not signed up? Sign up now.</Link>
+              <Link href="/signup">{t('SignupText')}</Link>
             </Button>
             <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/reset-password">Forgot password?</Link>
+              <Link href="/reset-password">{t('ForgotPassword')}</Link>
             </Button>
           </div>
 
@@ -77,9 +79,9 @@ export const Login = () => {
               {state?.formError}
             </p>
           ) : null}
-          <SubmitButton className="w-full">Log In</SubmitButton>
+          <SubmitButton className="w-full">{t('Submit')}</SubmitButton>
           <Button variant="outline" className="w-full" asChild>
-            <Link href="/">Cancel</Link>
+            <Link href="/">{t('Cancel')}</Link>
           </Button>
         </form>
       </CardContent>

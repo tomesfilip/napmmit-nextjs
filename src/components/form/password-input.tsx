@@ -1,6 +1,7 @@
 'user client';
 
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Input, type InputProps } from '../ui/input';
@@ -9,9 +10,12 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+    const t = useTranslations('Shared');
+
     return (
       <div className="relative">
         <Input
+          id={props.name}
           type={isPasswordVisible ? 'text' : 'password'}
           className={cn('pr-10', className)}
           ref={ref}
@@ -25,9 +29,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
           onClick={() => setIsPasswordVisible((prev) => !prev)}
           disabled={props.value === '' || props.disabled}
         >
-          {isPasswordVisible ? 'Hide password' : 'Show password'}
+          {isPasswordVisible
+            ? t('PasswordField.Hide')
+            : t('PasswordField.Show')}
           <span className="sr-only">
-            {isPasswordVisible ? 'Hide password' : 'Show password'}
+            {isPasswordVisible
+              ? t('PasswordField.Hide')
+              : t('PasswordField.Show')}
           </span>
         </Button>
       </div>

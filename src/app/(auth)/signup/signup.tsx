@@ -13,37 +13,41 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signup } from '@/lib/auth/actions';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
 
 export function Signup() {
   const [state, formAction] = useFormState(signup, null);
 
+  const t = useTranslations('SignupPage');
+  const tShared = useTranslations('Shared');
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Sign up to start using the app</CardDescription>
+        <CardTitle>{t('Title')}</CardTitle>
+        <CardDescription>{t('Description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
-            <Label>Email</Label>
+            <Label>{tShared('EmailField.Label')}</Label>
             <Input
               required
-              placeholder="email@example.com"
+              placeholder={tShared('EmailField.Placeholder')}
               autoComplete="email"
               name="email"
               type="email"
             />
           </div>
           <div className="space-y-2">
-            <Label>Password</Label>
+            <Label>{tShared('PasswordField.Label')}</Label>
             <PasswordInput
               name="password"
               required
               autoComplete="current-password"
-              placeholder="********"
+              placeholder={tShared('PasswordField.Placeholder')}
             />
           </div>
 
@@ -63,14 +67,14 @@ export function Signup() {
           <div>
             <Link href="/login">
               <span className="p-0 text-sm font-medium underline-offset-4 hover:underline">
-                Already signed up? Login instead.
+                {t('LoginText')}
               </span>
             </Link>
           </div>
 
-          <SubmitButton className="w-full"> Sign Up</SubmitButton>
+          <SubmitButton className="w-full">{t('Submit')}</SubmitButton>
           <Button variant="outline" className="w-full" asChild>
-            <Link href="/">Cancel</Link>
+            <Link href="/">{t('Cancel')}</Link>
           </Button>
         </form>
       </CardContent>

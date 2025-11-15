@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirects } from '@/lib/constants';
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { SendResetEmail } from './send-reset-email';
 
@@ -17,16 +18,15 @@ export const metadata = {
 
 export default async function ForgotPasswordPage() {
   const { user } = await validateRequest();
+  const t = await getTranslations('ResetPasswordPage');
 
   if (user) redirect(redirects.afterLogin);
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Forgot password?</CardTitle>
-        <CardDescription>
-          Password reset link will be sent to your email.
-        </CardDescription>
+        <CardTitle>{t('Title')}</CardTitle>
+        <CardDescription>{t('Description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <SendResetEmail />

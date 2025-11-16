@@ -15,6 +15,7 @@ export const redirects = {
   toVerify: '/verify-email',
   afterVerify: '/dashboard',
   cottageDetail: '/cottage',
+  createCottage: '/create',
 } as const;
 
 export const SERVICES: ServiceBadgeType[] = [
@@ -47,3 +48,5 @@ export const COTTAGE_AREAS: CottageArea[] = [
 ] as const;
 
 export const COOKIE_KEY = 'napmmit_cookie_preferences';
+
+export const MAX_IMAGES_PER_COTTAGE = 8;

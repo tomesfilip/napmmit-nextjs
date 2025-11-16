@@ -13,6 +13,7 @@
     "icons:generate": "npx @svgr/cli src/assets/svg --out-dir src/components/icons --typescript --filename-case camel"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
@@ -52,12 +53,15 @@
     "react": "^18.3.1",
     "react-day-picker": "^9.11.1",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.66.0",
     "react-icons": "^5.5.0",
     "resend": "^6.4.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.6",
+    "uuid": "^13.0.0",
     "vaul": "^1.1.2",
     "yet-another-react-lightbox": "^3.25.0",
     "zod": "^4.1.12"

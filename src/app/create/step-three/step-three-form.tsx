@@ -22,12 +22,20 @@ export const StepThreeForm = () => {
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const formSchema = z.object({
-    pricePerNight: z.coerce.number().min(1, {
+    pricePerNight: z.coerce.number<number>().min(1, {
       message: t('PricePerNight.Error'),
     }),
-    lowPricePerNight: z.coerce.number().min(0).optional().or(z.literal('')),
-    breakfastPrice: z.coerce.number().min(0).optional().or(z.literal('')),
-    dinnerPrice: z.coerce.number().min(0).optional().or(z.literal('')),
+    lowPricePerNight: z.coerce
+      .number<number>()
+      .min(0)
+      .optional()
+      .or(z.literal('')),
+    breakfastPrice: z.coerce
+      .number<number>()
+      .min(0)
+      .optional()
+      .or(z.literal('')),
+    dinnerPrice: z.coerce.number<number>().min(0).optional().or(z.literal('')),
   });
 
   type FormSchemaType = z.infer<typeof formSchema>;

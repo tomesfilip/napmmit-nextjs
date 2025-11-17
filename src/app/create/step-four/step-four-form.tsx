@@ -10,9 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,6 +38,8 @@ export type ImageFile = {
 export const StepFourForm = () => {
   const t = useTranslations('CreateCottage.StepFour');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
+
+  const router = useRouter();
 
   const [images, setImages] = useState<ImageFile[]>([]);
 
@@ -111,6 +115,7 @@ export const StepFourForm = () => {
   const onSubmit = (data: FormSchemaType) => {
     console.log(data);
     console.log('Images:', images);
+    router.push(ROUTES.CREATE_COTTAGE.STEP_FIVE);
   };
 
   return (
@@ -121,7 +126,7 @@ export const StepFourForm = () => {
       >
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <BackButton />
+            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_THREE} />
             <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
           </div>
           <div className="space-y-5">

@@ -11,8 +11,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BackButton } from '../back-button';
@@ -22,12 +24,17 @@ export const StepSixForm = () => {
   const t = useTranslations('CreateCottage.StepSix');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
+  const router = useRouter();
+
   const formSchema = z.object({
-    title: z.string().min(1, {
-      message: t('Title.Error'),
-    }).max(32, {
-      message: t('Title.MaxError'),
-    }),
+    title: z
+      .string()
+      .min(1, {
+        message: t('Title.Error'),
+      })
+      .max(32, {
+        message: t('Title.MaxError'),
+      }),
     description: z.string().min(1, {
       message: t('Description.Error'),
     }),
@@ -47,6 +54,12 @@ export const StepSixForm = () => {
 
   const onSubmit = (data: FormSchemaType) => {
     console.log(data);
+
+    // TODO: Save cottage to the db and retrieve its id
+    const cottage = {
+      id: 1,
+    };
+    router.push(`${ROUTES.COTTAGE_DETAIL}/${cottage.id}`);
   };
 
   return (
@@ -57,7 +70,7 @@ export const StepSixForm = () => {
       >
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <BackButton />
+            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_FIVE} />
             <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
           </div>
           <div className="space-y-5">
@@ -94,7 +107,9 @@ export const StepSixForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>{t('Description.Description')}</FormDescription>
+                  <FormDescription>
+                    {t('Description.Description')}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

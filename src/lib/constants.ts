@@ -7,6 +7,7 @@ export const APP_TITLE = 'Napmmit';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
 export const EMAIL_SENDER_RESEND = 'onboarding@resend.dev';
 
+// TODO: put the contents to ROUTES
 export const redirects = {
   toLogin: '/login',
   toSignup: '/signup',
@@ -16,6 +17,18 @@ export const redirects = {
   afterVerify: '/dashboard',
   cottageDetail: '/cottage',
   createCottage: '/create',
+} as const;
+
+export const ROUTES = {
+  COTTAGE_DETAIL: '/cottage',
+  CREATE_COTTAGE: {
+    STEP_ONE: 'step-one',
+    STEP_TWO: 'step-two',
+    STEP_THREE: 'step-three',
+    STEP_FOUR: 'step-four',
+    STEP_FIVE: 'step-five',
+    STEP_SIX: 'step-six',
+  },
 } as const;
 
 export const SERVICES: ServiceBadgeType[] = [

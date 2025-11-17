@@ -7,7 +7,7 @@ interface Props {
 
 export const SubmitButton = ({ disabled, children }: Props) => {
   return (
-    <Button disabled={disabled} type="submit">
+    <Button disabled={disabled} type="submit" className="ml-auto">
       {children}
     </Button>
   );

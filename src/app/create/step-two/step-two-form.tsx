@@ -10,8 +10,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BackButton } from '../back-button';
@@ -20,6 +22,8 @@ import { SubmitButton } from '../submit-button';
 export const StepTwoForm = () => {
   const t = useTranslations('CreateCottage.StepTwo');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
+
+  const router = useRouter();
 
   const formSchema = z.object({
     occupancy: z.number().min(1, {
@@ -54,6 +58,7 @@ export const StepTwoForm = () => {
 
   const onSubmit = (data: FormSchemaType) => {
     console.log(data);
+    router.push(ROUTES.CREATE_COTTAGE.STEP_THREE);
   };
 
   return (
@@ -64,7 +69,7 @@ export const StepTwoForm = () => {
       >
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <BackButton />
+            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_ONE} />
             <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
           </div>
           <div className="space-y-5">

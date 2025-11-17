@@ -11,8 +11,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BackButton } from '../back-button';
@@ -27,6 +29,8 @@ const services = [
 export const StepFiveForm = () => {
   const t = useTranslations('CreateCottage.StepFive');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
+
+  const router = useRouter();
 
   const formSchema = z.object({
     services: z.array(z.string()),
@@ -44,6 +48,7 @@ export const StepFiveForm = () => {
 
   const onSubmit = (data: FormSchemaType) => {
     console.log(data);
+    router.push(ROUTES.CREATE_COTTAGE.STEP_SIX);
   };
 
   return (
@@ -54,7 +59,7 @@ export const StepFiveForm = () => {
       >
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <BackButton />
+            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_FOUR} />
             <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
           </div>
           <div className="space-y-5">

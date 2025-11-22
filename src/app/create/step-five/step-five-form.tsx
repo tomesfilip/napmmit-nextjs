@@ -12,11 +12,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { ROUTES } from '@/lib/constants';
+import { stepFiveSchema, StepFiveSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
 
@@ -27,27 +28,25 @@ const services = [
 ] as const;
 
 export const StepFiveForm = () => {
-  const t = useTranslations('CreateCottage.StepFive');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
-  const formSchema = z.object({
-    services: z.array(z.string()),
-  });
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
 
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepFiveSchemaType>({
+    resolver: zodResolver(stepFiveSchema),
     defaultValues: {
-      services: [],
+      services: storedData.services || [],
     },
   });
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
+  const onSubmit = (data: StepFiveSchemaType) => {
+    setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_SIX);
   };
 

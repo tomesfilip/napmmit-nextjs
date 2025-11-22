@@ -11,41 +11,35 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/lib/constants';
+import { stepOneSchema, StepOneSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { SubmitButton } from '../submit-button';
 
 export const StepOneForm = () => {
-  const t = useTranslations('CreateCottage.StepOne');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
-  const formSchema = z.object({
-    address: z.string().min(2, {
-      message: t('Address.Error'),
-    }),
-    locationUrl: z.string().min(2, {
-      message: t('LocationUrl.Error'),
-    }),
-  });
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
 
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepOneSchemaType>({
+    resolver: zodResolver(stepOneSchema),
     defaultValues: {
-      address: '',
-      locationUrl: '',
+      address: storedData.address || '',
+      locationUrl: storedData.locationUrl || '',
     },
   });
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
+  const onSubmit = (data: StepOneSchemaType) => {
+    setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_TWO);
   };
 

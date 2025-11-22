@@ -11,6 +11,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { ROUTES } from '@/lib/constants';
+import { stepFourSchema, StepFourSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -18,7 +20,6 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
 import { ActionButtons } from './components/action-buttons';
@@ -36,24 +37,25 @@ export type ImageFile = {
 };
 
 export const StepFourForm = () => {
-  const t = useTranslations('CreateCottage.StepFour');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
+
   const [images, setImages] = useState<ImageFile[]>([]);
 
-  const formSchema = z.object({
-    images: z.array(z.string()).min(1, {
-      message: t('Images.Error'),
-    }),
-  });
-
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepFourSchemaType>({
+    resolver: zodResolver(
+      stepFourSchema.refine((data) => data.images.length >= 1, {
+        message: t('Images.Error'),
+        path: ['images'],
+      }),
+    ),
     defaultValues: {
-      images: [],
+      images: storedData.images || [],
     },
   });
 
@@ -112,9 +114,8 @@ export const StepFourForm = () => {
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
-    console.log('Images:', images);
+  const onSubmit = (data: StepFourSchemaType) => {
+    setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_FIVE);
   };
 

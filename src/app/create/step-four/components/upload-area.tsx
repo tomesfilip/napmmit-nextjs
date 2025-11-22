@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const UploadArea = ({ onDrop, imagesLength }: Props) => {
-  const t = useTranslations('CreateCottage.StepFour');
+  const t = useTranslations('CreateCottage');
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

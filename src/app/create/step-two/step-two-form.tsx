@@ -11,53 +11,38 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/lib/constants';
+import { stepTwoSchema, StepTwoSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
 
 export const StepTwoForm = () => {
-  const t = useTranslations('CreateCottage.StepTwo');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
-  const formSchema = z.object({
-    occupancy: z.number().min(1, {
-      message: t('Occupancy.Error'),
-    }),
-    email: z.email({
-      message: t('Email.Error'),
-    }),
-    phone: z.string().min(1, {
-      message: t('Phone.Error'),
-    }),
-    website: z
-      .url({
-        message: t('Website.Error'),
-      })
-      .optional()
-      .or(z.literal('')),
-  });
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
 
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepTwoSchemaType>({
+    resolver: zodResolver(stepTwoSchema),
     defaultValues: {
-      occupancy: 1,
-      email: '',
-      phone: '',
-      website: '',
+      occupancy: storedData.occupancy || 1,
+      email: storedData.email || '',
+      phone: storedData.phone || '',
+      website: storedData.website || '',
     },
   });
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
+  const onSubmit = (data: StepTwoSchemaType) => {
+    setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_THREE);
   };
 

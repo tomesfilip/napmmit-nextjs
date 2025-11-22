@@ -13,7 +13,7 @@ export const ActionButtons = ({
   setCoverImage,
   removeImage,
 }: Props) => {
-  const t = useTranslations('CreateCottage.StepFour');
+  const t = useTranslations('CreateCottage');
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">

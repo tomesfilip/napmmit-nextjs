@@ -11,52 +11,38 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/lib/constants';
+import { stepThreeSchema, StepThreeSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
 
 export const StepThreeForm = () => {
-  const t = useTranslations('CreateCottage.StepThree');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
-  const formSchema = z.object({
-    pricePerNight: z.coerce.number<number>().min(1, {
-      message: t('PricePerNight.Error'),
-    }),
-    lowPricePerNight: z.coerce
-      .number<number>()
-      .min(0)
-      .optional()
-      .or(z.literal('')),
-    breakfastPrice: z.coerce
-      .number<number>()
-      .min(0)
-      .optional()
-      .or(z.literal('')),
-    dinnerPrice: z.coerce.number<number>().min(0).optional().or(z.literal('')),
-  });
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
 
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepThreeSchemaType>({
+    resolver: zodResolver(stepThreeSchema),
     defaultValues: {
-      pricePerNight: 0,
-      lowPricePerNight: '',
-      breakfastPrice: '',
-      dinnerPrice: '',
+      pricePerNight: storedData.pricePerNight || 0,
+      lowPricePerNight: storedData.lowPricePerNight || '',
+      breakfastPrice: storedData.breakfastPrice || '',
+      dinnerPrice: storedData.dinnerPrice || '',
     },
   });
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
+  const onSubmit = (data: StepThreeSchemaType) => {
+    setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_FOUR);
   };
 

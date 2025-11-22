@@ -12,48 +12,51 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ROUTES } from '@/lib/constants';
+import { stepSixSchema, StepSixSchemaType } from '@/lib/formSchemas';
+import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
 
 export const StepSixForm = () => {
-  const t = useTranslations('CreateCottage.StepSix');
+  const t = useTranslations('CreateCottage');
   const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
-  const formSchema = z.object({
-    title: z
-      .string()
-      .min(1, {
-        message: t('Title.Error'),
-      })
-      .max(32, {
-        message: t('Title.MaxError'),
-      }),
-    description: z.string().min(1, {
-      message: t('Description.Error'),
-    }),
-  });
+  const setData = useCreateFormStore((state) => state.setData);
+  const storedData = useCreateFormStore((state) => state);
 
-  type FormSchemaType = z.infer<typeof formSchema>;
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<StepSixSchemaType>({
+    resolver: zodResolver(
+      stepSixSchema
+        .refine((data) => data.title.length >= 1, {
+          message: t('Title.Error'),
+          path: ['title'],
+        })
+        .refine((data) => data.title.length <= 32, {
+          message: t('Title.MaxError'),
+          path: ['title'],
+        })
+        .refine((data) => data.description.length >= 1, {
+          message: t('Description.Error'),
+          path: ['description'],
+        }),
+    ),
     defaultValues: {
-      title: '',
-      description: '',
+      title: storedData.title || '',
+      description: storedData.description || '',
     },
   });
 
   const { handleSubmit, watch } = form;
   const titleLength = watch('title')?.length || 0;
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log(data);
+  const onSubmit = (data: StepSixSchemaType) => {
+    setData(data);
 
     // TODO: Save cottage to the db and retrieve its id
     const cottage = {

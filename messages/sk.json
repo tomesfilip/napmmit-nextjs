@@ -91,108 +91,96 @@
     }
   },
   "CreateCottage": {
-    "StepOne": {
-      "Address": {
-        "Label": "Adresa",
-        "Placeholder": "Hrebienok, 062 01 Starý Smokovec, Vysoké Tatry, Slovensko",
-        "Description": "Adresa chaty",
-        "Error": "Adresa je nutná"
-      },
-      "LocationUrl": {
-        "Label": "Lokácia URL",
-        "Placeholder": "https://sk.frame.mapy.cz/s/pebezuhuza",
-        "Description": "URL lokácie na mape",
-        "Error": "Lokácia je nutná"
-      }
+    "Address": {
+      "Label": "Adresa",
+      "Placeholder": "Hrebienok, 062 01 Starý Smokovec, Vysoké Tatry, Slovensko",
+      "Description": "Adresa chaty",
+      "Error": "Adresa je nutná"
     },
-    "StepTwo": {
-      "Occupancy": {
-        "Label": "Kapacita",
-        "Placeholder": "4",
-        "Description": "Koľko ľudí sa môže ubytovať",
-        "Error": "Kapacita musí byť aspoň 1"
-      },
-      "Email": {
-        "Label": "E-mail",
-        "Placeholder": "kontakt@chata.sk",
-        "Description": "Kontaktný e-mail pre rezervácie",
-        "Error": "Zadajte platný e-mail"
-      },
-      "Phone": {
-        "Label": "Telefón",
-        "Placeholder": "+421 900 123 456",
-        "Description": "Kontaktné telefónne číslo",
-        "Error": "Telefónne číslo je povinné"
-      },
-      "Website": {
-        "Label": "Webová stránka",
-        "Placeholder": "https://www.chata.sk",
-        "Description": "Webová stránka chaty (voliteľné)",
-        "Error": "Zadajte platnú URL adresu"
-      }
+    "LocationUrl": {
+      "Label": "Lokácia URL",
+      "Placeholder": "https://sk.frame.mapy.cz/s/pebezuhuza",
+      "Description": "URL lokácie na mape",
+      "Error": "Lokácia je nutná"
     },
-    "StepThree": {
-      "PricePerNight": {
-        "Label": "Cena za noc",
-        "Placeholder": "50",
-        "Description": "Základná cena za noc v eurách",
-        "Error": "Cena musí byť aspoň 1"
-      },
-      "LowPricePerNight": {
-        "Label": "Znížená cena za noc",
-        "Placeholder": "40",
-        "Description": "Znížená cena za noc (voliteľné)",
-        "Error": "Cena musí byť aspoň 0"
-      },
-      "BreakfastPrice": {
-        "Label": "Cena za raňajky",
-        "Placeholder": "8",
-        "Description": "Cena za raňajky na osobu (voliteľné)",
-        "Error": "Cena musí byť aspoň 0"
-      },
-      "DinnerPrice": {
-        "Label": "Cena za večeru",
-        "Placeholder": "15",
-        "Description": "Cena za večeru na osobu (voliteľné)",
-        "Error": "Cena musí byť aspoň 0"
-      }
+    "Occupancy": {
+      "Label": "Kapacita",
+      "Placeholder": "4",
+      "Description": "Koľko ľudí sa môže ubytovať",
+      "Error": "Kapacita musí byť aspoň 1"
     },
-    "StepFive": {
-      "Services": {
-        "Label": "Doplnkové služby",
-        "Description": "Vyberte služby, ktoré vaša chata ponúka",
-        "Shower": "Sprcha",
-        "Breakfast": "Raňajky",
-        "Dinner": "Večera"
-      }
+    "Email": {
+      "Label": "E-mail",
+      "Placeholder": "kontakt@chata.sk",
+      "Description": "Kontaktný e-mail pre rezervácie",
+      "Error": "Zadajte platný e-mail"
     },
-    "StepFour": {
-      "Images": {
-        "Label": "Fotografie",
-        "Description": "Nahrajte fotografie vašej chaty (maximálne 8)",
-        "Error": "Aspoň jedna fotografia je povinná",
-        "DragDrop": "Pretáhnite fotografie sem alebo kliknite pre výber",
-        "DropHere": "Pustite fotografie sem",
-        "MaxFiles": "Môžete pridať ešte {count} fotografií",
-        "Cover": "Hlavná",
-        "SetCover": "Nastaviť ako hlavnú",
-        "Remove": "Odstrániť"
-      }
+    "Phone": {
+      "Label": "Telefón",
+      "Placeholder": "+421 900 123 456",
+      "Description": "Kontaktné telefónne číslo",
+      "Error": "Telefónne číslo je povinné"
     },
-    "StepSix": {
-      "Title": {
-        "Label": "Názov",
-        "Placeholder": "Krásna chata v Tatrách",
-        "Description": "Názov vašej chaty",
-        "Error": "Názov je povinný",
-        "MaxError": "Názov môže mať maximálne 32 znakov"
-      },
-      "Description": {
-        "Label": "Popis",
-        "Placeholder": "Opíšte vašu chatu, jej vybavenie a okolitú prírodu...",
-        "Description": "Detailný popis chaty pre návštevníkov",
-        "Error": "Popis je povinný"
-      }
+    "Website": {
+      "Label": "Webová stránka",
+      "Placeholder": "https://www.chata.sk",
+      "Description": "Webová stránka chaty (voliteľné)",
+      "Error": "Zadajte platnú URL adresu"
+    },
+    "PricePerNight": {
+      "Label": "Cena za noc",
+      "Placeholder": "50",
+      "Description": "Základná cena za noc v eurách",
+      "Error": "Cena musí byť aspoň 1"
+    },
+    "LowPricePerNight": {
+      "Label": "Znížená cena za noc",
+      "Placeholder": "40",
+      "Description": "Znížená cena za noc (voliteľné)",
+      "Error": "Cena musí byť aspoň 0"
+    },
+    "BreakfastPrice": {
+      "Label": "Cena za raňajky",
+      "Placeholder": "8",
+      "Description": "Cena za raňajky na osobu (voliteľné)",
+      "Error": "Cena musí byť aspoň 0"
+    },
+    "DinnerPrice": {
+      "Label": "Cena za večeru",
+      "Placeholder": "15",
+      "Description": "Cena za večeru na osobu (voliteľné)",
+      "Error": "Cena musí byť aspoň 0"
+    },
+    "Services": {
+      "Label": "Doplnkové služby",
+      "Description": "Vyberte služby, ktoré vaša chata ponúka",
+      "Shower": "Sprcha",
+      "Breakfast": "Raňajky",
+      "Dinner": "Večera"
+    },
+    "Images": {
+      "Label": "Fotografie",
+      "Description": "Nahrajte fotografie vašej chaty (maximálne 8)",
+      "Error": "Aspoň jedna fotografia je povinná",
+      "DragDrop": "Pretáhnite fotografie sem alebo kliknite pre výber",
+      "DropHere": "Pustite fotografie sem",
+      "MaxFiles": "Môžete pridať ešte {count} fotografií",
+      "Cover": "Hlavná",
+      "SetCover": "Nastaviť ako hlavnú",
+      "Remove": "Odstrániť"
+    },
+    "Title": {
+      "Label": "Názov",
+      "Placeholder": "Krásna chata v Tatrách",
+      "Description": "Názov vašej chaty",
+      "Error": "Názov je povinný",
+      "MaxError": "Názov môže mať maximálne 32 znakov"
+    },
+    "Description": {
+      "Label": "Popis",
+      "Placeholder": "Opíšte vašu chatu, jej vybavenie a okolitú prírodu...",
+      "Description": "Detailný popis chaty pre návštevníkov",
+      "Error": "Popis je povinný"
     },
     "FormNavigation": {
       "BackButton": "Späť",

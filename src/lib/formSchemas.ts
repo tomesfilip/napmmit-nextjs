@@ -3,10 +3,11 @@ import { z } from 'zod';
 export const stepOneSchema = z.object({
   address: z.string().min(2),
   locationUrl: z.string().min(2),
+  mountainArea: z.string().min(1),
 });
 
 export const stepTwoSchema = z.object({
-  occupancy: z.number().min(1),
+  occupancy: z.coerce.number<number>().min(1),
   email: z.email(),
   phone: z.string().min(1),
   website: z.url().optional().or(z.literal('')),

@@ -103,6 +103,12 @@
       "Description": "URL lokácie na mape",
       "Error": "Lokácia je nutná"
     },
+    "MountainArea": {
+      "Label": "Horská oblasť",
+      "Placeholder": "Vysoké Tatry",
+      "Description": "Horská oblasť, kde sa chata nachádza",
+      "Error": "Horská oblasť je nutná"
+    },
     "Occupancy": {
       "Label": "Kapacita",
       "Placeholder": "4",

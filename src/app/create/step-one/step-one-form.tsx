@@ -33,6 +33,7 @@ export const StepOneForm = () => {
     defaultValues: {
       address: storedData.address || '',
       locationUrl: storedData.locationUrl || '',
+      mountainArea: storedData.mountainArea || '',
     },
   });
 
@@ -79,6 +80,25 @@ export const StepOneForm = () => {
                   </FormControl>
                   <FormDescription>
                     {t('LocationUrl.Description')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="mountainArea"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('MountainArea.Label')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('MountainArea.Placeholder')}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t('MountainArea.Description')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -1,5 +1,6 @@
 'use client';
 
+import { createCottage } from '@/app/create/step-six/actions/cottage';
 import {
   Form,
   FormControl,
@@ -55,14 +56,19 @@ export const StepSixForm = () => {
   const { handleSubmit, watch } = form;
   const titleLength = watch('title')?.length || 0;
 
-  const onSubmit = (data: StepSixSchemaType) => {
+  const onSubmit = async (data: StepSixSchemaType) => {
     setData(data);
 
-    // TODO: Save cottage to the db and retrieve its id
-    const cottage = {
-      id: 1,
-    };
-    router.push(`${ROUTES.COTTAGE_DETAIL}/${cottage.id}`);
+    try {
+      const { setData: _, ...cleanData } = storedData;
+      const cottageId = await createCottage({
+        ...cleanData,
+        ...data,
+      });
+      router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
+    } catch (error) {
+      console.error('Failed to create cottage:', error);
+    }
   };
 
   return (

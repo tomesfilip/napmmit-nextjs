@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES, SERVICES } from '@/lib/constants';
 import { stepFiveSchema, StepFiveSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,12 +20,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { BackButton } from '../back-button';
 import { SubmitButton } from '../submit-button';
-
-const services = [
-  { id: 'Shower', icon: 'Shower' },
-  { id: 'Breakfast', icon: 'Breakfast' },
-  { id: 'Dinner', icon: 'Food' },
-] as const;
 
 export const StepFiveForm = () => {
   const t = useTranslations('CreateCottage');
@@ -71,32 +65,33 @@ export const StepFiveForm = () => {
                   <FormDescription>{t('Services.Description')}</FormDescription>
                   <FormControl>
                     <div className="grid max-w-max grid-cols-2 gap-3 lg:grid-cols-3">
-                      {services.map((service) => (
+                      {SERVICES.map((service) => (
                         <FormField
-                          key={service.id}
+                          key={service.name}
                           control={form.control}
                           name="services"
                           render={({ field }) => {
                             return (
                               <FormItem
-                                key={service.id}
+                                key={service.name}
                                 className="flex flex-row items-start space-x-3 space-y-0"
                               >
                                 <FormControl>
                                   <div className="relative size-full">
                                     <Checkbox
                                       checked={field.value?.includes(
-                                        service.id,
+                                        service.name,
                                       )}
                                       onCheckedChange={(checked) => {
                                         return checked
                                           ? field.onChange([
                                               ...field.value,
-                                              service.id,
+                                              service.name,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== service.id,
+                                                (value) =>
+                                                  value !== service.name,
                                               ),
                                             );
                                       }}
@@ -104,24 +99,24 @@ export const StepFiveForm = () => {
                                     />
                                     <div
                                       className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-colors ${
-                                        field.value?.includes(service.id)
+                                        field.value?.includes(service.name)
                                           ? 'border-primary bg-primary/5'
                                           : 'border-border hover:border-primary/50'
                                       } `}
                                       onClick={() => {
                                         const isChecked = field.value?.includes(
-                                          service.id,
+                                          service.name,
                                         );
                                         if (isChecked) {
                                           field.onChange(
                                             field.value?.filter(
-                                              (value) => value !== service.id,
+                                              (value) => value !== service.name,
                                             ),
                                           );
                                         } else {
                                           field.onChange([
                                             ...field.value,
-                                            service.id,
+                                            service.name,
                                           ]);
                                         }
                                       }}
@@ -131,7 +126,7 @@ export const StepFiveForm = () => {
                                         className="mb-2 h-6 w-6 fill-black"
                                       />
                                       <span className="text-sm font-medium">
-                                        {t(`Services.${service.id}`)}
+                                        {service.name}
                                       </span>
                                     </div>
                                   </div>

@@ -6,6 +6,7 @@ import Link from 'next/link';
 export const NavHeader = async () => {
   const t = useTranslations('NavHeader');
   const { user } = await validateRequest();
+
   return (
     <header className="flex w-full max-w-[1600px] items-center justify-between border-b-[1px] px-4 py-3 lg:px-12">
       <Link href="/" className="w-max font-alatsi text-xl uppercase">

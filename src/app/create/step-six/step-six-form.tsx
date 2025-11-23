@@ -29,6 +29,7 @@ export const StepSixForm = () => {
   const router = useRouter();
 
   const setData = useCreateFormStore((state) => state.setData);
+  const cleanData = useCreateFormStore((state) => state.clean);
   const storedData = useCreateFormStore((state) => state);
 
   const form = useForm<StepSixSchemaType>({
@@ -60,11 +61,13 @@ export const StepSixForm = () => {
     setData(data);
 
     try {
-      const { setData: _, ...cleanData } = storedData;
+      const { setData, clean, ...cottageData } = storedData;
       const cottageId = await createCottage({
-        ...cleanData,
+        ...cottageData,
         ...data,
       });
+
+      cleanData();
       router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
     } catch (error) {
       console.error('Failed to create cottage:', error);

@@ -7,12 +7,17 @@ type State = Partial<CreateCottageSchemaType> & {
   setData: (
     data: Partial<CreateCottageSchemaType> & { isEditing?: boolean },
   ) => void;
+  clean: () => void;
 };
 
 export const useCreateFormStore = create<State>()(
   persist(
-    (set) => ({
+    (set, get, api) => ({
       setData: (data) => set(data),
+      clean: () => {
+        set({});
+        api.persist.clearStorage();
+      },
     }),
     {
       name: 'create_cottage_form',

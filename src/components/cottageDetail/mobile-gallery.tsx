@@ -2,14 +2,14 @@
 
 import { ImageType } from '@/server/db/schema';
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Counter from 'yet-another-react-lightbox/plugins/counter';
 import NextImage from '../next-image';
 
+import Link from 'next/link';
 import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/styles.css';
-import Link from 'next/link';
 import { Icon } from '../shared/icon';
 
 interface Props {
@@ -37,6 +37,10 @@ export const MobileGallery = ({ images }: Props) => {
       return () => scrollElement.removeEventListener('scroll', handleScroll);
     }
   }, []);
+
+  if (images.length === 0) {
+    return null;
+  }
 
   return (
     <div className="lg:hidden">

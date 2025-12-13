@@ -1,9 +1,12 @@
+'use client';
+
 import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { CottageDetailType } from '@/lib/appTypes';
 import { redirects } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Icon } from './shared/icon';
 import { ServiceBadge } from './shared/service-badge';
 import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
@@ -17,13 +20,18 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
   const t = useTranslations('Home');
   const tDashboard = useTranslations('Dashboard');
 
+  const router = useRouter();
+
   return (
-    <Card className="group relative aspect-[16/9] h-fit min-h-[260px] w-full overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
+    <Card
+      className="group relative aspect-[16/9] h-fit min-h-[260px] w-full cursor-pointer overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]"
+      onClick={() => router.push(`/cottage/${cottage.id}`)}
+    >
       <Image
         src={cottageFallbackImg}
         alt={`image ${cottage.name}`}
         placeholder="blur"
-        className="absolute left-0 top-0 z-0 size-full rounded-lg object-cover"
+        className="absolute left-0 top-0 z-0 size-full rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
         width={926}
         height={520}
       />
@@ -38,6 +46,7 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
               <Link
                 className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
                 href={`${redirects.editCottage}/${cottage.id}`}
+                onClick={(e) => e.stopPropagation()}
               >
                 {tDashboard('CottageList.UpdateCottageLink')}
                 <Icon icon="Edit" className="size-4 fill-black" />
@@ -55,13 +64,6 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
           <CardTitle className="glass-bg relative z-[1] bg-black/30 px-3 py-1 text-lg leading-8 text-white lg:line-clamp-1 lg:text-xl">
             {cottage.name}
           </CardTitle>
-          <Link
-            className="ml-auto flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
-            href={`/cottage/${cottage.id}`}
-          >
-            {t('CottageList.CottageListItemCTA')}
-            <Icon icon="ArrowRight" className="size-4 fill-black" />
-          </Link>
         </CardFooter>
       </div>
     </Card>

@@ -1,7 +1,8 @@
-import { logout } from '@/lib/auth/actions';
 import { validateRequest } from '@/lib/auth/validateRequest';
+import { ROUTES } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { LogoutButton } from './logout-button';
 
 export const NavHeader = async () => {
   const t = useTranslations('NavHeader');
@@ -16,25 +17,23 @@ export const NavHeader = async () => {
         <ul className="flex items-center gap-4">
           {user ? (
             <>
-              <li className="text-sm font-medium text-gray-700">
-                {user.email}
+              <li className="text-sm font-medium">
+                <Link
+                  href={ROUTES.DASHBOARD}
+                  className="border-b border-b-transparent transition-all duration-200 hover:border-b-black"
+                >
+                  {t('Dashboard')}
+                </Link>
               </li>
               <li>
-                <form action={logout}>
-                  <button
-                    type="submit"
-                    className="rounded-lg bg-slate-100 px-4 py-2 font-semibold lg:text-lg"
-                  >
-                    {t('Logout')}
-                  </button>
-                </form>
+                <LogoutButton />
               </li>
             </>
           ) : (
             <li>
               <Link
                 href="/login"
-                className="rounded-lg bg-slate-100 px-4 py-2 font-semibold lg:text-lg"
+                className="rounded-lg bg-slate-100 px-4 py-2 font-semibold transition-colors duration-200 ease-in-out hover:bg-slate-200 lg:text-lg"
               >
                 {t('Login')}
               </Link>

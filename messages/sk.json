@@ -10,7 +10,8 @@
   },
   "NavHeader": {
     "Login": "Prihlásiť sa",
-    "Logout": "Odhlásiť sa"
+    "Logout": "Odhlásiť sa",
+    "Dashboard": "Spravovať chaty"
   },
   "CottageDetail": {
     "ContactTitle": "Kontakt",

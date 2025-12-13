@@ -30,6 +30,7 @@ export const ROUTES = {
     STEP_FIVE: 'step-five',
     STEP_SIX: 'step-six',
   },
+  DASHBOARD: '/dashboard',
 } as const;
 
 export const SERVICES: ServiceBadgeType[] = [

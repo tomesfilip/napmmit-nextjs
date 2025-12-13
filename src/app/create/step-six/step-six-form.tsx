@@ -1,6 +1,9 @@
 'use client';
 
-import { createCottage } from '@/app/create/step-six/actions/cottage';
+import {
+  createCottage,
+  updateCottage,
+} from '@/app/create/step-six/actions/cottage';
 import {
   Form,
   FormControl,
@@ -62,13 +65,19 @@ export const StepSixForm = () => {
 
     try {
       const { setData, clean, ...cottageData } = storedData;
-      const cottageId = await createCottage({
-        ...cottageData,
-        ...data,
-      });
 
-      cleanData();
-      router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
+      if (cottageData.cottageId) {
+        await updateCottage({ ...cottageData, ...data });
+        cleanData();
+        router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageData.cottageId}`);
+      } else {
+        const cottageId = await createCottage({
+          ...cottageData,
+          ...data,
+        });
+        cleanData();
+        router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
+      }
     } catch (error) {
       console.error('Failed to create cottage:', error);
     }

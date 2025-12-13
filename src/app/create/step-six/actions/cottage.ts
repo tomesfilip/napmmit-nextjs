@@ -10,15 +10,16 @@ import {
   images,
   services,
 } from '@/server/db/schema';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 
-export async function createCottage(
-  data: Partial<CreateCottageSchemaType> & {
-    title: string;
-    description: string;
-  },
-) {
+type createUpdateDataType = Partial<CreateCottageSchemaType> & {
+  cottageId?: number;
+  title: string;
+  description: string;
+};
+
+async function prepareCottageData(data: createUpdateDataType) {
   try {
     const { user } = await validateRequest();
     if (!user) throw new Error('Unauthorized');
@@ -32,35 +33,74 @@ export async function createCottage(
     if (!data.occupancy || data.occupancy < 1)
       throw new Error('Valid occupancy is required');
 
-    const cottage = await db
-      .insert(cottages)
-      .values({
-        name: data.title,
-        description: data.description,
-        address: data.address || '',
-        mountainArea: data.mountainArea || '',
-        capacity: data.occupancy || 1,
-        availableBeds: data.occupancy || 1,
-        pricePerNight: Math.round(data.pricePerNight || 0),
-        priceLowPerNight: data.lowPricePerNight
-          ? Math.round(Number(data.lowPricePerNight))
-          : null,
-        priceBreakfast: data.breakfastPrice
-          ? Math.round(Number(data.breakfastPrice))
-          : null,
-        priceDinner: data.dinnerPrice
-          ? Math.round(Number(data.dinnerPrice))
-          : null,
-        phoneNumber: data.phone || null,
-        email: data.email || null,
-        website: data.website || null,
-        userId: user.id,
-        locationURL: data.locationUrl || null,
-      })
+    const cottageData = {
+      name: data.title,
+      description: data.description,
+      address: data.address || '',
+      mountainArea: data.mountainArea || '',
+      capacity: data.occupancy || 1,
+      availableBeds: data.occupancy || 1,
+      pricePerNight: Math.round(data.pricePerNight || 0),
+      priceLowPerNight: data.lowPricePerNight
+        ? Math.round(Number(data.lowPricePerNight))
+        : null,
+      priceBreakfast: data.breakfastPrice
+        ? Math.round(Number(data.breakfastPrice))
+        : null,
+      priceDinner: data.dinnerPrice
+        ? Math.round(Number(data.dinnerPrice))
+        : null,
+      phoneNumber: data.phone || null,
+      email: data.email || null,
+      website: data.website || null,
+      userId: user.id,
+      locationURL: data.locationUrl || null,
+    };
+
+    return cottageData;
+  } catch (error) {
+    console.error('Cottage preparation failed:', error);
+    throw error instanceof Error
+      ? error
+      : new Error('Failed to prepare cottage data');
+  }
+}
+
+export async function updateCottage(data: createUpdateDataType) {
+  const cottageData = await prepareCottageData(data);
+
+  try {
+    const cottageId = data.cottageId;
+    if (!cottageId) throw new Error('Cottage ID is required');
+
+    const updatedCottage = await db
+      .update(cottages)
+      .set(cottageData)
+      .where(eq(cottages.id, cottageId))
       .returning({ id: cottages.id });
 
-    if (!cottage?.[0]?.id) throw new Error('Failed to create cottage');
-    const cottageId = cottage[0].id;
+    if (!updatedCottage?.[0]?.id) throw new Error('Failed to update cottage');
+    const updatedCottageId = updatedCottage[0].id;
+    redirect(`${ROUTES.COTTAGE_DETAIL}/${updatedCottageId}`);
+  } catch (error) {
+    console.error('Cottage update failed:', error);
+    throw error instanceof Error
+      ? error
+      : new Error('Failed to update cottage');
+  }
+}
+
+export async function createCottage(data: createUpdateDataType) {
+  const cottageData = await prepareCottageData(data);
+
+  try {
+    const newCottage = await db
+      .insert(cottages)
+      .values(cottageData)
+      .returning({ id: cottages.id });
+
+    if (!newCottage?.[0]?.id) throw new Error('Failed to create cottage');
+    const cottageId = newCottage[0].id;
 
     if (data.services?.length) {
       const serviceIds = await db

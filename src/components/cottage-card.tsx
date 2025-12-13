@@ -1,21 +1,24 @@
 import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { CottageDetailType } from '@/lib/appTypes';
+import { redirects } from '@/lib/constants';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { ServiceBadge } from './shared/service-badge';
 import { Icon } from './shared/icon';
-import { useTranslations } from 'next-intl';
+import { ServiceBadge } from './shared/service-badge';
+import { Card, CardFooter, CardHeader, CardTitle } from './ui/card';
 
 type Props = {
   cottage: CottageDetailType;
+  isEditable?: boolean;
 };
 
-export const CottageCard = ({ cottage }: Props) => {
+export const CottageCard = ({ cottage, isEditable }: Props) => {
   const t = useTranslations('Home');
+  const tDashboard = useTranslations('Dashboard');
 
   return (
-    <Card className="group relative aspect-[16/9] h-fit w-full overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
+    <Card className="group relative aspect-[16/9] h-fit min-h-[260px] w-full overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
       <Image
         src={cottageFallbackImg}
         alt={`image ${cottage.name}`}
@@ -26,9 +29,20 @@ export const CottageCard = ({ cottage }: Props) => {
       />
       <div className="relative z-[1] size-full rounded-md p-2">
         <CardHeader className="space-y-3 p-0">
-          <div className="glass-bg flex max-w-max items-center gap-2 bg-black/30 px-3 py-1 text-white">
-            <Icon icon="Location" className="size-4 fill-white" />
-            <p className="font-medium">{cottage.mountainArea}</p>
+          <div className="flex w-full justify-between gap-4">
+            <div className="glass-bg flex max-w-max items-center gap-2 bg-black/30 px-3 py-1 text-white">
+              <Icon icon="Location" className="size-4 fill-white" />
+              <p className="font-medium">{cottage.mountainArea}</p>
+            </div>
+            {isEditable && (
+              <Link
+                className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
+                href={`${redirects.editCottage}/${cottage.id}`}
+              >
+                {tDashboard('CottageList.UpdateCottageLink')}
+                <Icon icon="Edit" className="size-4 fill-black" />
+              </Link>
+            )}
           </div>
 
           <div className="flex gap-2">

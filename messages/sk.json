@@ -93,6 +93,9 @@
       "Title": "Zatiaľ nemáte žiadne chaty",
       "Description": "Vytvorte svoj prvý inzerát a začnite prenajímať svoju chatu návštevníkom.",
       "CreateButton": "Vytvoriť inzerát"
+    },
+    "CottageList": {
+      "UpdateCottageLink": "Upraviť"
     }
   },
   "CreateCottage": {

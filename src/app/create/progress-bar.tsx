@@ -17,7 +17,9 @@ export default function ProgressBar() {
   const currentProgress =
     (multistepNavigationLinks.findIndex((step) =>
       pathName.includes(step.link),
-    ) / multistepNavigationLinks.length) * 100;
+    ) /
+      multistepNavigationLinks.length) *
+    100;
 
   return (
     <div

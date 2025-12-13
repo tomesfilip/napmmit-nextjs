@@ -3,9 +3,9 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 type State = Partial<CreateCottageSchemaType> & {
-  isEditing?: boolean;
+  cottageId?: number;
   setData: (
-    data: Partial<CreateCottageSchemaType> & { isEditing?: boolean },
+    data: Partial<CreateCottageSchemaType> & { cottageId?: number },
   ) => void;
   clean: () => void;
 };

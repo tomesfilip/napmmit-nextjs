@@ -17,6 +17,7 @@ export const redirects = {
   afterVerify: '/dashboard',
   cottageDetail: '/cottage',
   createCottage: '/create',
+  editCottage: '/edit',
 } as const;
 
 export const ROUTES = {

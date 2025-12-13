@@ -5,31 +5,30 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { validateRequest } from '@/lib/auth/validateRequest';
-import { redirects } from '@/lib/constants';
-import { redirect } from 'next/navigation';
-import { SendResetEmail } from '../send-reset-email';
+import { ResetPasswordForm } from './reset-password-form';
 
 export const metadata = {
-  title: 'Forgot Password',
-  description: 'Forgot Password Page',
+  title: 'Reset Password',
+  description: 'Reset Password Page',
 };
 
-export default async function ForgotPasswordPage() {
-  const { user } = await validateRequest();
+interface ResetPasswordPageProps {
+  params: {
+    token: string;
+  };
+}
 
-  if (user) redirect(redirects.afterLogin);
-
+export default async function ResetPasswordPage({
+  params,
+}: ResetPasswordPageProps) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Forgot password?</CardTitle>
-        <CardDescription>
-          Password reset link will be sent to your email.
-        </CardDescription>
+        <CardTitle>Reset password</CardTitle>
+        <CardDescription>Enter your new password below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <SendResetEmail />
+        <ResetPasswordForm token={params.token} />
       </CardContent>
     </Card>
   );

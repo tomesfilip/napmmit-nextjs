@@ -1,3 +1,5 @@
+'use client';
+
 import { ServiceBadgeType } from '@/lib/appTypes';
 import clsx from 'clsx';
 import { Badge, BadgeProps } from '../ui/badge';
@@ -34,7 +36,7 @@ export const ServiceBadge = ({
       <Icon
         icon={serviceBadge.icon}
         className={clsx(
-          'group-hover/badge:fill-gray-900 size-5 transition-colors duration-200',
+          'size-5 transition-colors duration-200 group-hover/badge:fill-gray-900',
           isActive ? 'fill-gray-900' : 'fill-white',
         )}
       />

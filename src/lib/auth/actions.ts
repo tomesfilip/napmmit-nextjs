@@ -21,8 +21,10 @@ import { renderVerificationCodeEmail } from '../emailTemplates/email-verificatio
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
   LoginInput,
+  ResetPasswordInput,
   SignupInput,
   loginSchema,
+  resetPasswordSchema,
   signupSchema,
 } from '../validators/auth';
 import { validateRequest } from './validateRequest';
@@ -40,11 +42,11 @@ export const login = async (
 
   const parsed = loginSchema.safeParse(obj);
   if (!parsed.success) {
-    const err = parsed.error.flatten();
+    const err = parsed.error._zod.output;
     return {
       fieldError: {
-        email: err.fieldErrors.email?.[0],
-        password: err.fieldErrors.password?.[0],
+        email: err.email?.[0],
+        password: err.password?.[0],
       },
     };
   }
@@ -57,13 +59,13 @@ export const login = async (
 
   if (!existingUser) {
     return {
-      formError: 'Incorrect email',
+      formError: 'Nesprávny mail',
     };
   }
 
   if (!existingUser || !existingUser?.password) {
     return {
-      formError: 'Incorrect email or password',
+      formError: 'Nesprávny mail alebo heslo',
     };
   }
 
@@ -73,7 +75,7 @@ export const login = async (
   );
   if (!validPassword) {
     return {
-      formError: 'Incorrect email or password',
+      formError: 'Nesprávny mail alebo heslo',
     };
   }
 
@@ -95,11 +97,11 @@ export const signup = async (
 
   const parsed = signupSchema.safeParse(obj);
   if (!parsed.success) {
-    const err = parsed.error.flatten();
+    const err = parsed.error._zod.output;
     return {
       fieldError: {
-        email: err.fieldErrors.email?.[0],
-        password: err.fieldErrors.password?.[0],
+        email: err.email?.[0],
+        password: err.password?.[0],
       },
     };
   }
@@ -313,4 +315,61 @@ export const sendPasswordResetLink = async (
   } catch (error) {
     return { error: 'Failed to send verification email.' };
   }
+};
+
+export const resetPassword = async (
+  _: any,
+  formData: FormData,
+): Promise<ActionResponse<ResetPasswordInput>> => {
+  const obj = Object.fromEntries(formData.entries());
+
+  const parsed = resetPasswordSchema.safeParse(obj);
+  if (!parsed.success) {
+    const err = parsed.error._zod.output;
+    return {
+      fieldError: {
+        token: err.token?.[0],
+        password: err.password?.[0],
+      },
+    };
+  }
+
+  const { token, password } = parsed.data;
+
+  try {
+    const existingToken = await db.query.passwordResetTokens.findFirst({
+      where: (table, { eq }) => eq(table.id, token),
+    });
+
+    if (!existingToken) {
+      return { formError: 'Invalid token.' };
+    }
+
+    if (!isWithinExpirationDate(existingToken.expiresAt)) {
+      return { formError: 'Token expired.' };
+    }
+
+    await lucia.invalidateUserSessions(existingToken.userId);
+    const hashedPassword = await new Scrypt().hash(password);
+    await db
+      .update(users)
+      .set({ password: hashedPassword })
+      .where(eq(users.id, existingToken.userId));
+    await db
+      .delete(passwordResetTokens)
+      .where(eq(passwordResetTokens.id, token));
+
+    const session = await lucia.createSession(existingToken.userId, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
+  } catch (error) {
+    console.error('Reset password error: ', error);
+  }
+
+  return redirect(redirects.afterLogin);
 };

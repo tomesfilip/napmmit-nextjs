@@ -81,7 +81,12 @@
     "SignupText": "Nie ste zaregistrovaný? Zaregistrujte sa",
     "Submit": "Obnoviť heslo",
     "Cancel": "Zrušiť",
-    "SuccessMessage": "Odkaz na obnovenie hesla bol zaslaný na váš e-mail."
+    "SuccessMessage": "Odkaz na obnovenie hesla bol zaslaný na váš e-mail.",
+    "NewPasswordForm": {
+      "NewPassword": "Nové heslo",
+      "Submit": "Nastaviť nové heslo",
+      "Cancel": "Prihlásiť sa"
+    }
   },
   "Dashboard": {
     "NoCottages": {

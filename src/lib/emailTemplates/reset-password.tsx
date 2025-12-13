@@ -15,6 +15,7 @@ interface Props {
   link: string;
 }
 
+// TODO: internazionalization for mail message
 export const ResetPasswordEmail = ({ link }: Props) => {
   return (
     <Html>

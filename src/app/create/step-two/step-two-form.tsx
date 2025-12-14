@@ -48,8 +48,10 @@ export const StepTwoForm = () => {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-5">
-          {/* TODO: title & desc */}
-
+          <div className="space-y-2">
+            <h1 className="text-lg font-medium">{t('StepTwo.Title')}</h1>
+            <p className="text-sm">{t('StepTwo.Description')}</p>
+          </div>
           <div className="space-y-5">
             <FormField
               control={form.control}

@@ -52,7 +52,11 @@ export const StepFiveForm = () => {
               name="services"
               render={() => (
                 <FormItem>
-                  <FormLabel>{t('Services.Label')}</FormLabel>
+                  <FormLabel>
+                    <h1 className="text-lg font-medium">
+                      {t('Services.Label')}
+                    </h1>
+                  </FormLabel>
                   <FormDescription>{t('Services.Description')}</FormDescription>
                   <FormControl>
                     <div className="grid max-w-max grid-cols-2 gap-3 lg:grid-cols-3">

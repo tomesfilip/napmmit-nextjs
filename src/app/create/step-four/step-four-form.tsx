@@ -127,8 +127,12 @@ export const StepFourForm = () => {
               name="images"
               render={() => (
                 <FormItem>
-                  <FormLabel>{t('Images.Label')}</FormLabel>
-                  <FormDescription>{t('Images.Description')}</FormDescription>
+                  <FormLabel>
+                    <h1 className="text-lg font-medium">{t('Images.Label')}</h1>
+                  </FormLabel>
+                  <FormDescription className="text-sm">
+                    {t('Images.Description')}
+                  </FormDescription>
                   <FormControl>
                     <div className="space-y-4">
                       {images.length < 8 && (

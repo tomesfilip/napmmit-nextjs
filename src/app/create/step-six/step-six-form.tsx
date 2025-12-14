@@ -22,6 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { StepNavigation } from '../step-navigation';
 
 export const StepSixForm = () => {
@@ -67,6 +68,7 @@ export const StepSixForm = () => {
       if (cottageData.cottageId) {
         await updateCottage({ ...cottageData, ...data });
         cleanData();
+        toast(t('EditSuccess'));
         router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageData.cottageId}`);
       } else {
         const cottageId = await createCottage({
@@ -74,6 +76,7 @@ export const StepSixForm = () => {
           ...data,
         });
         cleanData();
+        toast(t('CreateSuccess'));
         router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
       }
     } catch (error) {
@@ -85,6 +88,10 @@ export const StepSixForm = () => {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-5">
+          <div className="space-y-2">
+            <h1 className="text-lg font-medium">{t('StepSix.Title')}</h1>
+            <p className="text-sm">{t('StepSix.Description')}</p>
+          </div>
           <div className="space-y-5">
             <FormField
               control={form.control}

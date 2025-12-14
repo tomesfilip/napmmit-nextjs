@@ -21,7 +21,6 @@ import { StepNavigation } from '../step-navigation';
 
 export const StepThreeForm = () => {
   const t = useTranslations('CreateCottage');
-  const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
@@ -49,6 +48,10 @@ export const StepThreeForm = () => {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-5">
+          <div className="space-y-2">
+            <h1 className="text-lg font-medium">{t('StepThree.Title')}</h1>
+            <p className="text-sm">{t('StepThree.Description')}</p>
+          </div>
           <div className="space-y-5">
             <FormField
               control={form.control}

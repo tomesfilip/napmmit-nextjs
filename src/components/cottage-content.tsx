@@ -2,6 +2,7 @@
 
 import { CottageDetailType } from '@/lib/appTypes';
 import { lowerCaseNoDiacriticsText } from '@/lib/utils';
+import { useCottageAreas } from '@/stores/cottageAreas';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { CottageCard } from './cottage-card';
@@ -18,14 +19,18 @@ type Props = {
 export const CottageContent = ({ cottages }: Props) => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
+  const setCottageAreas = useCottageAreas((state) => state.setCottageAreas);
 
   const filterLocation = searchParams.get('location');
   const searchQuery = searchParams.get('query');
 
   const availableMountainAreas = useMemo(() => {
-    return Array.from(
+    const areas = Array.from(
       new Set(cottages.map(({ mountainArea }) => mountainArea)),
     );
+
+    setCottageAreas(areas);
+    return areas;
   }, [cottages]);
 
   const filterServices = useMemo(() => {

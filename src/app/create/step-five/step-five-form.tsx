@@ -18,12 +18,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { BackButton } from '../back-button';
-import { SubmitButton } from '../submit-button';
+import { StepNavigation } from '../step-navigation';
 
 export const StepFiveForm = () => {
   const t = useTranslations('CreateCottage');
-  const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
@@ -46,15 +44,8 @@ export const StepFiveForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-[400px] py-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_FOUR} />
-            <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
-          </div>
           <div className="space-y-5">
             <FormField
               control={form.control}
@@ -143,6 +134,7 @@ export const StepFiveForm = () => {
               )}
             />
           </div>
+          <StepNavigation />
         </div>
       </form>
     </Form>

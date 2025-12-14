@@ -20,8 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
-import { BackButton } from '../back-button';
-import { SubmitButton } from '../submit-button';
+import { StepNavigation } from '../step-navigation';
 import { ActionButtons } from './components/action-buttons';
 import { ReorderButtons } from './components/reorder-buttons';
 import { UploadArea } from './components/upload-area';
@@ -38,7 +37,6 @@ export type ImageFile = {
 
 export const StepFourForm = () => {
   const t = useTranslations('CreateCottage');
-  const tNavigation = useTranslations('CreateCottage.FormNavigation');
 
   const router = useRouter();
 
@@ -121,15 +119,8 @@ export const StepFourForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-[600px] py-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[600px]">
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <BackButton href={ROUTES.CREATE_COTTAGE.STEP_THREE} />
-            <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
-          </div>
           <div className="space-y-5">
             <FormField
               control={form.control}
@@ -184,6 +175,7 @@ export const StepFourForm = () => {
               )}
             />
           </div>
+          <StepNavigation />
         </div>
       </form>
     </Form>

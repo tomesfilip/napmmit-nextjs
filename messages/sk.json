@@ -100,6 +100,10 @@
     }
   },
   "CreateCottage": {
+    "StepOne": {
+      "Title": "Lokalita chaty",
+      "Description": "Zadajte základné informácie o polohe vašej chaty."
+    },
     "Address": {
       "Label": "Adresa",
       "Placeholder": "Hrebienok, 062 01 Starý Smokovec, Vysoké Tatry, Slovensko",
@@ -199,7 +203,8 @@
     },
     "FormNavigation": {
       "BackButton": "Späť",
-      "NextButton": "Ďalej"
+      "NextButton": "Ďalej",
+      "AutosaveHint": "Údaje sa ukladajú automaticky."
     }
   },
   "Shared": {

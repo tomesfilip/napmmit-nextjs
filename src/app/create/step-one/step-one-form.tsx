@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { SubmitButton } from '../submit-button';
+import { StepNavigation } from '../step-navigation';
 
 export const StepOneForm = () => {
   const t = useTranslations('CreateCottage');
@@ -35,6 +35,7 @@ export const StepOneForm = () => {
       locationUrl: storedData.locationUrl || '',
       mountainArea: storedData.mountainArea || '',
     },
+    shouldFocusError: true,
   });
 
   const { handleSubmit } = form;
@@ -48,8 +49,9 @@ export const StepOneForm = () => {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <SubmitButton>{tNavigation('NextButton')}</SubmitButton>
+          <div className="space-y-2 pr-5">
+            <h1 className="text-lg font-medium">{t('StepOne.Title')}</h1>
+            <p className="text-sm">{t('StepOne.Description')}</p>
           </div>
           <div className="space-y-5">
             <FormField
@@ -105,6 +107,7 @@ export const StepOneForm = () => {
               )}
             />
           </div>
+          <StepNavigation hasBackButton={false} />
         </div>
       </form>
     </Form>

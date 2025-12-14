@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { sendPasswordResetLink } from '@/lib/auth/actions';
-import { redirects } from '@/lib/constants';
+import { ROUTES } from '@/lib/constants';
 import { MailWarningIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ export const SendResetEmail = () => {
   useEffect(() => {
     if (state?.success) {
       toast(t('SuccessMessage'));
-      router.push(redirects.toLogin);
+      router.push(ROUTES.AUTH.LOGIN);
     }
     if (state?.error) {
       toast(state.error, {
@@ -46,8 +46,8 @@ export const SendResetEmail = () => {
       </div>
 
       <div className="flex flex-wrap justify-between">
-        <Link href={redirects.toSignup}>
-          <Button variant={'link'} size={'sm'} className="p-0">
+        <Link href={ROUTES.AUTH.SIGNUP}>
+          <Button variant="link" size="sm" className="p-0">
             {t('SignupText')}
           </Button>
         </Link>

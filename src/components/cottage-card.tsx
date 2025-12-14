@@ -2,7 +2,7 @@
 
 import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
 import { CottageDetailType } from '@/lib/appTypes';
-import { redirects } from '@/lib/constants';
+import { ROUTES } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
   return (
     <Card
       className="group relative aspect-[16/9] h-fit min-h-[260px] w-full cursor-pointer overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]"
-      onClick={() => router.push(`/cottage/${cottage.id}`)}
+      onClick={() => router.push(`${ROUTES.COTTAGE_DETAIL}/${cottage.id}`)}
     >
       <Image
         src={cottageFallbackImg}
@@ -45,7 +45,7 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
             {isEditable && (
               <Link
                 className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 font-medium transition-all hover:px-4"
-                href={`${redirects.editCottage}/${cottage.id}`}
+                href={`${ROUTES.EDIT_COTTAGE}/${cottage.id}`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {tDashboard('CottageList.UpdateCottageLink')}

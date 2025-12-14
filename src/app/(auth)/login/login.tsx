@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login } from '@/lib/auth/actions';
+import { ROUTES } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
@@ -59,10 +60,12 @@ export const Login = () => {
 
           <div className="flex flex-wrap justify-between">
             <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/signup">{t('SignupText')}</Link>
+              <Link href={ROUTES.AUTH.SIGNUP}>{t('SignupText')}</Link>
             </Button>
             <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/reset-password">{t('ForgotPassword')}</Link>
+              <Link href={ROUTES.AUTH.RESET_PASSWORD}>
+                {t('ForgotPassword')}
+              </Link>
             </Button>
           </div>
 

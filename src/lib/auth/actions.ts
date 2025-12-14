@@ -16,7 +16,7 @@ import {
   users,
 } from '../../server/db/schema';
 import { sendMail } from '../../server/db/sendMail';
-import { PASSWORD_ID_LENGTH, USER_ID_LENGTH, redirects } from '../constants';
+import { PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
@@ -86,7 +86,7 @@ export const login = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect(redirects.afterLogin);
+  return redirect(ROUTES.DASHBOARD);
 };
 
 export const signup = async (
@@ -148,7 +148,7 @@ export const signup = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect(redirects.toVerify);
+  return redirect(ROUTES.AUTH.VERIFY_EMAIL);
 };
 
 export async function logout(): Promise<void> {
@@ -190,7 +190,7 @@ export const resendVerificationEmail = async (): Promise<{
 }> => {
   const { user } = await validateRequest();
   if (!user) {
-    return redirect(redirects.toLogin);
+    return redirect(ROUTES.AUTH.LOGIN);
   }
 
   const lastSent = await db.query.emailVerificationCodes.findFirst({
@@ -247,7 +247,7 @@ export const verifyEmail = async (
   }
   const { user } = await validateRequest();
   if (!user) {
-    return redirect(redirects.toLogin);
+    return redirect(ROUTES.AUTH.LOGIN);
   }
 
   const dbCode = await db.transaction(async (tx) => {
@@ -282,7 +282,7 @@ export const verifyEmail = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  redirect(redirects.afterLogin);
+  redirect(ROUTES.DASHBOARD);
 };
 
 export const sendPasswordResetLink = async (
@@ -371,5 +371,5 @@ export const resetPassword = async (
     console.error('Reset password error: ', error);
   }
 
-  return redirect(redirects.afterLogin);
+  return redirect(ROUTES.DASHBOARD);
 };

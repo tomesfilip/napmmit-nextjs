@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { validateRequest } from '@/lib/auth/validateRequest';
-import { redirects } from '@/lib/constants';
+import { ROUTES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { VerifyCode } from './verify-code';
 
@@ -15,11 +15,12 @@ export const metadata = {
   description: 'Verify Email Page',
 };
 
+// TODO: translations
 export default async function VerifyEmailPage() {
   const { user } = await validateRequest();
 
-  if (!user) redirect(redirects.toLogin);
-  if (user.isEmailVerified) redirect(redirects.afterVerify);
+  if (!user) redirect(ROUTES.AUTH.LOGIN);
+  if (user.isEmailVerified) redirect(ROUTES.DASHBOARD);
 
   return (
     <Card className="w-full max-w-md">

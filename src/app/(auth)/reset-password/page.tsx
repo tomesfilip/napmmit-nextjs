@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { validateRequest } from '@/lib/auth/validateRequest';
-import { redirects } from '@/lib/constants';
+import { ROUTES } from '@/lib/constants';
 import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { SendResetEmail } from './send-reset-email';
@@ -20,7 +20,7 @@ export default async function ForgotPasswordPage() {
   const { user } = await validateRequest();
   const t = await getTranslations('ResetPasswordPage');
 
-  if (user) redirect(redirects.afterLogin);
+  if (user) redirect(ROUTES.DASHBOARD);
 
   return (
     <Card className="w-full max-w-md">

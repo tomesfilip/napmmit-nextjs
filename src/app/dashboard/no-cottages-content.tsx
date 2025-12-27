@@ -14,8 +14,8 @@ export const NoCottagesContent = () => {
         {t('NoCottages.Description')}
       </p>
       <Link
-        href={ROUTES.CREATE_COTTAGE.STEP_ONE}
-        className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+        href={'create/' + ROUTES.CREATE_COTTAGE.STEP_ONE}
+        className="rounded-lg bg-gray-600 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-700"
       >
         {t('NoCottages.CreateButton')}
       </Link>

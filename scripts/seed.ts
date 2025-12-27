@@ -7,9 +7,9 @@ import * as schema from '../src/server/db/schema';
 import { cottageData } from './data/cottages';
 import { imageData } from './data/images';
 
-const DB_URL = process.env.DB_URL;
+const DB_URL = process.env.DATABASE_URL;
 if (!DB_URL) {
-  throw new Error('DB_URL environment variable is not defined.');
+  throw new Error('DATABASE_URL environment variable is not defined.');
 }
 
 const sql = neon(DB_URL);
@@ -66,15 +66,13 @@ const main = async () => {
     await db.insert(schema.users).values(userData);
     await db.insert(schema.cottages).values(cottageData);
     await db.insert(schema.images).values(imageData);
-    await db
-      .insert(schema.services)
-      .values(
-        SERVICES.map(({ name, icon }, index) => ({
-          id: index + 1,
-          name: name,
-          icon: icon,
-        })),
-      );
+    await db.insert(schema.services).values(
+      SERVICES.map(({ name, icon }, index) => ({
+        id: index + 1,
+        name: name,
+        icon: icon,
+      })),
+    );
     await db.insert(schema.cottageServices).values(cottageServiceData);
 
     console.log('Seeding of the database finished');

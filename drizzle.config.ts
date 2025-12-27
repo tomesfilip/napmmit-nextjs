@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
 
-const DB_URL = process.env.DB_URL;
+const DB_URL = process.env.DATABASE_URL;
 if (!DB_URL) {
-  throw new Error('DB_URL environment variable is not defined.');
+  throw new Error('DATABASE_URL environment variable is not defined.');
 }
 
 export default defineConfig({

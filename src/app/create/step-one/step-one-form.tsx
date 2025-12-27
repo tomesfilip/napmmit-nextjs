@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon } from '@/components/shared/icon';
 import {
   Form,
   FormControl,
@@ -10,7 +11,20 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ROUTES } from '@/lib/constants';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { COTTAGE_AREAS, ROUTES } from '@/lib/constants';
 import { stepOneSchema, StepOneSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,6 +40,8 @@ export const StepOneForm = () => {
 
   const setData = useCreateFormStore((state) => state.setData);
   const storedData = useCreateFormStore((state) => state);
+
+  console.log('Stored data in Step One Form:', storedData);
 
   const form = useForm<StepOneSchemaType>({
     resolver: zodResolver(stepOneSchema),
@@ -72,7 +88,20 @@ export const StepOneForm = () => {
               name="locationUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('LocationUrl.Label')}</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <span>{t('LocationUrl.Label')}</span>
+                    <Tooltip>
+                      <TooltipTrigger type="button">
+                        <Icon
+                          icon="Info"
+                          className="size-4 rounded-sm fill-black transition-colors hover:bg-slate-200"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        {t('LocationUrl.Tooltip')}
+                      </TooltipContent>
+                    </Tooltip>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder={t('LocationUrl.Placeholder')}
@@ -93,10 +122,28 @@ export const StepOneForm = () => {
                 <FormItem>
                   <FormLabel>{t('MountainArea.Label')}</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={t('MountainArea.Placeholder')}
-                      {...field}
-                    />
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        className="w-[276px]"
+                        aria-label="Vybrať horskú oblasť"
+                      >
+                        <SelectValue placeholder="Vysoké Tatry, Malá Fatra, ..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="all">Všetky</SelectItem>
+                          {COTTAGE_AREAS.map(({ name }) => (
+                            <SelectItem
+                              key={name}
+                              value={name}
+                              className="cursor-pointer"
+                            >
+                              {name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormDescription>
                     {t('MountainArea.Description')}

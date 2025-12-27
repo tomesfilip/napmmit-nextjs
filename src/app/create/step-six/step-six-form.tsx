@@ -1,10 +1,6 @@
 'use client';
 
 import {
-  createCottage,
-  updateCottage,
-} from '@/app/create/step-six/actions/cottage';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -16,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ROUTES } from '@/lib/constants';
+import { createCottage, updateCottage } from '@/lib/cottage/actions';
 import { stepSixSchema, StepSixSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -64,6 +61,8 @@ export const StepSixForm = () => {
 
     try {
       const { setData, clean, ...cottageData } = storedData;
+
+      console.log('Submitting cottage data:', cottageData);
 
       if (cottageData.cottageId) {
         await updateCottage({ ...cottageData, ...data });

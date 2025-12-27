@@ -40,14 +40,20 @@ export const cottages = pgTable('cottages', {
   phoneNumber: varchar('phone_number'),
   email: varchar('email'),
   website: varchar('website'),
-  userId: varchar('userId', { length: USER_ID_LENGTH }).notNull(),
+  userId: varchar('userId', { length: USER_ID_LENGTH })
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   locationURL: varchar('locationURL'),
 });
 
 export const reservations = pgTable('reservations', {
   id: serial('id').primaryKey(),
-  userId: varchar('user_id', { length: USER_ID_LENGTH }).notNull(),
-  cottageId: integer('cottage_id').notNull(),
+  userId: varchar('user_id', { length: USER_ID_LENGTH })
+    .notNull()
+    .references(() => users.id),
+  cottageId: integer('cottage_id')
+    .notNull()
+    .references(() => cottages.id, { onDelete: 'cascade' }),
   from: date('from').notNull(),
   to: date('to').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
@@ -137,7 +143,7 @@ export const cottageServices = pgTable(
   {
     cottageId: integer('cottage_id')
       .notNull()
-      .references(() => cottages.id),
+      .references(() => cottages.id, { onDelete: 'cascade' }),
     serviceId: integer('service_id')
       .notNull()
       .references(() => services.id),

@@ -96,7 +96,15 @@
       "CreateButton": "Vytvoriť inzerát"
     },
     "CottageList": {
-      "UpdateCottageLink": "Upraviť"
+      "UpdateCottageLink": "Upraviť",
+      "DeleteCottageButton": "Odstrániť"
+    },
+    "DeleteCottageModal": {
+      "Title": "Odstrániť inzerát",
+      "Description": "Ste si istý, že chcete odstrániť tento inzerát?",
+      "CancelButton": "Zrušiť",
+      "ConfirmButton": "Odstrániť",
+      "SuccessMessage": "Inzerát bol úspešne odstránený."
     }
   },
   "CreateCottage": {
@@ -125,7 +133,8 @@
     "LocationUrl": {
       "Label": "Lokácia URL",
       "Placeholder": "https://sk.frame.mapy.cz/s/pebezuhuza",
-      "Description": "URL lokácie na mape",
+      "Description": "URL lokácie na mape - mapy.com",
+      "Tooltip": "Získajte URL lokácie z mapy.com kliknutím pravým tlačidlom na miesto a výberom 'Zdieľať miesto'. Skopírujte URL z dialógového okna (zdielať na stránke).",
       "Error": "Lokácia je nutná"
     },
     "MountainArea": {

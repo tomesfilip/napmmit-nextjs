@@ -8,10 +8,13 @@ import {
   cottages,
   cottageServices,
   images,
+  reservations,
   services,
 } from '@/server/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
+import { CottageDetailType } from '../appTypes';
 
 type createUpdateDataType = Partial<CreateCottageSchemaType> & {
   cottageId?: number;
@@ -136,5 +139,37 @@ export async function createCottage(data: createUpdateDataType) {
     throw error instanceof Error
       ? error
       : new Error('Failed to create cottage');
+  }
+}
+
+export async function deleteCottage(cottageId: CottageDetailType['id']) {
+  try {
+    const responseServices = await db
+      .delete(cottageServices)
+      .where(eq(cottageServices.cottageId, cottageId));
+
+    console.log('Delete cottage services response:', responseServices);
+
+    const responseImages = await db
+      .delete(images)
+      .where(eq(images.cottageId, cottageId));
+    console.log('Delete cottage images response:', responseImages);
+
+    const reservationsResponse = await db
+      .delete(reservations)
+      .where(eq(reservations.cottageId, cottageId));
+    console.log('Delete cottage reservations response:', reservationsResponse);
+
+    const response = await db
+      .delete(cottages)
+      .where(eq(cottages.id, cottageId));
+    console.log('Delete cottage response:', response);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Cottage deletion failed:', error);
+    throw error instanceof Error
+      ? error
+      : new Error('Failed to delete cottage');
   }
 }

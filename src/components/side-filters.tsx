@@ -1,8 +1,10 @@
 'use client';
 
 import { SERVICES } from '@/lib/constants';
+import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
+import { ServiceBadge } from './shared/service-badge';
 import {
   Select,
   SelectContent,
@@ -11,9 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { ServiceBadge } from './shared/service-badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { useTranslations } from 'next-intl';
 
 interface Props {
   availableMountainAreas: string[];
@@ -81,7 +81,7 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
             <SelectGroup>
               <SelectItem value="all">Všetky</SelectItem>
               {availableMountainAreas.map((name) => (
-                <SelectItem key={name} value={name}>
+                <SelectItem key={name} value={name} className="cursor-pointer">
                   {name}
                 </SelectItem>
               ))}

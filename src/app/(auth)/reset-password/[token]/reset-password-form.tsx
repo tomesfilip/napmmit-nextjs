@@ -7,14 +7,14 @@ import { Label } from '@/components/ui/label';
 import { resetPassword } from '@/lib/auth/actions';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 
 interface ResetPasswordFormProps {
   token: string;
 }
 
 export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
-  const [state, formAction] = useFormState(resetPassword, null);
+  const [state, formAction] = useActionState(resetPassword, null);
 
   const t = useTranslations('ResetPasswordPage.NewPasswordForm');
   const tShared = useTranslations('Shared');

@@ -15,10 +15,10 @@ import { Label } from '@/components/ui/label';
 import { signup } from '@/lib/auth/actions';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 
 export function Signup() {
-  const [state, formAction] = useFormState(signup, null);
+  const [state, formAction] = useActionState(signup, null);
 
   const t = useTranslations('SignupPage');
   const tShared = useTranslations('Shared');

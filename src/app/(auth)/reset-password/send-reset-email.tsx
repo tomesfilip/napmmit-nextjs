@@ -10,12 +10,11 @@ import { MailWarningIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useFormState } from 'react-dom';
+import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const SendResetEmail = () => {
-  const [state, formAction] = useFormState(sendPasswordResetLink, null);
+  const [state, formAction] = useActionState(sendPasswordResetLink, null);
   const router = useRouter();
   const t = useTranslations('ResetPasswordPage');
   const tShared = useTranslations('Shared');

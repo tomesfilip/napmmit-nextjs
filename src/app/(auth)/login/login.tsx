@@ -16,10 +16,10 @@ import { login } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 
 export const Login = () => {
-  const [state, formAction] = useFormState(login, null);
+  const [state, formAction] = useActionState(login, null);
 
   const t = useTranslations('LoginPage');
   const tShared = useTranslations('Shared');

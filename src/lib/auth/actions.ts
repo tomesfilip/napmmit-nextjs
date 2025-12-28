@@ -81,7 +81,8 @@ export const login = async (
 
   const session = await lucia.createSession(existingUser.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
+  const cookiesStore = await cookies();
+  cookiesStore.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
@@ -143,7 +144,8 @@ export const signup = async (
 
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
+  const cookiesStore = await cookies();
+  cookiesStore.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
@@ -159,7 +161,8 @@ export async function logout(): Promise<void> {
 
   await lucia.invalidateSession(session.id);
   const sessionCookie = lucia.createBlankSessionCookie();
-  cookies().set(
+  const cookiesStore = await cookies();
+  cookiesStore.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
@@ -277,7 +280,8 @@ export const verifyEmail = async (
     .where(eq(users.id, user.id));
   const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
+  const cookiesStore = await cookies();
+  cookiesStore.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
@@ -361,8 +365,9 @@ export const resetPassword = async (
 
     const session = await lucia.createSession(existingToken.userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
+    const cookiesStore = await cookies();
 
-    cookies().set(
+    cookiesStore.set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,

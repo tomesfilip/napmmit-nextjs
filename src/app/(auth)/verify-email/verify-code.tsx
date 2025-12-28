@@ -9,13 +9,15 @@ import {
 } from '@/lib/auth/actions';
 import { Label } from '@radix-ui/react-label';
 import { MailWarningIcon } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { useFormState } from 'react-dom';
+import { useActionState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
 export const VerifyCode = () => {
-  const [verifyEmailState, verifyEmailAction] = useFormState(verifyEmail, null);
-  const [resendState, resendAction] = useFormState(resendEmail, null);
+  const [verifyEmailState, verifyEmailAction] = useActionState(
+    verifyEmail,
+    null,
+  );
+  const [resendState, resendAction] = useActionState(resendEmail, null);
   const codeFormRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {

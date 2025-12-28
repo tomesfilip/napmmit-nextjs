@@ -5,6 +5,7 @@ import { StepSixForm } from '@/app/create/step-six/step-six-form';
 import { StepThreeForm } from '@/app/create/step-three/step-three-form';
 import { StepTwoForm } from '@/app/create/step-two/step-two-form';
 import { redirect } from 'next/navigation';
+import { use } from 'react';
 
 const steps = {
   'step-one': StepOneForm,
@@ -18,12 +19,13 @@ const steps = {
 export default function EditStepPage({
   params,
 }: {
-  params: { id: string; step: string };
+  params: Promise<{ id: string; step: string }>;
 }) {
-  const StepComponent = steps[params.step as keyof typeof steps];
+  const { id, step } = use(params);
+  const StepComponent = steps[step as keyof typeof steps];
 
   if (!StepComponent) {
-    redirect(`/edit/${params.id}/step-one`);
+    redirect(`/edit/${id}/step-one`);
   }
 
   return <StepComponent />;

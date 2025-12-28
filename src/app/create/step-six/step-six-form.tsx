@@ -67,7 +67,6 @@ export const StepSixForm = () => {
 
       if (cottageData.uploadImages) {
         for (const file of cottageData.uploadImages) {
-          console.log('Uploading image file:', file);
           const result = await upload(file.name, file, {
             access: 'public',
             handleUploadUrl: '/api/cottage-images/upload',
@@ -75,10 +74,9 @@ export const StepSixForm = () => {
           uploadResults.push(result.url);
         }
       }
-      console.log('Submitting cottage data:', cottageData, uploadResults);
 
       if (cottageData.cottageId) {
-        await updateCottage({ ...cottageData, ...data });
+        await updateCottage({ ...cottageData, ...data, images: uploadResults });
         cleanData();
         toast(t('EditSuccess'));
         router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageData.cottageId}`);
@@ -86,6 +84,7 @@ export const StepSixForm = () => {
         const cottageId = await createCottage({
           ...cottageData,
           ...data,
+          images: uploadResults,
         });
         cleanData();
         toast(t('CreateSuccess'));

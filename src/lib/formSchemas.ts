@@ -25,6 +25,7 @@ export const stepThreeSchema = z.object({
 });
 
 export const stepFourSchema = z.object({
+  images: z.array(z.string()).optional(),
   uploadImages: z.array(z.file()).min(1),
 });
 

@@ -113,7 +113,6 @@ export const StepFourForm = () => {
   const { handleSubmit } = form;
 
   const onSubmit = (data: StepFourSchemaType) => {
-    console.log('Step Four Data:', data);
     setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_FIVE);
   };

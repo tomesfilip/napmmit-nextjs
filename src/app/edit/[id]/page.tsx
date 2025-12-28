@@ -3,15 +3,17 @@
 import { getCottage } from '@/server/db/queries';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 
-const EditPage = ({ params }: { params: { id: string } }) => {
+const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
+
   const router = useRouter();
   const setData = useCreateFormStore((state) => state.setData);
 
   useEffect(() => {
     const loadCottageData = async () => {
-      const cottageId = Number(params.id);
+      const cottageId = Number(id);
       if (isNaN(cottageId)) {
         router.push('/dashboard');
         return;
@@ -39,11 +41,11 @@ const EditPage = ({ params }: { params: { id: string } }) => {
         mountainArea: cottage.mountainArea,
       });
 
-      router.push(`/edit/${params.id}/step-one`);
+      router.push(`/edit/${id}/step-one`);
     };
 
     loadCottageData();
-  }, [params.id, setData, router]);
+  }, [id, setData, router]);
 
   return <div>Loading...</div>;
 };

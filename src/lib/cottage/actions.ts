@@ -19,6 +19,7 @@ type createUpdateDataType = Partial<CreateCottageSchemaType> & {
   cottageId?: number;
   title: string;
   description: string;
+  images?: string[];
 };
 
 async function prepareCottageData(data: createUpdateDataType) {
@@ -83,6 +84,17 @@ export async function updateCottage(data: createUpdateDataType) {
 
     if (!updatedCottage?.[0]?.id) throw new Error('Failed to update cottage');
     const updatedCottageId = updatedCottage[0].id;
+    // If new image URLs were provided, insert them for this cottage
+    if (data.images?.length) {
+      await db.insert(images).values(
+        data.images.map((src) => ({
+          cottageId: updatedCottageId,
+          src,
+          width: 800,
+          height: 600,
+        })),
+      );
+    }
     redirect(`${ROUTES.COTTAGE_DETAIL}/${updatedCottageId}`);
   } catch (error) {
     console.error('Cottage update failed:', error);
@@ -120,28 +132,17 @@ export async function createCottage(data: createUpdateDataType) {
       }
     }
 
-    // TODO: Handle image uploads to cloud storage and save URLs
-    // if (data.imageFiles?.length) {
-    //   await db.insert(images).values(
-    //     data.imageFiles.map((img, index) => ({
-    //       cottageId,
-    //       src: `uploaded-url-${img.id}`,
-    //       width: 800,
-    //       height: 600,
-    //     }))
-    //   );
-    // }
     // Save uploaded image URLs (we expect `data.images` to be an array of URLs)
-    // if (data.images?.length) {
-    //   await db.insert(images).values(
-    //     data.images.map((src) => ({
-    //       cottageId,
-    //       src,
-    //       width: 800,
-    //       height: 600,
-    //     })),
-    //   );
-    // }
+    if (data.images?.length) {
+      await db.insert(images).values(
+        data.images.map((src) => ({
+          cottageId,
+          src,
+          width: 800,
+          height: 600,
+        })),
+      );
+    }
 
     return cottageId;
   } catch (error) {

@@ -25,8 +25,8 @@ import { ActionButtons } from './components/action-buttons';
 import { ReorderButtons } from './components/reorder-buttons';
 import { UploadArea } from './components/upload-area';
 
-// TODO: Replace with Cloudinary for production
-// TODO: Add image compression with Cloudinary transformations
+// TODO: Replace with Vercel Blob for production
+// TODO: Add image compression
 
 export type ImageFile = {
   id: string;
@@ -47,13 +47,13 @@ export const StepFourForm = () => {
 
   const form = useForm<StepFourSchemaType>({
     resolver: zodResolver(
-      stepFourSchema.refine((data) => data.images.length >= 1, {
+      stepFourSchema.refine((data) => data.uploadImages.length >= 1, {
         message: t('Images.Error'),
-        path: ['images'],
+        path: ['uploadImages'],
       }),
     ),
     defaultValues: {
-      images: storedData.images || [],
+      uploadImages: storedData.uploadImages || [],
     },
   });
 
@@ -71,8 +71,8 @@ export const StepFourForm = () => {
       const updatedImages = [...images, ...newImages];
       setImages(updatedImages);
       form.setValue(
-        'images',
-        updatedImages.map((img) => img.id),
+        'uploadImages',
+        updatedImages.map((img) => img.file),
       );
     },
     [images, form],
@@ -86,8 +86,8 @@ export const StepFourForm = () => {
     }
     setImages(updatedImages);
     form.setValue(
-      'images',
-      updatedImages.map((img) => img.id),
+      'uploadImages',
+      updatedImages.map((img) => img.file),
     );
   };
 
@@ -105,14 +105,15 @@ export const StepFourForm = () => {
     updatedImages.splice(toIndex, 0, movedImage);
     setImages(updatedImages);
     form.setValue(
-      'images',
-      updatedImages.map((img) => img.id),
+      'uploadImages',
+      updatedImages.map((img) => img.file),
     );
   };
 
   const { handleSubmit } = form;
 
   const onSubmit = (data: StepFourSchemaType) => {
+    console.log('Step Four Data:', data);
     setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_FIVE);
   };
@@ -124,7 +125,7 @@ export const StepFourForm = () => {
           <div className="space-y-5">
             <FormField
               control={form.control}
-              name="images"
+              name="uploadImages"
               render={() => (
                 <FormItem>
                   <FormLabel>

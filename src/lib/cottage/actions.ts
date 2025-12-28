@@ -13,7 +13,6 @@ import {
 } from '@/server/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
-import { NextResponse } from 'next/server';
 import { CottageDetailType } from '../appTypes';
 
 type createUpdateDataType = Partial<CreateCottageSchemaType> & {
@@ -130,6 +129,17 @@ export async function createCottage(data: createUpdateDataType) {
     //       width: 800,
     //       height: 600,
     //     }))
+    //   );
+    // }
+    // Save uploaded image URLs (we expect `data.images` to be an array of URLs)
+    // if (data.images?.length) {
+    //   await db.insert(images).values(
+    //     data.images.map((src) => ({
+    //       cottageId,
+    //       src,
+    //       width: 800,
+    //       height: 600,
+    //     })),
     //   );
     // }
 

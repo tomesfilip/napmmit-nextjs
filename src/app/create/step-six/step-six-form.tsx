@@ -16,10 +16,12 @@ import { createCottage, updateCottage } from '@/lib/cottage/actions';
 import { stepSixSchema, StepSixSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { upload } from '@vercel/blob/client';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+
 import { StepNavigation } from '../step-navigation';
 
 export const StepSixForm = () => {
@@ -61,8 +63,19 @@ export const StepSixForm = () => {
 
     try {
       const { setData, clean, ...cottageData } = storedData;
+      const uploadResults: string[] = [];
 
-      console.log('Submitting cottage data:', cottageData);
+      if (cottageData.uploadImages) {
+        for (const file of cottageData.uploadImages) {
+          console.log('Uploading image file:', file);
+          const result = await upload(file.name, file, {
+            access: 'public',
+            handleUploadUrl: '/api/cottage-images/upload',
+          });
+          uploadResults.push(result.url);
+        }
+      }
+      console.log('Submitting cottage data:', cottageData, uploadResults);
 
       if (cottageData.cottageId) {
         await updateCottage({ ...cottageData, ...data });

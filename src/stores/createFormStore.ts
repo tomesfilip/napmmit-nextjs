@@ -5,7 +5,10 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 type State = Partial<CreateCottageSchemaType> & {
   cottageId?: number;
   setData: (
-    data: Partial<CreateCottageSchemaType> & { cottageId?: number },
+    data: Partial<CreateCottageSchemaType> & {
+      cottageId?: number;
+      uploadImages?: File[];
+    },
   ) => void;
   clean: () => void;
 };

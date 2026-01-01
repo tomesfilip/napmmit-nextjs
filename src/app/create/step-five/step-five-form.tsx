@@ -37,6 +37,10 @@ export const StepFiveForm = () => {
 
   const { handleSubmit } = form;
 
+  console.log({
+    formErrors: form.formState.errors,
+  });
+
   const onSubmit = (data: StepFiveSchemaType) => {
     setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_SIX);
@@ -62,31 +66,30 @@ export const StepFiveForm = () => {
                     <div className="grid max-w-max grid-cols-2 gap-3 lg:grid-cols-3">
                       {SERVICES.map((service) => (
                         <FormField
-                          key={service.name}
+                          key={service.id}
                           control={form.control}
                           name="services"
                           render={({ field }) => {
                             return (
                               <FormItem
-                                key={service.name}
+                                key={service.id}
                                 className="flex flex-row items-start space-x-3 space-y-0"
                               >
                                 <FormControl>
                                   <div className="relative size-full">
                                     <Checkbox
                                       checked={field.value?.includes(
-                                        service.name,
+                                        service.id,
                                       )}
                                       onCheckedChange={(checked) => {
                                         return checked
                                           ? field.onChange([
                                               ...field.value,
-                                              service.name,
+                                              service.id,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) =>
-                                                  value !== service.name,
+                                                (value) => value !== service.id,
                                               ),
                                             );
                                       }}
@@ -94,24 +97,24 @@ export const StepFiveForm = () => {
                                     />
                                     <div
                                       className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-colors ${
-                                        field.value?.includes(service.name)
+                                        field.value?.includes(service.id)
                                           ? 'border-primary bg-primary/5'
                                           : 'border-border hover:border-primary/50'
                                       } `}
                                       onClick={() => {
                                         const isChecked = field.value?.includes(
-                                          service.name,
+                                          service.id,
                                         );
                                         if (isChecked) {
                                           field.onChange(
                                             field.value?.filter(
-                                              (value) => value !== service.name,
+                                              (value) => value !== service.id,
                                             ),
                                           );
                                         } else {
                                           field.onChange([
                                             ...field.value,
-                                            service.name,
+                                            service.id,
                                           ]);
                                         }
                                       }}

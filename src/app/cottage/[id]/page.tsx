@@ -29,7 +29,7 @@ const CottageDetail = async ({
               </h1>
               <p className="xl:text-lg">{cottage.description}</p>
             </div>
-            {cottage.images && cottage.images.length > 1 && (
+            {cottage.images && cottage.images.length > 0 && (
               <DetailGallery images={cottage.images} />
             )}
           </DetailSection>

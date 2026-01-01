@@ -10,14 +10,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ROUTES } from '@/lib/constants';
+import { MAX_IMAGES_PER_COTTAGE, ROUTES } from '@/lib/constants';
 import { stepFourSchema, StepFourSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { upload } from '@vercel/blob/client';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { StepNavigation } from '../step-navigation';
@@ -25,88 +26,145 @@ import { ActionButtons } from './components/action-buttons';
 import { ReorderButtons } from './components/reorder-buttons';
 import { UploadArea } from './components/upload-area';
 
-// TODO: Replace with Vercel Blob for production
 // TODO: Add image compression
 
-export type ImageFile = {
+export type ImageItemType = {
   id: string;
-  file: File;
-  preview: string;
+  src: string;
+  width: number;
+  height: number;
+  order: number;
   isCover: boolean;
 };
 
 export const StepFourForm = () => {
   const t = useTranslations('CreateCottage');
-
   const router = useRouter();
 
   const setData = useCreateFormStore((state) => state.setData);
-  const storedData = useCreateFormStore((state) => state);
+  const storedImages = useMemo(
+    () => useCreateFormStore.getState().images ?? [],
+    [],
+  );
 
-  const [images, setImages] = useState<ImageFile[]>([]);
+  const [images, setImages] = useState<ImageItemType[]>(() =>
+    storedImages.length
+      ? storedImages.map((img, index) => ({
+          id: uuidv4(),
+          src: img.src,
+          width: img.width,
+          height: img.height,
+          order: img.order ?? index,
+          isCover: index === 0,
+        }))
+      : [],
+  );
 
   const form = useForm<StepFourSchemaType>({
-    resolver: zodResolver(
-      stepFourSchema.refine((data) => data.uploadImages.length >= 1, {
-        message: t('Images.Error'),
-        path: ['uploadImages'],
-      }),
-    ),
+    resolver: zodResolver(stepFourSchema),
     defaultValues: {
-      uploadImages: storedData.uploadImages || [],
+      images: images.map(({ src, width, height, order }) => ({
+        src,
+        width,
+        height,
+        order,
+      })),
     },
   });
 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const newImages = acceptedFiles
-        .slice(0, 8 - images.length)
-        .map((file) => ({
-          id: uuidv4(),
-          file,
-          preview: URL.createObjectURL(file),
-          isCover: images.length === 0,
-        }));
+    async (acceptedFiles: File[]) => {
+      const uploaded: ImageItemType[] = [];
 
-      const updatedImages = [...images, ...newImages];
-      setImages(updatedImages);
+      for (const file of acceptedFiles.slice(
+        0,
+        MAX_IMAGES_PER_COTTAGE - images.length,
+      )) {
+        const res = await upload(file.name, file, {
+          access: 'public',
+          handleUploadUrl: '/api/cottage-images/upload',
+        });
+
+        const img = new window.Image();
+        img.src = res.url;
+        await img.decode();
+
+        uploaded.push({
+          id: uuidv4(),
+          src: res.url,
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+          order: images.length + uploaded.length,
+          isCover: images.length === 0 && uploaded.length === 0,
+        });
+      }
+
+      const next: ImageItemType[] = [...images, ...uploaded];
+      setImages(next);
+
       form.setValue(
-        'uploadImages',
-        updatedImages.map((img) => img.file),
+        'images',
+        next.map(({ src, width, height, order }) => ({
+          src,
+          width,
+          height,
+          order,
+        })),
+        { shouldValidate: true },
       );
     },
     [images, form],
   );
 
   const removeImage = (id: string) => {
-    const updatedImages = images.filter((img) => img.id !== id);
+    const next = images.filter((img) => img.id !== id);
 
-    if (updatedImages.length > 0 && !updatedImages.some((img) => img.isCover)) {
-      updatedImages[0].isCover = true;
+    if (next.length && !next.some((i) => i.isCover)) {
+      next[0].isCover = true;
     }
-    setImages(updatedImages);
+
+    next.forEach((img, i) => (img.order = i));
+
+    setImages(next);
+
     form.setValue(
-      'uploadImages',
-      updatedImages.map((img) => img.file),
+      'images',
+      next.map(({ src, width, height, order }) => ({
+        src,
+        width,
+        height,
+        order,
+      })),
+      { shouldValidate: true },
     );
   };
 
   const setCoverImage = (id: string) => {
-    const updatedImages = images.map((img) => ({
-      ...img,
-      isCover: img.id === id,
-    }));
-    setImages(updatedImages);
+    setImages((prev) =>
+      prev.map((img) => ({
+        ...img,
+        isCover: img.id === id,
+      })),
+    );
   };
 
   const moveImage = (fromIndex: number, toIndex: number) => {
-    const updatedImages = [...images];
-    const [movedImage] = updatedImages.splice(fromIndex, 1);
-    updatedImages.splice(toIndex, 0, movedImage);
-    setImages(updatedImages);
+    const next = [...images];
+    const [moved] = next.splice(fromIndex, 1);
+
+    next.splice(toIndex, 0, moved);
+    next.forEach((img, i) => (img.order = i));
+
+    setImages(next);
     form.setValue(
-      'uploadImages',
-      updatedImages.map((img) => img.file),
+      'images',
+      next.map(({ src, width, height, order }) => ({
+        src,
+        width,
+        height,
+        order,
+      })),
+      { shouldValidate: true },
     );
   };
 
@@ -124,7 +182,7 @@ export const StepFourForm = () => {
           <div className="space-y-5">
             <FormField
               control={form.control}
-              name="uploadImages"
+              name="images"
               render={() => (
                 <FormItem>
                   <FormLabel>
@@ -149,7 +207,7 @@ export const StepFourForm = () => {
                               <Image
                                 width={200}
                                 height={128}
-                                src={image.preview}
+                                src={image.src}
                                 alt={`Upload ${index + 1}`}
                                 className="h-32 w-full rounded-lg object-cover"
                               />

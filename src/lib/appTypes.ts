@@ -11,11 +11,6 @@ export type CottageArea = {
   group?: string;
 };
 
-export type ServiceBadgeType = {
-  name: string;
-  icon: keyof typeof Icons;
-};
-
 export type IconType = keyof typeof Icons;
 
 export type CookieConsentType = {

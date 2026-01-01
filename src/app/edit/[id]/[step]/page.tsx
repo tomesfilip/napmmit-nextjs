@@ -4,6 +4,7 @@ import { StepOneForm } from '@/app/create/step-one/step-one-form';
 import { StepSixForm } from '@/app/create/step-six/step-six-form';
 import { StepThreeForm } from '@/app/create/step-three/step-three-form';
 import { StepTwoForm } from '@/app/create/step-two/step-two-form';
+import { ROUTES } from '@/lib/constants';
 import { redirect } from 'next/navigation';
 import { use } from 'react';
 
@@ -25,7 +26,7 @@ export default function EditStepPage({
   const StepComponent = steps[step as keyof typeof steps];
 
   if (!StepComponent) {
-    redirect(`/edit/${id}/step-one`);
+    redirect(`/edit/${id}/${ROUTES.CREATE_COTTAGE.STEP_ONE}`);
   }
 
   return <StepComponent />;

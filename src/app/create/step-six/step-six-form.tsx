@@ -16,7 +16,6 @@ import { createCottage, updateCottage } from '@/lib/cottage/actions';
 import { stepSixSchema, StepSixSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { upload } from '@vercel/blob/client';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -62,34 +61,30 @@ export const StepSixForm = () => {
     setData(data);
 
     try {
-      const { setData, clean, ...cottageData } = storedData;
-      const uploadResults: string[] = [];
+      const { mode, cottageId, ...cottageData } = storedData;
 
-      if (cottageData.uploadImages) {
-        for (const file of cottageData.uploadImages) {
-          const result = await upload(file.name, file, {
-            access: 'public',
-            handleUploadUrl: '/api/cottage-images/upload',
-          });
-          uploadResults.push(result.url);
-        }
-      }
-
-      if (cottageData.cottageId) {
-        await updateCottage({ ...cottageData, ...data, images: uploadResults });
-        cleanData();
-        toast(t('EditSuccess'));
-        router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageData.cottageId}`);
-      } else {
-        const cottageId = await createCottage({
+      if (mode === 'edit' && cottageId) {
+        await updateCottage({
+          cottageId,
           ...cottageData,
           ...data,
-          images: uploadResults,
         });
-        cleanData();
-        toast(t('CreateSuccess'));
+
+        toast(t('EditSuccess'));
         router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
       }
+
+      if (mode === 'create') {
+        const newId = await createCottage({
+          ...cottageData,
+          ...data,
+        });
+
+        toast(t('CreateSuccess'));
+        router.push(`${ROUTES.COTTAGE_DETAIL}/${newId}`);
+      }
+
+      cleanData();
     } catch (error) {
       console.error('Failed to create cottage:', error);
     }

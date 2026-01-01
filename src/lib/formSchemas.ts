@@ -25,11 +25,21 @@ export const stepThreeSchema = z.object({
 });
 
 export const stepFourSchema = z.object({
-  images: z.array(z.string()).min(1),
+  images: z
+    .array(
+      z.object({
+        id: z.number().optional(),
+        src: z.url(),
+        width: z.number(),
+        height: z.number(),
+        order: z.number(),
+      }),
+    )
+    .min(1),
 });
 
 export const stepFiveSchema = z.object({
-  services: z.array(z.string()),
+  services: z.array(z.number()),
 });
 
 export const stepSixSchema = z.object({

@@ -2,8 +2,8 @@ import { cookies } from 'next/headers';
 import { CookieConsentType } from './appTypes';
 import { COOKIE_KEY } from './constants';
 
-export function getCookieConsent(): CookieConsentType {
-  const cookieStore = cookies();
+export async function getCookieConsent(): Promise<CookieConsentType> {
+  const cookieStore = await cookies();
   const raw = cookieStore.get(COOKIE_KEY);
 
   if (!raw) {

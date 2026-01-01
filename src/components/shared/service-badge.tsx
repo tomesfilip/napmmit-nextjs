@@ -1,13 +1,13 @@
 'use client';
 
-import { ServiceBadgeType } from '@/lib/appTypes';
+import type { Service } from '@/server/db/schema';
 import clsx from 'clsx';
 import { Badge, BadgeProps } from '../ui/badge';
 import { Icon } from './icon';
 
 interface Props extends BadgeProps {
   isActive?: boolean;
-  serviceBadge: ServiceBadgeType;
+  serviceBadge: Service;
 }
 
 export const ServiceBadge = ({

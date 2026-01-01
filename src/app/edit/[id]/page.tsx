@@ -1,17 +1,21 @@
 'use client';
 
+import { ROUTES } from '@/lib/constants';
 import { getCottage } from '@/server/db/queries';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 
-const EditPage = ({ params }: { params: { id: string } }) => {
+const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
+
   const router = useRouter();
   const setData = useCreateFormStore((state) => state.setData);
+  const setMode = useCreateFormStore((state) => state.setMode);
 
   useEffect(() => {
     const loadCottageData = async () => {
-      const cottageId = Number(params.id);
+      const cottageId = Number(id);
       if (isNaN(cottageId)) {
         router.push('/dashboard');
         return;
@@ -28,8 +32,17 @@ const EditPage = ({ params }: { params: { id: string } }) => {
         cottageId,
         title: cottage.name,
         description: cottage.description || '',
-        services: cottage.cottageServices?.map((s) => s.name) || [],
-        images: cottage.images?.map((img) => img.src) || [],
+        services: cottage.cottageServices?.map((s) => s.id) || [],
+        images:
+          cottage.images.map(({ id, src, width, height, order }) => {
+            return {
+              id,
+              src,
+              width,
+              height,
+              order,
+            };
+          }) || [],
         pricePerNight: cottage.pricePerNight,
         occupancy: cottage.capacity,
         email: cottage.email || '',
@@ -39,11 +52,13 @@ const EditPage = ({ params }: { params: { id: string } }) => {
         mountainArea: cottage.mountainArea,
       });
 
-      router.push(`/edit/${params.id}/step-one`);
+      setMode('edit', cottageId);
+
+      router.push(`/edit/${id}/${ROUTES.CREATE_COTTAGE.STEP_ONE}`);
     };
 
     loadCottageData();
-  }, [params.id, setData, router]);
+  }, [id, setData, router]);
 
   return <div>Loading...</div>;
 };

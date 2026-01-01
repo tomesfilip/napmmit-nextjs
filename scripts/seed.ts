@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 import 'dotenv/config';
+import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/neon-http';
 
 import { SERVICES } from '@/lib/constants';
@@ -12,8 +13,17 @@ if (!DB_URL) {
   throw new Error('DATABASE_URL environment variable is not defined.');
 }
 
-const sql = neon(DB_URL);
-const db = drizzle(sql, { schema });
+const neonInit = neon(DB_URL);
+const db = drizzle(neonInit, { schema });
+
+const resetSequence = async (table: string) => {
+  await db.execute(sql`
+    SELECT setval(
+      pg_get_serial_sequence(${table}, 'id'),
+      COALESCE((SELECT MAX(id) FROM ${sql.identifier(table)}), 1)
+    )
+  `);
+};
 
 const userData = [
   {
@@ -66,14 +76,12 @@ const main = async () => {
     await db.insert(schema.users).values(userData);
     await db.insert(schema.cottages).values(cottageData);
     await db.insert(schema.images).values(imageData);
-    await db.insert(schema.services).values(
-      SERVICES.map(({ name, icon }, index) => ({
-        id: index + 1,
-        name: name,
-        icon: icon,
-      })),
-    );
+    await db.insert(schema.services).values(SERVICES);
     await db.insert(schema.cottageServices).values(cottageServiceData);
+
+    await resetSequence('cottages');
+    await resetSequence('services');
+    await resetSequence('images');
 
     console.log('Seeding of the database finished');
   } catch (error) {

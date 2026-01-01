@@ -1,5 +1,6 @@
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirect } from 'next/navigation';
+import { CreateFormInit } from './create-form-init';
 import ProgressBar from './progress-bar';
 
 const CreateLayout = async ({
@@ -15,6 +16,7 @@ const CreateLayout = async ({
 
   return (
     <div className="relative flex size-full justify-center gap-8 px-4 py-5 lg:px-12">
+      <CreateFormInit />
       <ProgressBar />
       <div className="min-h-dvh w-full max-w-[420px]">{children}</div>
     </div>

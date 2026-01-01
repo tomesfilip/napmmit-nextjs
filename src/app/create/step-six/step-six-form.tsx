@@ -20,6 +20,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+
 import { StepNavigation } from '../step-navigation';
 
 export const StepSixForm = () => {
@@ -60,24 +61,30 @@ export const StepSixForm = () => {
     setData(data);
 
     try {
-      const { setData, clean, ...cottageData } = storedData;
+      const { mode, cottageId, ...cottageData } = storedData;
 
-      console.log('Submitting cottage data:', cottageData);
-
-      if (cottageData.cottageId) {
-        await updateCottage({ ...cottageData, ...data });
-        cleanData();
-        toast(t('EditSuccess'));
-        router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageData.cottageId}`);
-      } else {
-        const cottageId = await createCottage({
+      if (mode === 'edit' && cottageId) {
+        await updateCottage({
+          cottageId,
           ...cottageData,
           ...data,
         });
-        cleanData();
-        toast(t('CreateSuccess'));
+
+        toast(t('EditSuccess'));
         router.push(`${ROUTES.COTTAGE_DETAIL}/${cottageId}`);
       }
+
+      if (mode === 'create') {
+        const newId = await createCottage({
+          ...cottageData,
+          ...data,
+        });
+
+        toast(t('CreateSuccess'));
+        router.push(`${ROUTES.COTTAGE_DETAIL}/${newId}`);
+      }
+
+      cleanData();
     } catch (error) {
       console.error('Failed to create cottage:', error);
     }

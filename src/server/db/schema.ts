@@ -40,10 +40,12 @@ export const cottages = pgTable('cottages', {
   phoneNumber: varchar('phone_number'),
   email: varchar('email'),
   website: varchar('website'),
-  userId: varchar('userId', { length: USER_ID_LENGTH })
+  userId: varchar('user_id', { length: USER_ID_LENGTH })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   locationURL: varchar('locationURL'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const reservations = pgTable('reservations', {
@@ -148,7 +150,9 @@ export const cottageServices = pgTable(
       .notNull()
       .references(() => services.id),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.cottageId, t.serviceId] }) }),
+  (t) => ({
+    pk: primaryKey({ columns: [t.cottageId, t.serviceId] }),
+  }),
 );
 
 export const cottageServicesRelations = relations(
@@ -173,6 +177,7 @@ export const images = pgTable('images', {
   src: varchar('src', { length: 255 }).notNull(),
   width: integer('width').notNull(),
   height: integer('height').notNull(),
+  order: integer('order').default(0).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

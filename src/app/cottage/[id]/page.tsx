@@ -5,7 +5,6 @@ import { ContactSection } from '@/components/cottageDetail/contact-section';
 import { DetailGallery } from '@/components/cottageDetail/detail-gallery';
 import { LocationSection } from '@/components/cottageDetail/location-section';
 import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
-import { use } from 'react';
 
 const CottageDetail = async ({
   params,
@@ -13,7 +12,6 @@ const CottageDetail = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  console.log('Fetching cottage with id:', id);
   const { success: cottage, error } = await getCottage(id);
 
   // await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -31,7 +29,7 @@ const CottageDetail = async ({
               </h1>
               <p className="xl:text-lg">{cottage.description}</p>
             </div>
-            {cottage.images && cottage.images.length > 1 && (
+            {cottage.images && cottage.images.length > 0 && (
               <DetailGallery images={cottage.images} />
             )}
           </DetailSection>

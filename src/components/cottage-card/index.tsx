@@ -40,8 +40,8 @@ export const CottageCard = ({ cottage, isEditable }: Props) => {
             {isEditable && <DashboardControls cottageId={cottage.id} />}
           </div>
           <div className="flex gap-2">
-            {cottage.cottageServices.map(({ id, name, icon }) => (
-              <ServiceBadge key={id} serviceBadge={{ name, icon }} />
+            {cottage.cottageServices.map((service) => (
+              <ServiceBadge key={service.id} serviceBadge={service} />
             ))}
           </div>
         </CardHeader>

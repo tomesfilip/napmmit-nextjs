@@ -1,4 +1,5 @@
-import { CottageArea, ServiceBadgeType } from './appTypes';
+import { Service } from '@/server/db/schema';
+import { CottageArea } from './appTypes';
 
 export const USER_ID_LENGTH = 21;
 export const PASSWORD_ID_LENGTH = 40;
@@ -28,10 +29,10 @@ export const ROUTES = {
   EDIT_COTTAGE: '/edit',
 } as const;
 
-export const SERVICES: ServiceBadgeType[] = [
-  { name: 'raňajky', icon: 'Breakfast' },
-  { name: 'večera', icon: 'Food' },
-  { name: 'sprcha', icon: 'Shower' },
+export const SERVICES: Service[] = [
+  { id: 1, name: 'raňajky', icon: 'Breakfast' },
+  { id: 2, name: 'večera', icon: 'Food' },
+  { id: 3, name: 'sprcha', icon: 'Shower' },
 ] as const;
 
 export const COTTAGE_AREAS: CottageArea[] = [

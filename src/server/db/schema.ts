@@ -150,7 +150,9 @@ export const cottageServices = pgTable(
       .notNull()
       .references(() => services.id),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.cottageId, t.serviceId] }) }),
+  (t) => ({
+    pk: primaryKey({ columns: [t.cottageId, t.serviceId] }),
+  }),
 );
 
 export const cottageServicesRelations = relations(

@@ -37,10 +37,6 @@ export const StepFiveForm = () => {
 
   const { handleSubmit } = form;
 
-  console.log({
-    formErrors: form.formState.errors,
-  });
-
   const onSubmit = (data: StepFiveSchemaType) => {
     setData(data);
     router.push(ROUTES.CREATE_COTTAGE.STEP_SIX);

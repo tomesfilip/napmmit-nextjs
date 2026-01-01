@@ -41,8 +41,6 @@ export const StepOneForm = () => {
   const setData = useCreateFormStore((state) => state.setData);
   const storedData = useCreateFormStore((state) => state);
 
-  console.log('Stored data in Step One Form:', storedData);
-
   const form = useForm<StepOneSchemaType>({
     resolver: zodResolver(stepOneSchema),
     defaultValues: {

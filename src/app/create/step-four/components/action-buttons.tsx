@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
-import { ImageFile } from '../step-four-form';
+import { ImageItemType } from '../step-four-form';
 
 interface Props {
-  currImg: ImageFile;
+  currImg: ImageItemType;
   setCoverImage: (id: string) => void;
   removeImage: (id: string) => void;
 }

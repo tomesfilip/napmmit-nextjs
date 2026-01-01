@@ -92,13 +92,13 @@ export const SideFiltersContent = ({ availableMountainAreas }: Props) => {
       <div className="space-y-4">
         <h2 className="text-lg font-bold">{t('Filters.Services')}</h2>
         <div className="flex gap-3">
-          {SERVICES.map(({ name, icon }) => (
-            <Tooltip key={name}>
+          {SERVICES.map(({ id, name, icon }) => (
+            <Tooltip key={id}>
               <TooltipTrigger>
                 <ServiceBadge
                   onClick={() => handleSelectService(name)}
                   isActive={filterServices.includes(name)}
-                  serviceBadge={{ name, icon }}
+                  serviceBadge={{ id, name, icon }}
                   aria-label={name}
                   tabIndex={0}
                   className="cursor-pointer px-3 py-2 hover:shadow-lg"

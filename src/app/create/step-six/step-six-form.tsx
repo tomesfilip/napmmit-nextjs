@@ -140,7 +140,7 @@ export const StepSixForm = () => {
               )}
             />
           </div>
-          <StepNavigation />
+          <StepNavigation isFinalSubmit />
         </div>
       </form>
     </Form>

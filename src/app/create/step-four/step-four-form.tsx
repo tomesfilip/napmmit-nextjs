@@ -10,7 +10,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { MAX_IMAGES_PER_COTTAGE, ROUTES } from '@/lib/constants';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  MAX_IMAGES_PER_COTTAGE,
+  MIN_FILE_SIZE_TO_COMPRESS_KB,
+  ROUTES,
+} from '@/lib/constants';
 import { stepFourSchema, StepFourSchemaType } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,8 +30,15 @@ import { StepNavigation } from '../step-navigation';
 import { ActionButtons } from './components/action-buttons';
 import { ReorderButtons } from './components/reorder-buttons';
 import { UploadArea } from './components/upload-area';
+import { compressImage } from './utils/compress-image';
 
-// TODO: Add image compression
+export const ImageSkeletonCard = () => {
+  return (
+    <div className="relative h-32 w-full overflow-hidden rounded-lg">
+      <Skeleton className="h-full w-full rounded-lg" />
+    </div>
+  );
+};
 
 export type ImageItemType = {
   id: string;
@@ -46,6 +58,8 @@ export const StepFourForm = () => {
     () => useCreateFormStore.getState().images ?? [],
     [],
   );
+
+  const [isUploading, setIsUploading] = useState(false);
 
   const [images, setImages] = useState<ImageItemType[]>(() =>
     storedImages.length
@@ -76,11 +90,22 @@ export const StepFourForm = () => {
     async (acceptedFiles: File[]) => {
       const uploaded: ImageItemType[] = [];
 
+      setIsUploading(true);
+
       for (const file of acceptedFiles.slice(
         0,
         MAX_IMAGES_PER_COTTAGE - images.length,
       )) {
-        const res = await upload(file.name, file, {
+        console.log('FILE SIZE (kb):', file.size / 1024);
+
+        // IF File size is less than 300kb, don't compress it
+        const preparedImg =
+          file.size / 1024 > MIN_FILE_SIZE_TO_COMPRESS_KB
+            ? await compressImage(file)
+            : file;
+        console.log('COMPRESS FILE SIZE (kb):', preparedImg.size / 1024);
+
+        const res = await upload(preparedImg.name, preparedImg, {
           access: 'public',
           handleUploadUrl: '/api/cottage-images/upload',
         });
@@ -112,6 +137,8 @@ export const StepFourForm = () => {
         })),
         { shouldValidate: true },
       );
+
+      setIsUploading(false);
     },
     [images, form],
   );
@@ -197,19 +224,19 @@ export const StepFourForm = () => {
                         <UploadArea
                           onDrop={onDrop}
                           imagesLength={images.length}
+                          isUploading={isUploading}
                         />
                       )}
-
                       {images.length > 0 && (
-                        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                        <div className="grid h-[17rem] grid-cols-2 place-content-between gap-4 overflow-y-auto overflow-x-hidden md:grid-cols-3">
                           {images.map((image, index) => (
-                            <div key={image.id} className="group relative">
+                            <div key={image.id} className="group relative h-32">
                               <Image
                                 width={200}
                                 height={128}
                                 src={image.src}
                                 alt={`Upload ${index + 1}`}
-                                className="h-32 w-full rounded-lg object-cover"
+                                className="size-full rounded-lg object-cover"
                               />
                               {image.isCover && (
                                 <Badge className="absolute left-2 top-2 rounded bg-primary px-2 py-1 text-xs text-primary-foreground">
@@ -228,6 +255,7 @@ export const StepFourForm = () => {
                               />
                             </div>
                           ))}
+                          {isUploading && <ImageSkeletonCard />}
                         </div>
                       )}
                     </div>
@@ -237,7 +265,7 @@ export const StepFourForm = () => {
               )}
             />
           </div>
-          <StepNavigation />
+          <StepNavigation disabled={isUploading} />
         </div>
       </form>
     </Form>

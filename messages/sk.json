@@ -225,6 +225,7 @@
     "FormNavigation": {
       "BackButton": "Späť",
       "NextButton": "Ďalej",
+      "SubmitButton": "Publikovať",
       "AutosaveHint": "Údaje sa ukladajú automaticky."
     },
     "CreateSuccess": "Chata bola úspešne publikovaná",

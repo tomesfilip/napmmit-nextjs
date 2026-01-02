@@ -61,3 +61,4 @@ export const COTTAGE_AREAS: CottageArea[] = [
 export const COOKIE_KEY = 'napmmit_cookie_preferences';
 
 export const MAX_IMAGES_PER_COTTAGE = 8;
+export const MIN_FILE_SIZE_TO_COMPRESS_KB = 300;

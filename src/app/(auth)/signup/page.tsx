@@ -11,7 +11,13 @@ export const metadata = {
 export default async function SignupPage() {
   const { user } = await validateRequest();
 
-  if (user) redirect(ROUTES.DASHBOARD);
+  if (user) {
+    if (user.role === 'hiker') {
+      redirect('/');
+    } else {
+      redirect(ROUTES.DASHBOARD.INDEX);
+    }
+  }
 
   return <Signup />;
 }

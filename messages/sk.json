@@ -11,7 +11,8 @@
   "NavHeader": {
     "Login": "Prihlásiť sa",
     "Logout": "Odhlásiť sa",
-    "Dashboard": "Spravovať chaty"
+    "Dashboard": "Spravovať chaty",
+    "Reservations": "Rezervácie"
   },
   "CottageDetail": {
     "ContactTitle": "Kontakt",
@@ -72,6 +73,11 @@
   "SignupPage": {
     "Title": "Registrácia",
     "Description": "Zaregistrujte sa a začnite používať aplikáciu",
+    "Roles": {
+      "Headline": "Som",
+      "Owner": "Majiteľ chaty",
+      "Hiker": "Turista"
+    },
     "LoginText": "Už máte účet? Prihláste sa.",
     "Submit": "Registrovať sa",
     "Cancel": "Zrušiť"

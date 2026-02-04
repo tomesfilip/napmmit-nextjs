@@ -25,7 +25,11 @@ export const ROUTES = {
     STEP_FIVE: 'step-five',
     STEP_SIX: 'step-six',
   },
-  DASHBOARD: '/dashboard',
+  DASHBOARD: {
+    INDEX: '/dashboard',
+    RESERVATIONS: '/dashboard/reservations',
+  },
+
   EDIT_COTTAGE: '/edit',
 } as const;
 

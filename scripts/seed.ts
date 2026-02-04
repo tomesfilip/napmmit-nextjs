@@ -25,7 +25,7 @@ const resetSequence = async (table: string) => {
   `);
 };
 
-const userData = [
+const userData: schema.User[] = [
   {
     id: '1',
     email: 'admin@example.com',
@@ -34,6 +34,8 @@ const userData = [
     username: 'admin',
     phoneNumber: '123-456-7890',
     isEmailVerified: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
     role: 'admin',
   },
 ];

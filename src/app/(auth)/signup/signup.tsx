@@ -12,13 +12,16 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { UserRole } from '@/lib/appTypes';
 import { signup } from '@/lib/auth/actions';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 
 export function Signup() {
   const [state, formAction] = useActionState(signup, null);
+  const [selectedRole, setSelectedRole] = useState<UserRole>('hiker');
 
   const t = useTranslations('SignupPage');
   const tShared = useTranslations('Shared');
@@ -31,6 +34,22 @@ export function Signup() {
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
+          <div className="space-y-2">
+            <Label>{t('Roles.Headline')}</Label>
+            <Tabs
+              value={selectedRole}
+              onValueChange={(val) => setSelectedRole(val as UserRole)}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="hiker">{t('Roles.Hiker')}</TabsTrigger>
+                <TabsTrigger value="cottage_owner">
+                  {t('Roles.Owner')}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <input type="hidden" name="role" value={selectedRole} />
+          </div>
           <div className="space-y-2">
             <Label>{tShared('EmailField.Label')}</Label>
             <Input

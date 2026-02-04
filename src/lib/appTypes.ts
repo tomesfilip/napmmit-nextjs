@@ -1,5 +1,7 @@
 import type * as Icons from '@/components/icons/index';
-import { Cottage, ImageType, Service } from '@/server/db/schema';
+import { Cottage, ImageType, Service, userRoleEnum } from '@/server/db/schema';
+
+export type UserRole = (typeof userRoleEnum.enumValues)[number];
 
 export type CottageDetailType = Cottage & {
   cottageServices: Service[];
@@ -18,3 +20,5 @@ export type CookieConsentType = {
   analytics: boolean;
   marketing: boolean;
 };
+
+export type ReservationStatusType = 'pending' | 'confirmed' | 'cancelled';

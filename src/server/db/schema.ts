@@ -5,6 +5,7 @@ import {
   boolean,
   date,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   serial,
@@ -12,6 +13,12 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
+
+export const userRoleEnum = pgEnum('user_role', [
+  'hiker',
+  'cottage_owner',
+  'admin',
+]);
 
 export const users = pgTable('users', {
   id: varchar('id', { length: USER_ID_LENGTH }).primaryKey(),
@@ -22,7 +29,7 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   isEmailVerified: boolean('is_email_verified'),
-  role: varchar('role', { length: 20 }).notNull(),
+  role: userRoleEnum('role').notNull().default('hiker'),
 });
 
 export const cottages = pgTable('cottages', {
@@ -50,18 +57,33 @@ export const cottages = pgTable('cottages', {
 
 export const reservations = pgTable('reservations', {
   id: serial('id').primaryKey(),
-  userId: varchar('user_id', { length: USER_ID_LENGTH })
-    .notNull()
-    .references(() => users.id),
+
+  userId: varchar('user_id', { length: USER_ID_LENGTH }).references(
+    () => users.id,
+  ),
   cottageId: integer('cottage_id')
     .notNull()
     .references(() => cottages.id, { onDelete: 'cascade' }),
-  from: date('from').notNull(),
-  to: date('to').notNull(),
+
+  guestEmail: varchar('guest_email', { length: 100 }),
+  guestPhone: varchar('guest_phone', { length: 20 }),
+
+  bedsReserved: integer('beds_reserved').notNull(),
+
+  reservationFee: integer('reservation_fee').notNull().default(1),
+  refundAmount: integer('refund_amount').default(0),
   pricePerNight: integer('price_per_night').notNull(),
   totalPrice: integer('total_price').notNull(),
-  created: date('created').notNull(),
-  status: varchar('status', { length: 255 }).notNull(),
+
+  from: date('from').notNull(),
+  to: date('to').notNull(),
+
+  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled
+
+  accessToken: varchar('access_token', { length: 64 }).unique(),
+
+  createdAt: date('created_at').defaultNow().notNull(),
+  updateAt: date('updated_at').defaultNow().notNull(),
 });
 
 // TODO: Could be better to use separate table for the pricing options
@@ -193,3 +215,4 @@ export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
 export type ImageType = typeof images.$inferSelect;
+export type ReservationType = typeof reservations.$inferSelect;

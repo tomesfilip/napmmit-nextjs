@@ -12,6 +12,7 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export const signupSchema = z.object({
   email: z.email('Please enter a valid email'),
   password: z.string().min(1, 'Please provide your password.').max(255),
+  role: z.enum(['hiker', 'cottage_owner']).default('hiker'),
 });
 export type SignupInput = z.infer<typeof signupSchema>;
 

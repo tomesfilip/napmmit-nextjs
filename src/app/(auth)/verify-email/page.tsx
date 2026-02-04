@@ -20,7 +20,13 @@ export default async function VerifyEmailPage() {
   const { user } = await validateRequest();
 
   if (!user) redirect(ROUTES.AUTH.LOGIN);
-  if (user.isEmailVerified) redirect(ROUTES.DASHBOARD);
+  if (user.isEmailVerified) {
+    if (user.role === 'hiker') {
+      redirect('/');
+    } else {
+      redirect(ROUTES.DASHBOARD.INDEX);
+    }
+  }
 
   return (
     <Card className="w-full max-w-md">

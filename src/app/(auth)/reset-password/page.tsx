@@ -20,7 +20,7 @@ export default async function ForgotPasswordPage() {
   const { user } = await validateRequest();
   const t = await getTranslations('ResetPasswordPage');
 
-  if (user) redirect(ROUTES.DASHBOARD);
+  if (user) redirect(ROUTES.DASHBOARD.INDEX);
 
   return (
     <Card className="w-full max-w-md">

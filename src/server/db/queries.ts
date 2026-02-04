@@ -3,6 +3,7 @@
 import { CottageDetailType } from '@/lib/appTypes';
 import { cache } from 'react';
 import db from './drizzle';
+import { ReservationType } from './schema';
 
 export const getCottages = cache(
   async (): Promise<{ success?: CottageDetailType[]; error?: string }> => {
@@ -110,3 +111,33 @@ export const getMyCottages = cache(
     }
   },
 );
+
+export const getOwnerReservations = cache(
+  async (
+    userId: string,
+  ): Promise<{ success?: ReservationType[]; error?: string }> => {
+    try {
+      const ownedCottages = await db.query.cottages.findMany({
+        columns: { id: true },
+        where: (table, funcs) => funcs.eq(table.userId, userId),
+      });
+
+      const cottageIds = ownedCottages.map((cottage) => cottage.id);
+
+      if (cottageIds.length === 0) {
+        return { success: [] };
+      }
+
+      // Fetch all reservations for the owned cottages
+      const data = await db.query.reservations.findMany({
+        where: (table, funcs) => funcs.inArray(table.cottageId, cottageIds),
+      });
+
+      return { success: data };
+    } catch (err) {
+      return { error: "Couldn't find any reservations." };
+    }
+  },
+);
+
+// export const getHikerReservations = cache();

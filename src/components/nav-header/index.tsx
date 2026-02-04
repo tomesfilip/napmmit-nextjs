@@ -19,12 +19,22 @@ export const NavHeader = async () => {
             <>
               <li className="text-sm font-medium">
                 <Link
-                  href={ROUTES.DASHBOARD}
+                  href={ROUTES.DASHBOARD.RESERVATIONS}
                   className="border-b border-b-transparent transition-all duration-200 hover:border-b-black"
                 >
-                  {t('Dashboard')}
+                  {t('Reservations')}
                 </Link>
               </li>
+              {user.role !== 'hiker' && (
+                <li className="text-sm font-medium">
+                  <Link
+                    href={ROUTES.DASHBOARD.INDEX}
+                    className="border-b border-b-transparent transition-all duration-200 hover:border-b-black"
+                  >
+                    {t('Dashboard')}
+                  </Link>
+                </li>
+              )}
               <li>
                 <LogoutButton />
               </li>

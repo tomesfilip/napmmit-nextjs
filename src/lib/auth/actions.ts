@@ -87,7 +87,12 @@ export const login = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect(ROUTES.DASHBOARD);
+
+  if (existingUser.role === 'hiker') {
+    return redirect('/');
+  }
+
+  return redirect(ROUTES.DASHBOARD.INDEX);
 };
 
 export const signup = async (
@@ -107,7 +112,7 @@ export const signup = async (
     };
   }
 
-  const { email, password } = parsed.data;
+  const { email, password, role } = parsed.data;
 
   const existingUser = await db.query.users.findFirst({
     where: (table, { eq }) => eq(table.email, email),
@@ -129,7 +134,7 @@ export const signup = async (
     username: '',
     phoneNumber: '',
     isEmailVerified: false,
-    role: '',
+    role: role || 'hiker',
   });
 
   const verificationCode = await generateEmailVerificationCode(userId, email);
@@ -286,7 +291,14 @@ export const verifyEmail = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  redirect(ROUTES.DASHBOARD);
+
+  if (user) {
+    if (user.role === 'hiker') {
+      redirect('/');
+    } else {
+      redirect(ROUTES.DASHBOARD.INDEX);
+    }
+  }
 };
 
 export const sendPasswordResetLink = async (
@@ -376,5 +388,5 @@ export const resetPassword = async (
     console.error('Reset password error: ', error);
   }
 
-  return redirect(ROUTES.DASHBOARD);
+  return redirect('/');
 };

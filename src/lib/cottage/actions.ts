@@ -59,6 +59,7 @@ async function prepareCottageData(data: CreateUpdateDataType) {
     website: data.website || null,
     userId: user.id,
     locationURL: data.locationUrl || null,
+    unAvailabilityDates: data.unavailableDates || [],
   };
 }
 

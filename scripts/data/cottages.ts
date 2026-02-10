@@ -17,6 +17,7 @@ export const cottageData = [
     website: 'http://www.vysoketatry.com/chaty/bchata/bchata.html',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/pebezuhuza',
+    unAvailabilityDates: [],
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const cottageData = [
     website: 'http://www.vysoketatry.com/chaty/hhhrebienok/hhhrebienok.html',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/nezojuceno',
+    unAvailabilityDates: [],
   },
   {
     id: 3,
@@ -55,6 +57,7 @@ export const cottageData = [
     website: 'http://www.chatapodrysmi.com/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/medakamome',
+    unAvailabilityDates: [],
   },
   {
     id: 4,
@@ -75,6 +78,7 @@ export const cottageData = [
     website: 'http://chatasolisko.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/fafopovafa',
+    unAvailabilityDates: [],
   },
   {
     id: 5,
@@ -94,6 +98,7 @@ export const cottageData = [
     website: 'http://www.popradskepleso.com',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/fatabokozo',
+    unAvailabilityDates: [],
   },
   {
     id: 6,
@@ -113,6 +118,7 @@ export const cottageData = [
     website: 'http://chataprizelenomplese.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/hukeguvura',
+    unAvailabilityDates: [],
   },
   {
     id: 7,
@@ -133,6 +139,7 @@ export const cottageData = [
     website: 'http://www.sliezskydom.sk',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/mulasamose',
+    unAvailabilityDates: [],
   },
   {
     id: 8,
@@ -152,6 +159,7 @@ export const cottageData = [
     website: 'http://www.teryhochata.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/lobumageku',
+    unAvailabilityDates: [],
   },
   {
     id: 9,
@@ -172,6 +180,7 @@ export const cottageData = [
     website: 'http://www.zamka.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/jetotuzapu',
+    unAvailabilityDates: [],
   },
   {
     id: 10,
@@ -192,6 +201,7 @@ export const cottageData = [
     website: 'http://zbojnickachata.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/labonafano',
+    unAvailabilityDates: [],
   },
   {
     id: 11,
@@ -211,6 +221,7 @@ export const cottageData = [
     website: 'http://www.chatachleb.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/hekesebufe',
+    unAvailabilityDates: [],
   },
   {
     id: 12,
@@ -230,6 +241,7 @@ export const cottageData = [
     website: 'http://www.chatapodsuchym.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/duhameraso',
+    unAvailabilityDates: [],
   },
   {
     id: 13,
@@ -250,6 +262,7 @@ export const cottageData = [
     website: 'http://www.chatanagruni.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/cajanesefa',
+    unAvailabilityDates: [],
   },
   {
     id: 14,
@@ -269,6 +282,7 @@ export const cottageData = [
     website: 'http://www.chatamrs.sk/home.html',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/kazupohobu',
+    unAvailabilityDates: [],
   },
   {
     id: 15,
@@ -288,6 +302,7 @@ export const cottageData = [
     website: 'http://nova.kamennachata.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/jozapasafo',
+    unAvailabilityDates: [],
   },
   {
     id: 16,
@@ -308,6 +323,7 @@ export const cottageData = [
     website: 'http://chatakosodrevina.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/remafapezu',
+    unAvailabilityDates: [],
   },
   {
     id: 17,
@@ -327,6 +343,7 @@ export const cottageData = [
     website: 'http://trangoska.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/cerazacase',
+    unAvailabilityDates: [],
   },
   {
     id: 18,
@@ -346,6 +363,7 @@ export const cottageData = [
     website: 'http://durkova.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/negefuvate',
+    unAvailabilityDates: [],
   },
   {
     id: 19,
@@ -365,6 +383,7 @@ export const cottageData = [
     website: 'http://www.ziarskachata.com/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/nupagofaka',
+    unAvailabilityDates: [],
   },
   {
     id: 20,
@@ -384,6 +403,7 @@ export const cottageData = [
     website: 'http://www.chatazverovka.sk/',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/ladobahenu',
+    unAvailabilityDates: [],
   },
   {
     id: 21,
@@ -404,6 +424,7 @@ export const cottageData = [
     website: 'http://www.chatacervenec.sk/index.html',
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/pudumokece',
+    unAvailabilityDates: [],
   },
   {
     id: 22,
@@ -423,5 +444,6 @@ export const cottageData = [
     website: null,
     userId: '1',
     locationURL: 'https://sk.frame.mapy.cz/s/dagagufona',
+    unAvailabilityDates: [],
   },
 ];

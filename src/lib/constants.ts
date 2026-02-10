@@ -24,6 +24,7 @@ export const ROUTES = {
     STEP_FOUR: 'step-four',
     STEP_FIVE: 'step-five',
     STEP_SIX: 'step-six',
+    AVAILABILITY: 'availability',
   },
   DASHBOARD: {
     INDEX: '/dashboard',

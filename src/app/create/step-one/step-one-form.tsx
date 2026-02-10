@@ -121,10 +121,7 @@ export const StepOneForm = () => {
                   <FormLabel>{t('MountainArea.Label')}</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger
-                        className="w-[276px]"
-                        aria-label="Vybrať horskú oblasť"
-                      >
+                      <SelectTrigger aria-label="Vybrať horskú oblasť">
                         <SelectValue placeholder="Vysoké Tatry, Malá Fatra, ..." />
                       </SelectTrigger>
                       <SelectContent>

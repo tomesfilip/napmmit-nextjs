@@ -39,7 +39,7 @@ export const StepFiveForm = () => {
 
   const onSubmit = (data: StepFiveSchemaType) => {
     setData(data);
-    router.push(ROUTES.CREATE_COTTAGE.STEP_SIX);
+    router.push(ROUTES.CREATE_COTTAGE.AVAILABILITY);
   };
 
   return (

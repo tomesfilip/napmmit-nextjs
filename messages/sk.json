@@ -130,6 +130,21 @@
       "Title": "Názov a popis chaty",
       "Description": "Zadajte názov a stručný popis, ktorý sa zobrazí návštevníkom."
     },
+    "Availability": {
+      "Title": "Dostupnosť chaty",
+      "Description": "Nastavte, kedy je vaša chata dostupná pre rezervácie.",
+      "AlwaysAvailable": "Dostupná vždy",
+      "Seasonal": "Sezónna dostupnosť",
+      "AlwaysCard": {
+        "Title": "Celoročná dostupnosť",
+        "Description": "Chata je dostupná po celý rok"
+      },
+      "SeasonalCard": {
+        "Title": "Vyberte nedostupné termíny",
+        "Description": "Vyberte konkrétne dni, kedy chata nie je dostupná",
+        "SelectedDates": "Vybrané nedostupné termíny"
+      }
+    },
     "Address": {
       "Label": "Adresa",
       "Placeholder": "Hrebienok, 062 01 Starý Smokovec, Vysoké Tatry, Slovensko",

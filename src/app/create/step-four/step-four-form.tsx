@@ -202,6 +202,8 @@ export const StepFourForm = () => {
     router.push(ROUTES.CREATE_COTTAGE.STEP_FIVE);
   };
 
+  const displayImageGrid = images.length > 0 || isUploading;
+
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[600px]">
@@ -227,7 +229,7 @@ export const StepFourForm = () => {
                           isUploading={isUploading}
                         />
                       )}
-                      {images.length > 0 && (
+                      {displayImageGrid && (
                         <div className="grid h-[17rem] grid-cols-2 place-content-between gap-4 overflow-y-auto overflow-x-hidden md:grid-cols-3">
                           {images.map((image, index) => (
                             <div key={image.id} className="group relative h-32">

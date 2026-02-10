@@ -3,6 +3,7 @@ import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
+  customType,
   date,
   integer,
   pgEnum,
@@ -53,6 +54,18 @@ export const cottages = pgTable('cottages', {
   locationURL: varchar('locationURL'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  unAvailabilityDates: customType<{ data: Date[]; driverData: string }>({
+    dataType: () => 'date[]',
+    toDriver: (val) => {
+      if (!val || val.length === 0) return '{}';
+      return `{${val.map((date) => date.toISOString().split('T')[0]).join(',')}}`;
+    },
+    fromDriver: (val) => {
+      if (!val || val === '{}') return [];
+      const dates = val.slice(1, -1).split(',');
+      return dates.map((date) => new Date(date));
+    },
+  })().default([]),
 });
 
 export const reservations = pgTable('reservations', {

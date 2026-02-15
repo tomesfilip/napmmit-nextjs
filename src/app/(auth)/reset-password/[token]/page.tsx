@@ -13,22 +13,24 @@ export const metadata = {
 };
 
 interface ResetPasswordPageProps {
-  params: {
+  params: Promise<{
     token: string;
-  };
+  }>;
 }
 
 export default async function ResetPasswordPage({
   params,
 }: ResetPasswordPageProps) {
+  const { token } = await params;
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Reset password</CardTitle>
-        <CardDescription>Enter your new password below.</CardDescription>
+        <CardTitle>Obnoviť heslo</CardTitle>
+        <CardDescription>Zadajte nové heslo nižšie.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ResetPasswordForm token={params.token} />
+        <ResetPasswordForm token={token} />
       </CardContent>
     </Card>
   );

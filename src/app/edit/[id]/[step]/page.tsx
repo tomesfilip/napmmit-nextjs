@@ -1,3 +1,4 @@
+import { AvailabilityForm } from '@/app/create/availability/availability-form';
 import { StepFiveForm } from '@/app/create/step-five/step-five-form';
 import { StepFourForm } from '@/app/create/step-four/step-four-form';
 import { StepOneForm } from '@/app/create/step-one/step-one-form';
@@ -14,6 +15,7 @@ const steps = {
   'step-three': StepThreeForm,
   'step-four': StepFourForm,
   'step-five': StepFiveForm,
+  availability: AvailabilityForm,
   'step-six': StepSixForm,
 };
 

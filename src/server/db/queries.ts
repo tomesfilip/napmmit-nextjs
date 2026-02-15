@@ -1,6 +1,6 @@
 'use server';
 
-import { CottageDetailType } from '@/lib/appTypes';
+import { CottageDetailType, ReservedRangeType } from '@/lib/appTypes';
 import { cache } from 'react';
 import db from './drizzle';
 import { ReservationType } from './schema';
@@ -112,6 +112,33 @@ export const getMyCottages = cache(
   },
 );
 
+export const getCottageReservedRanges = cache(
+  async (
+    cottageId: number,
+  ): Promise<{
+    success?: ReservedRangeType[];
+    error?: string;
+  }> => {
+    try {
+      const data = await db.query.reservations.findMany({
+        columns: { from: true, to: true },
+        where: (table, funcs) =>
+          funcs.and(
+            funcs.eq(table.cottageId, cottageId),
+            funcs.or(
+              funcs.eq(table.status, 'pending'),
+              funcs.eq(table.status, 'confirmed'),
+            ),
+          ),
+      });
+
+      return { success: data };
+    } catch (err) {
+      return { error: "Couldn't find reservation ranges." };
+    }
+  },
+);
+
 export const getOwnerReservations = cache(
   async (
     userId: string,
@@ -140,4 +167,23 @@ export const getOwnerReservations = cache(
   },
 );
 
-// export const getHikerReservations = cache();
+export const getHikerReservations = cache(
+  async (
+    userId: string,
+  ): Promise<{ success?: ReservationType[]; error?: string }> => {
+    try {
+      const data = await db.query.reservations.findMany({
+        with: {
+          cottage: {
+            columns: { id: true, name: true },
+          },
+        },
+        where: (table, funcs) => funcs.eq(table.userId, userId),
+      });
+
+      return { success: data };
+    } catch (err) {
+      return { error: "Couldn't find any reservations." };
+    }
+  },
+);

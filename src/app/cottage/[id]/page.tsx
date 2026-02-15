@@ -1,10 +1,12 @@
 import { DetailSection } from '@/components/ui/detail-section';
-import { getCottage } from '@/server/db/queries';
+import { getCottage, getCottageReservedRanges } from '@/server/db/queries';
 
 import { ContactSection } from '@/components/cottageDetail/contact-section';
 import { DetailGallery } from '@/components/cottageDetail/detail-gallery';
 import { LocationSection } from '@/components/cottageDetail/location-section';
 import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
+import { ReservationSection } from '@/components/cottageDetail/reservation-section';
+import { validateRequest } from '@/lib/auth/validateRequest';
 
 const CottageDetail = async ({
   params,
@@ -12,7 +14,12 @@ const CottageDetail = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const { success: cottage, error } = await getCottage(id);
+  const [{ success: cottage, error }, { success: reservedRanges }, { user }] =
+    await Promise.all([
+      getCottage(id),
+      getCottageReservedRanges(id),
+      validateRequest(),
+    ]);
 
   // await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -33,7 +40,14 @@ const CottageDetail = async ({
               <DetailGallery images={cottage.images} />
             )}
           </DetailSection>
-          <ContactSection {...cottage} />
+          <div className="grid w-full grid-flow-row justify-center gap-8 px-4 lg:px-12 xl:grid-cols-12">
+            <ReservationSection
+              {...cottage}
+              reservedRanges={reservedRanges ?? []}
+              user={user}
+            />
+            <ContactSection {...cottage} />
+          </div>
           <LocationSection
             address={cottage.address}
             locationURL={cottage.locationURL}

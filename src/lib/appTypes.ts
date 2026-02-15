@@ -22,3 +22,5 @@ export type CookieConsentType = {
 };
 
 export type ReservationStatusType = 'pending' | 'confirmed' | 'cancelled';
+
+export type ReservedRangeType = { from: string; to: string };

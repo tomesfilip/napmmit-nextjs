@@ -1,7 +1,7 @@
 import { CottageDetailType } from '@/lib/appTypes';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Icon } from '../shared/icon';
-import { useTranslations } from 'next-intl';
 
 export const ContactSection = ({
   phoneNumber,
@@ -11,10 +11,10 @@ export const ContactSection = ({
   const t = useTranslations('CottageDetail');
 
   return (
-    <section className="w-full space-y-4 px-4 lg:px-12">
+    <section className="w-full space-y-4 px-4 xl:col-span-7 2xl:col-span-8">
       <hr />
       <h2 className="text-lg font-medium lg:text-xl">{t('ContactTitle')}</h2>
-      <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-12">
+      <div className="flex w-full flex-wrap gap-6 lg:grid-cols-3 lg:gap-12">
         {phoneNumber && (
           <div className="flex items-center gap-2">
             <Icon icon="Phone" className="size-6 flex-shrink-0 fill-black" />

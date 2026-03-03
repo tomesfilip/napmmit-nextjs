@@ -115,10 +115,24 @@ export async function createReservation(
 export async function updateReservation(data: any) {}
 
 export async function deleteReservation(reservationId: number) {
-  const deletedReservation = await db
-    .delete(reservations)
-    .where(eq(reservations.id, reservationId))
-    .returning({ id: reservations.id });
+  try {
+    await db.delete(reservations).where(eq(reservations.id, reservationId));
+    return { success: true };
+  } catch (error) {
+    console.error('Reservation deletion failed:', error);
+    return { error: 'reservation_deletion_failed' };
+  }
+}
 
-  return deletedReservation;
+export async function confirmReservation(reservationId: number) {
+  try {
+    await db
+      .update(reservations)
+      .set({ status: 'confirmed' })
+      .where(eq(reservations.id, reservationId));
+    return { success: true };
+  } catch (error) {
+    console.error('Reservation confirmation failed:', error);
+    return { error: 'reservation_confirmation_failed' };
+  }
 }

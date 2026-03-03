@@ -96,7 +96,7 @@ export const reservations = pgTable('reservations', {
   accessToken: varchar('access_token', { length: 64 }).unique(),
 
   createdAt: date('created_at').defaultNow().notNull(),
-  updateAt: date('updated_at').defaultNow().notNull(),
+  updatedAt: date('updated_at').defaultNow().notNull(),
 });
 
 // TODO: Could be better to use separate table for the pricing options

@@ -1,14 +1,15 @@
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { getTranslations } from 'next-intl/server';
-
+import { redirect } from 'next/navigation';
 
 const Profile = async () => {
   const { user } = await validateRequest();
-  const t = await getTranslations('Profile')
 
   if (!user) {
-    return null;
+    redirect('/login');
   }
+
+  const t = await getTranslations('Profile');
 
   return (
     <main className="py-4">

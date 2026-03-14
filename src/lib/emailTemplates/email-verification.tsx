@@ -8,12 +8,12 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 type Props = { code: string };
 
-export const VerificationCodeEmail = ({ code }: Props) => {
-  const t = useTranslations('EmailTemplates.EmailVerification');
+export const VerificationCodeEmail = async ({ code }: Props) => {
+  const t = await getTranslations('EmailTemplates.EmailVerification');
 
   return (
     <Html>

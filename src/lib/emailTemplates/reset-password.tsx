@@ -6,18 +6,17 @@ import {
   Head,
   Html,
   Preview,
-  Section,
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 interface Props {
   link: string;
 }
 
-export const ResetPasswordEmail = ({ link }: Props) => {
-  const t = useTranslations('EmailTemplates.ResetPassword');
+export const ResetPasswordEmail = async ({ link }: Props) => {
+  const t = await getTranslations('EmailTemplates.ResetPassword');
 
   return (
     <Html>

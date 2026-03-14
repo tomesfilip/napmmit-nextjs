@@ -8,13 +8,13 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { HikerReservationType } from '../appTypes';
 
 type Props = { reservation: HikerReservationType };
 
-export const ReservationCancelledEmail = ({ reservation }: Props) => {
-  const t = useTranslations('EmailTemplates.ReservationCancelled');
+export const ReservationCancelledEmail = async ({ reservation }: Props) => {
+  const t = await getTranslations('EmailTemplates.ReservationCancelled');
 
   return (
     <Html>

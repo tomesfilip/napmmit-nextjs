@@ -5,33 +5,33 @@ import {
   Head,
   Html,
   Preview,
-  Section,
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
+import { useTranslations } from 'next-intl';
 
 type Props = { code: string };
 
 export const VerificationCodeEmail = ({ code }: Props) => {
+  const t = useTranslations('EmailTemplates.EmailVerification');
+
   return (
     <Html>
       <Head />
       <Preview>
-        Verify your email address to complete your {APP_TITLE} registration
+        {t('Preview', { appTitle: APP_TITLE })}
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
             <Text style={title}>{APP_TITLE}</Text>
-            <Text style={text}>Hi,</Text>
+            <Text style={text}>{t('IntroMessage')}</Text>
             <Text style={text}>
-              Thank you for registering for an account on {APP_TITLE}. To
-              complete your registration, please verify your your account by
-              using the following code:
+              {t('MainMessage', { appTitle: APP_TITLE })}
             </Text>
             <Text style={codePlaceholder}>{code}</Text>
 
-            <Text style={text}>Have a nice day!</Text>
+            <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
       </Body>

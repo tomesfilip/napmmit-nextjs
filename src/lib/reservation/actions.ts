@@ -116,6 +116,27 @@ export async function updateReservation(data: any) {}
 
 export async function deleteReservation(reservationId: number) {
   try {
+    const { user } = await validateRequest();
+    if (!user) {
+      return { error: 'unauthorized' };
+    }
+
+    // Verify user owns the reservation or the cottage
+    const reservation = await db.query.reservations.findFirst({
+      where: (table, funcs) => funcs.eq(table.id, reservationId),
+      with: { cottage: { columns: { userId: true } } },
+    });
+    if (!reservation) {
+      return { error: 'reservation_not_found' };
+    }
+
+    const isOwner = reservation.cottage?.userId === user.id;
+    const isReservationHolder = reservation.userId === user.id;
+
+    if (!isOwner && !isReservationHolder) {
+      return { error: 'unauthorized' };
+    }
+
     await db.delete(reservations).where(eq(reservations.id, reservationId));
     return { success: true };
   } catch (error) {
@@ -126,9 +147,29 @@ export async function deleteReservation(reservationId: number) {
 
 export async function confirmReservation(reservationId: number) {
   try {
+    const { user } = await validateRequest();
+    if (!user) {
+      return { error: 'unauthorized' };
+    }
+
+    const reservation = await db.query.reservations.findFirst({
+      where: (table, funcs) => funcs.eq(table.id, reservationId),
+      with: { cottage: { columns: { userId: true } } },
+    });
+    if (!reservation) {
+      return { error: 'reservation_not_found' };
+    }
+
+    if (reservation.cottage?.userId !== user.id) {
+      return { error: 'unauthorized' };
+    }
+
     await db
       .update(reservations)
-      .set({ status: 'confirmed' })
+      .set({
+        status: 'confirmed',
+        updatedAt: new Date().toISOString().split('T')[0],
+      })
       .where(eq(reservations.id, reservationId));
     return { success: true };
   } catch (error) {

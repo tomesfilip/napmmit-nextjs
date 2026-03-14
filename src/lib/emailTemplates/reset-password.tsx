@@ -10,38 +10,37 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   link: string;
 }
 
-// TODO: internazionalization for mail message
 export const ResetPasswordEmail = ({ link }: Props) => {
+  const t = useTranslations('EmailTemplates.ResetPassword');
+
   return (
     <Html>
       <Head />
-      <Preview>Reset your password</Preview>
+      <Preview>{t('Preview')}</Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
             <Text style={title}>{APP_TITLE}</Text>
-            <Text style={text}>Hi,</Text>
+            <Text style={text}>{t('IntroMessage')}</Text>
             <Text style={text}>
-              Someone recently requested a password change for your {APP_TITLE}
-              &nbsp;account. If this was you, you can set a new password here:
+              {t('MainMessage', { appTitle: APP_TITLE })}
             </Text>
             <Button style={button} href={link}>
-              Reset password
+              {t('ButtonText')}
             </Button>
             <Text style={text}>
-              If you don&apos;t want to change your password or didn&apos;t
-              request this, just ignore and delete this message.
+              {t('IgnoreMessage')}
             </Text>
             <Text style={text}>
-              To keep your account secure, please don&apos;t forward this email
-              to anyone.
+              {t('SecurityMessage')}
             </Text>
-            <Text style={text}>Have a nice day!</Text>
+            <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
       </Body>

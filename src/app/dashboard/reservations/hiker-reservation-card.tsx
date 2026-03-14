@@ -7,13 +7,28 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { HikerReservationType } from '@/lib/appTypes';
+import { deleteReservation } from '@/lib/reservation/actions';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 type Props = {
   reservation: HikerReservationType;
 };
 
 export const HikerReservationCard = ({ reservation }: Props) => {
+  const t = useTranslations('Dashboard');
+
+  const handleCancelReservation = async (reservationId: number) => {
+    const { success, error } = await deleteReservation(reservationId);
+    if (success) {
+      toast.success('Rezervácia bola zrušená');
+    } else {
+      toast.error(error);
+    }
+  };
+
+
   return (
     <Card className="rounded-lg border bg-white p-4 shadow-sm">
       <CardHeader>
@@ -63,7 +78,7 @@ export const HikerReservationCard = ({ reservation }: Props) => {
         )}
       </CardContent>
       <CardFooter>
-        <Button>Zrušiť rezerváciu</Button>
+        <Button onClick={() => handleCancelReservation(reservation.id)}>{t('Reservations.Actions.Cancel')}</Button>
       </CardFooter>
     </Card>
   );

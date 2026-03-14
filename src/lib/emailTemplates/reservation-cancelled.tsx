@@ -8,32 +8,34 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
+import { useTranslations } from 'next-intl';
 import { HikerReservationType } from '../appTypes';
 
 type Props = { reservation: HikerReservationType };
 
 export const ReservationCancelledEmail = ({ reservation }: Props) => {
+  const t = useTranslations('EmailTemplates.ReservationCancelled');
+
   return (
     <Html>
       <Head />
       <Preview>
-        Your reservation for {reservation.cottage.name} has been created
-        successfully
+        {t('Preview', { cottageName: reservation.cottage.name })}
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>
-              Hi, {reservation.guestEmail ?? reservation.userId}!
+              {t('IntroMessage', { guestName: reservation.guestEmail ?? reservation.userId ?? 'there' })}
             </Text>
             <Text style={text}>
-              Your reservation for {reservation.cottage.name} has been cancelled
+              {t('MainMessage', { cottageName: reservation.cottage.name })}
             </Text>
             <Text style={text}>
-              If you have any questions, please contact us at {EMAIL_SUPPORT}.
+              {t('SupportMessage', { supportEmail: EMAIL_SUPPORT })}
             </Text>
-            <Text style={text}>Have a nice day!</Text>
+            <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
       </Body>

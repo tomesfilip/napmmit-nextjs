@@ -10,43 +10,46 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { HikerReservationType } from '../appTypes';
 
 type Props = { reservation: HikerReservationType };
 
 export const ReservationCreatedEmail = ({ reservation }: Props) => {
+  const t = useTranslations('EmailTemplates.ReservationCreated');
+
   return (
     <Html>
       <Head />
       <Preview>
-        Your reservation for {reservation.cottage.name} has been created
-        successfully
+        {t('Preview', { cottageName: reservation.cottage.name })}
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>
-              Hi, {reservation.guestEmail ?? reservation.userId}!
+              {t('IntroMessage', { guestName: reservation.guestEmail ?? reservation.userId ?? 'there' })}
             </Text>
             <Text style={text}>
-              Your reservation for {reservation.cottage.name} has been created
-              successfully.
+              {t('MainMessage', { cottageName: reservation.cottage.name })}
             </Text>
             <Text style={text}>
-              The reservation is pending confirmation. You will be notified when
-              it is confirmed.
+              {t('PendingMessage')}
             </Text>
             <Text style={text}>
-              The reservation is from{' '}
-              {format(new Date(reservation.from), 'dd.MM.yyyy')} to{' '}
-              {format(new Date(reservation.to), 'dd.MM.yyyy')}
+              {t('DateMessage', {
+                fromDate: format(new Date(reservation.from), 'dd.MM.yyyy'),
+                toDate: format(new Date(reservation.to), 'dd.MM.yyyy')
+              })}
             </Text>
             <Text style={text}>
-              The reservation is for {reservation.bedsReserved} beds for a total
-              price of {reservation.totalPrice} €.
+              {t('DetailsMessage', {
+                bedsCount: reservation.bedsReserved,
+                totalPrice: reservation.totalPrice
+              })}
             </Text>
-            <Text style={text}>Have a nice day!</Text>
+            <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
       </Body>

@@ -286,6 +286,10 @@
     "CreateSuccess": "Chata bola úspešne publikovaná",
     "EditSuccess": "Chata bola úspešne upravená"
   },
+  "Profile": {
+    "Title": "Môj profil",
+    "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia."
+  },
   "Shared": {
     "EmailField": {
       "Label": "E-mail",
@@ -296,6 +300,39 @@
       "Placeholder": "********",
       "Show": "Zobraziť",
       "Hide": "Skryť"
+    }
+  },
+  "EmailTemplates": {
+    "ReservationCancelled": {
+      "Preview": "Vaša rezervácia pre {cottageName} bola zrušená",
+      "IntroMessage": "Ahoj, {guestName}!",
+      "MainMessage": "Vaša rezervácia pre {cottageName} bola zrušená",
+      "SupportMessage": "Ak máte akékoľvek otázky, kontaktujte nás na {supportEmail}.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "ReservationCreated": {
+      "Preview": "Vaša rezervácia pre {cottageName} bola úspešne vytvorená",
+      "IntroMessage": "Ahoj, {guestName}!",
+      "MainMessage": "Vaša rezervácia pre {cottageName} bola úspešne vytvorená.",
+      "PendingMessage": "Rezervácia čaká na potvrdenie. Budete upozornený, keď bude potvrdená.",
+      "DateMessage": "Rezervácia je od {fromDate} do {toDate}",
+      "DetailsMessage": "Rezervácia je pre {bedsCount} lôžok za celkovú cenu {totalPrice} €.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "ResetPassword": {
+      "Preview": "Obnovte si heslo",
+      "IntroMessage": "Ahoj,",
+      "MainMessage": "Niekto nedávno požiadal o zmenu hesla pre váš {appTitle} účet. Ak ste to boli vy, môžete si nastaviť nové heslo tu:",
+      "ButtonText": "Obnoviť heslo",
+      "IgnoreMessage": "Ak si nechcete zmeniť heslo alebo ste o to nepožiadali, jednoducho ignorujte a odstráňte túto správu.",
+      "SecurityMessage": "Pre zabezpečenie vášho účtu, nepresmerujte tento e-mail nikomu.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "EmailVerification": {
+      "Preview": "Overte svoju e-mailovú adresu pre dokončenie registrácie v {appTitle}",
+      "IntroMessage": "Ahoj,",
+      "MainMessage": "Ďakujeme za registráciu účtu v {appTitle}. Pre dokončenie registrácie overte svoj účet pomocou nasledujúceho kódu:",
+      "GoodbyeMessage": "Pekný deň!"
     }
   }
 }

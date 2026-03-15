@@ -16,7 +16,10 @@ interface Props {
   locale?: string;
 }
 
-export default async function ResetPasswordEmail({ link, locale = 'sk' }: Props) {
+export default async function ResetPasswordEmail({
+  link,
+  locale = 'sk',
+}: Props) {
   const t = createTranslator({
     messages: await import(`../../../messages/${locale}.json`),
     namespace: 'EmailTemplates.ResetPassword',
@@ -32,13 +35,13 @@ export default async function ResetPasswordEmail({ link, locale = 'sk' }: Props)
           <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>{t('IntroMessage')}</Text>
-            <Text style={text}>{t('MainMessage', { appTitle: APP_TITLE })}</Text>
+            <Text style={text}>
+              {t('MainMessage', { appTitle: APP_TITLE })}
+            </Text>
             <Button style={button} href={link}>
               {t('ButtonText')}
             </Button>
-            <Text style={text}>
-              {t('IgnoreMessage')}
-            </Text>
+            <Text style={text}>{t('IgnoreMessage')}</Text>
             <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
@@ -52,7 +55,10 @@ ResetPasswordEmail.PreviewProps = {
   locale: 'sk',
 };
 
-export const renderResetPasswordEmail = async ({ link, locale = 'sk' }: Props) => {
+export const renderResetPasswordEmail = async ({
+  link,
+  locale = 'sk',
+}: Props) => {
   return render(<ResetPasswordEmail link={link} locale={locale} />);
 };
 

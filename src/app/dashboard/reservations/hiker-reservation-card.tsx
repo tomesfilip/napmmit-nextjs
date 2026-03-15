@@ -28,7 +28,6 @@ export const HikerReservationCard = ({ reservation }: Props) => {
     }
   };
 
-
   return (
     <Card className="rounded-lg border bg-white p-4 shadow-sm">
       <CardHeader>
@@ -78,7 +77,9 @@ export const HikerReservationCard = ({ reservation }: Props) => {
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={() => handleCancelReservation(reservation.id)}>{t('Reservations.Actions.Cancel')}</Button>
+        <Button onClick={() => handleCancelReservation(reservation.id)}>
+          {t('Reservations.Actions.Cancel')}
+        </Button>
       </CardFooter>
     </Card>
   );

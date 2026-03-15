@@ -1,4 +1,3 @@
-import { APP_TITLE, EMAIL_SUPPORT } from '@/lib/constants';
 import {
   Body,
   Container,
@@ -9,14 +8,18 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { createTranslator } from 'next-intl';
-import { HikerReservationType } from '../appTypes';
+import { APP_TITLE, EMAIL_SUPPORT } from '@/lib/constants';
+import type { HikerReservationType } from '../appTypes';
 
-type Props = { 
+type Props = {
   reservation: HikerReservationType;
   locale?: string;
 };
 
-export default async function ReservationCancelledEmail({ reservation, locale = 'sk' }: Props) {
+export default async function ReservationCancelledEmail({
+  reservation,
+  locale = 'sk',
+}: Props) {
   const t = createTranslator({
     messages: await import(`../../../messages/${locale}.json`),
     namespace: 'EmailTemplates.ReservationCancelled',
@@ -34,7 +37,10 @@ export default async function ReservationCancelledEmail({ reservation, locale = 
           <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>
-              {t('IntroMessage', { guestName: reservation.guestEmail ?? reservation.userId ?? 'there' })}
+              {t('IntroMessage', {
+                guestName:
+                  reservation.guestEmail ?? reservation.userId ?? 'there',
+              })}
             </Text>
             <Text style={text}>
               {t('MainMessage', { cottageName: reservation.cottage.name })}
@@ -59,8 +65,13 @@ ReservationCancelledEmail.PreviewProps = {
   locale: 'sk',
 };
 
-export const renderReservationCancelledEmail = async ({ reservation, locale = 'sk' }: Props) =>
-  render(<ReservationCancelledEmail reservation={reservation} locale={locale} />);
+export const renderReservationCancelledEmail = async ({
+  reservation,
+  locale = 'sk',
+}: Props) =>
+  render(
+    <ReservationCancelledEmail reservation={reservation} locale={locale} />,
+  );
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 

@@ -32,7 +32,7 @@
     "GuestEmail": "Váš e-mail",
     "GuestPhone": "Vaše telefónne číslo",
     "GuestContactNote": "Zadajte aspoň jeden kontaktný údaj pre potvrdenie rezervácie.",
-    "ReservationSuccess": "Rezervácia bola úspešne vytvorená! Budeme vás kontaktovať na uvedené údaje.",
+    "ReservationSuccess": "Rezervácia bola úspešne vytvorená.\nBudeme vás kontaktovať na uvedené kontaktné údaje.",
     "ReservationProcessing": "Rezervujem...",
     "ErrorMissingContact": "Zadajte prosím e-mail alebo telefónne číslo.",
     "ErrorDatesUnavailable": "Vybrané termíny nie sú k dispozícii. Vyberte iný termín.",
@@ -117,6 +117,19 @@
     }
   },
   "Dashboard": {
+    "Reservations": {
+      "Title": "Rezervácie",
+      "Description": "Zobrazujú sa všetky rezervácie pre všetky vaše chaty.",
+      "Status": {
+        "Confirmed": "Potvrdené",
+        "Pending": "Čakajúce",
+        "Cancelled": "Zrušené"
+      },
+      "Actions": {
+        "Confirm": "Potvrdiť",
+        "Cancel": "Zrušiť rezerváciu"
+      }
+    },
     "NoCottages": {
       "Title": "Zatiaľ nemáte žiadne chaty",
       "Description": "Vytvorte svoj prvý inzerát a začnite prenajímať svoju chatu návštevníkom.",
@@ -273,6 +286,10 @@
     "CreateSuccess": "Chata bola úspešne publikovaná",
     "EditSuccess": "Chata bola úspešne upravená"
   },
+  "Profile": {
+    "Title": "Môj profil",
+    "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia."
+  },
   "Shared": {
     "EmailField": {
       "Label": "E-mail",
@@ -283,6 +300,39 @@
       "Placeholder": "********",
       "Show": "Zobraziť",
       "Hide": "Skryť"
+    }
+  },
+  "EmailTemplates": {
+    "ReservationCancelled": {
+      "Preview": "Vaša rezervácia pre {cottageName} bola zrušená",
+      "IntroMessage": "Ahoj, {guestName}!",
+      "MainMessage": "Vaša rezervácia pre {cottageName} bola zrušená",
+      "SupportMessage": "Ak máte akékoľvek otázky, kontaktujte nás na {supportEmail}.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "ReservationCreated": {
+      "Preview": "Vaša rezervácia pre {cottageName} bola úspešne vytvorená",
+      "IntroMessage": "Ahoj, {guestName}!",
+      "MainMessage": "Vaša rezervácia pre {cottageName} bola úspešne vytvorená.",
+      "PendingMessage": "Rezervácia čaká na potvrdenie. Budete upozornený, keď bude potvrdená.",
+      "DateMessage": "Rezervácia je od {fromDate} do {toDate}",
+      "DetailsMessage": "Rezervácia je pre {bedsCount} lôžok za celkovú cenu {totalPrice} €.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "ResetPassword": {
+      "Preview": "Obnovte si heslo",
+      "IntroMessage": "Ahoj,",
+      "MainMessage": "Niekto nedávno požiadal o zmenu hesla pre váš {appTitle} účet. Ak ste to boli vy, môžete si nastaviť nové heslo tu:",
+      "ButtonText": "Obnoviť heslo",
+      "IgnoreMessage": "Ak si nechcete zmeniť heslo alebo ste o to nepožiadali, jednoducho ignorujte a odstráňte túto správu.",
+      "SecurityMessage": "Pre zabezpečenie vášho účtu, nepresmerujte tento e-mail nikomu.",
+      "GoodbyeMessage": "Pekný deň!"
+    },
+    "EmailVerification": {
+      "Preview": "Overte svoju e-mailovú adresu pre dokončenie registrácie v {appTitle}",
+      "IntroMessage": "Ahoj,",
+      "MainMessage": "Ďakujeme za registráciu účtu v {appTitle}. Pre dokončenie registrácie overte svoj účet pomocou nasledujúceho kódu:",
+      "GoodbyeMessage": "Pekný deň!"
     }
   }
 }

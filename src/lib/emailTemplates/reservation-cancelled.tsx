@@ -1,4 +1,4 @@
-import { APP_TITLE } from '@/lib/constants';
+import { APP_TITLE, EMAIL_SUPPORT } from '@/lib/constants';
 import {
   Body,
   Container,
@@ -9,28 +9,32 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { getTranslations } from 'next-intl/server';
+import { HikerReservationType } from '../appTypes';
 
-type Props = { code: string };
+type Props = { reservation: HikerReservationType };
 
-export const VerificationCodeEmail = async ({ code }: Props) => {
-  const t = await getTranslations('EmailTemplates.EmailVerification');
+export const ReservationCancelledEmail = async ({ reservation }: Props) => {
+  const t = await getTranslations('EmailTemplates.ReservationCancelled');
 
   return (
     <Html>
       <Head />
       <Preview>
-        {t('Preview', { appTitle: APP_TITLE })}
+        {t('Preview', { cottageName: reservation.cottage.name })}
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
             <Text style={title}>{APP_TITLE}</Text>
-            <Text style={text}>{t('IntroMessage')}</Text>
             <Text style={text}>
-              {t('MainMessage', { appTitle: APP_TITLE })}
+              {t('IntroMessage', { guestName: reservation.guestEmail ?? reservation.userId ?? 'there' })}
             </Text>
-            <Text style={codePlaceholder}>{code}</Text>
-
+            <Text style={text}>
+              {t('MainMessage', { cottageName: reservation.cottage.name })}
+            </Text>
+            <Text style={text}>
+              {t('SupportMessage', { supportEmail: EMAIL_SUPPORT })}
+            </Text>
             <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>
@@ -39,8 +43,8 @@ export const VerificationCodeEmail = async ({ code }: Props) => {
   );
 };
 
-export const renderVerificationCodeEmail = ({ code }: Props) =>
-  render(<VerificationCodeEmail code={code} />);
+export const renderReservationCancelledEmail = ({ reservation }: Props) =>
+  render(<ReservationCancelledEmail reservation={reservation} />);
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 
@@ -64,18 +68,4 @@ const title = {
   fontSize: '22px',
   fontWeight: '700',
   lineHeight: '32px',
-};
-
-const codePlaceholder = {
-  backgroundColor: '#fbfbfb',
-  border: '1px solid #f0f0f0',
-  borderRadius: '4px',
-  color: '#1c1c1c',
-  fontFamily: "'Open Sans', 'Helvetica Neue', Arial",
-  fontSize: '15px',
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'block',
-  width: '210px',
-  padding: '14px 7px',
 };

@@ -7,6 +7,7 @@ export const PASSWORD_ID_LENGTH = 40;
 export const APP_TITLE = 'Napmmit';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
 export const EMAIL_SENDER_RESEND = 'onboarding@resend.dev';
+export const EMAIL_SUPPORT = 'support@napmmit.com';
 
 export const ROUTES = {
   AUTH: {
@@ -32,6 +33,7 @@ export const ROUTES = {
   },
 
   EDIT_COTTAGE: '/edit',
+  PROFILE: '/profile',
 } as const;
 
 export const SERVICES: Service[] = [

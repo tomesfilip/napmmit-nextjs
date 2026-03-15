@@ -162,10 +162,10 @@ export const ReservationSection = ({
     <section className="rounded-lg border bg-white p-6 shadow-sm xl:col-span-5 2xl:col-span-4">
       <h2 className="mb-4 text-xl font-semibold">{t('Reservation')}</h2>
 
-      <div className="space-y-4">
+      <div className="max-w-[400px] space-y-4">
         {success && (
           <div className="rounded-md bg-green-50 p-3 text-sm text-green-800">
-            {t('ReservationSuccess')}
+            <p className="whitespace-pre-line">{t('ReservationSuccess')}</p>
           </div>
         )}
 

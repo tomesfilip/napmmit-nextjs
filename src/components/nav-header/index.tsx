@@ -14,7 +14,7 @@ export const NavHeader = async () => {
         Napmmit
       </Link>
       <nav className="flex w-full justify-end">
-        <ul className="flex items-center gap-4">
+        <ul className="flex items-center gap-8">
           {user ? (
             <>
               <li className="text-sm font-medium">
@@ -35,7 +35,14 @@ export const NavHeader = async () => {
                   </Link>
                 </li>
               )}
-              <li>
+              <li className="flex items-center gap-4">
+                {/* TODO: add the profile page */}
+                <Link
+                  href={ROUTES.PROFILE}
+                  className="border-b border-b-transparent transition-all duration-200 hover:border-b-black"
+                >
+                  {user.email}
+                </Link>
                 <LogoutButton />
               </li>
             </>

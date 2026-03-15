@@ -39,9 +39,6 @@ export default async function ResetPasswordEmail({ link, locale = 'sk' }: Props)
             <Text style={text}>
               {t('IgnoreMessage')}
             </Text>
-            <Text style={text}>
-              {t('SecurityMessage')}
-            </Text>
             <Text style={text}>{t('GoodbyeMessage')}</Text>
           </div>
         </Container>

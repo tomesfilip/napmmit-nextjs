@@ -325,7 +325,6 @@
       "MainMessage": "Niekto nedávno požiadal o zmenu hesla pre váš {appTitle} účet. Ak ste to boli vy, môžete si nastaviť nové heslo tu:",
       "ButtonText": "Obnoviť heslo",
       "IgnoreMessage": "Ak si nechcete zmeniť heslo alebo ste o to nepožiadali, jednoducho ignorujte a odstráňte túto správu.",
-      "SecurityMessage": "Pre zabezpečenie vášho účtu, nepresmerujte tento e-mail nikomu.",
       "GoodbyeMessage": "Pekný deň!"
     },
     "EmailVerification": {

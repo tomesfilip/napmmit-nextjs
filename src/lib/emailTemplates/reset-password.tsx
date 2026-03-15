@@ -9,14 +9,19 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { getTranslations } from 'next-intl/server';
+import { createTranslator } from 'next-intl';
 
 interface Props {
   link: string;
+  locale?: string;
 }
 
-export const ResetPasswordEmail = async ({ link }: Props) => {
-  const t = await getTranslations('EmailTemplates.ResetPassword');
+export default async function ResetPasswordEmail({ link, locale = 'sk' }: Props) {
+  const t = createTranslator({
+    messages: await import(`../../../messages/${locale}.json`),
+    namespace: 'EmailTemplates.ResetPassword',
+    locale,
+  });
 
   return (
     <Html>
@@ -27,9 +32,7 @@ export const ResetPasswordEmail = async ({ link }: Props) => {
           <div>
             <Text style={title}>{APP_TITLE}</Text>
             <Text style={text}>{t('IntroMessage')}</Text>
-            <Text style={text}>
-              {t('MainMessage', { appTitle: APP_TITLE })}
-            </Text>
+            <Text style={text}>{t('MainMessage', { appTitle: APP_TITLE })}</Text>
             <Button style={button} href={link}>
               {t('ButtonText')}
             </Button>
@@ -45,10 +48,16 @@ export const ResetPasswordEmail = async ({ link }: Props) => {
       </Body>
     </Html>
   );
+}
+
+ResetPasswordEmail.PreviewProps = {
+  link: 'https://example.com/reset-password?token=abc123',
+  locale: 'sk',
 };
 
-export const renderResetPasswordEmail = ({ link }: Props) =>
-  render(<ResetPasswordEmail link={link} />);
+export const renderResetPasswordEmail = async ({ link, locale = 'sk' }: Props) => {
+  return render(<ResetPasswordEmail link={link} locale={locale} />);
+};
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 

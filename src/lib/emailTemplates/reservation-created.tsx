@@ -10,13 +10,20 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { format } from 'date-fns';
-import { getTranslations } from 'next-intl/server';
+import { createTranslator } from 'next-intl';
 import { HikerReservationType } from '../appTypes';
 
-type Props = { reservation: HikerReservationType };
+type Props = { 
+  reservation: HikerReservationType;
+  locale?: string;
+};
 
-export const ReservationCreatedEmail = async ({ reservation }: Props) => {
-  const t = await getTranslations('EmailTemplates.ReservationCreated');
+export default async function ReservationCreatedEmail({ reservation, locale = 'sk' }: Props) {
+  const t = createTranslator({
+    messages: await import(`../../../messages/${locale}.json`),
+    namespace: 'EmailTemplates.ReservationCreated',
+    locale,
+  });
 
   return (
     <Html>
@@ -55,10 +62,23 @@ export const ReservationCreatedEmail = async ({ reservation }: Props) => {
       </Body>
     </Html>
   );
+}
+
+ReservationCreatedEmail.PreviewProps = {
+  reservation: {
+    cottage: { name: 'Chata v Tatrách' },
+    guestEmail: 'guest@example.com',
+    userId: null,
+    from: '2024-07-15',
+    to: '2024-07-17',
+    bedsReserved: 2,
+    totalPrice: 100,
+  },
+  locale: 'sk',
 };
 
-export const renderReservationCreatedEmail = ({ reservation }: Props) =>
-  render(<ReservationCreatedEmail reservation={reservation} />);
+export const renderReservationCreatedEmail = async ({ reservation, locale = 'sk' }: Props) =>
+  render(<ReservationCreatedEmail reservation={reservation} locale={locale} />);
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 

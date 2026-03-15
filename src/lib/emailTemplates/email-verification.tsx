@@ -8,12 +8,19 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { getTranslations } from 'next-intl/server';
+import { createTranslator } from 'next-intl';
 
-type Props = { code: string };
+type Props = { 
+  code: string;
+  locale?: string;
+};
 
-export const VerificationCodeEmail = async ({ code }: Props) => {
-  const t = await getTranslations('EmailTemplates.EmailVerification');
+export default async function VerificationCodeEmail({ code, locale = 'sk' }: Props) {
+  const t = createTranslator({
+    messages: await import(`../../../messages/${locale}.json`),
+    namespace: 'EmailTemplates.EmailVerification',
+    locale,
+  });
 
   return (
     <Html>
@@ -37,10 +44,15 @@ export const VerificationCodeEmail = async ({ code }: Props) => {
       </Body>
     </Html>
   );
+}
+
+VerificationCodeEmail.PreviewProps = {
+  code: '123456',
+  locale: 'sk',
 };
 
-export const renderVerificationCodeEmail = ({ code }: Props) =>
-  render(<VerificationCodeEmail code={code} />);
+export const renderVerificationCodeEmail = async ({ code, locale = 'sk' }: Props) =>
+  render(<VerificationCodeEmail code={code} locale={locale} />);
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 

@@ -1,7 +1,7 @@
+import { useTranslations } from 'next-intl';
 import { Icon } from '@/components/shared/icon';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
-import { ImageItemType } from '../step-four-form';
+import type { ImageItemType } from '../step-four-form';
 
 interface Props {
   currImg: ImageItemType;

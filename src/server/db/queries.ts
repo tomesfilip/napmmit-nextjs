@@ -1,14 +1,13 @@
 'use server';
 
-import {
+import { cache } from 'react';
+import type {
   CottageDetailType,
   HikerReservationType,
   OwnerReservationType,
   ReservedRangeType,
 } from '@/lib/appTypes';
-import { cache } from 'react';
 import db from './drizzle';
-import { Cottage, ImageType, ReservationType } from './schema';
 
 export const getCottages = cache(
   async (): Promise<{ success?: CottageDetailType[]; error?: string }> => {
@@ -39,7 +38,7 @@ export const getCottages = cache(
 
       return { success: normalizedData };
     } catch (err) {
-      return { error: "Couldn't find any cottages." };
+      return { error: `Couldn't find any cottages: ${err}` };
     }
   },
 );
@@ -76,8 +75,8 @@ export const getCottage = cache(
       };
 
       return { success: normalizedData };
-    } catch (error) {
-      return { error: "Couldn't find the specified cottage." };
+    } catch (err) {
+      return { error: `Couldn't find the specified cottage: ${err}` };
     }
   },
 );
@@ -112,7 +111,7 @@ export const getMyCottages = cache(
 
       return { success: normalizedData };
     } catch (err) {
-      return { error: "Couldn't find any cottages." };
+      return { error: `Couldn't find any cottages: ${err}` };
     }
   },
 );
@@ -139,7 +138,7 @@ export const getCottageReservedRanges = cache(
 
       return { success: data };
     } catch (err) {
-      return { error: "Couldn't find reservation ranges." };
+      return { error: `Couldn't find reservation ranges: ${err}` };
     }
   },
 );
@@ -175,7 +174,7 @@ export const getOwnerReservations = cache(
 
       return { success: data };
     } catch (err) {
-      return { error: "Couldn't find any reservations." };
+      return { error: `Couldn't find any reservations: ${err}` };
     }
   },
 );
@@ -202,7 +201,7 @@ export const getHikerReservations = cache(
 
       return { success: data };
     } catch (err) {
-      return { error: "Couldn't find any reservations." };
+      return { error: `Couldn't find any reservations: ${err}` };
     }
   },
 );

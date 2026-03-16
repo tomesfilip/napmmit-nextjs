@@ -1,8 +1,8 @@
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { Icon } from '@/components/shared/icon';
 import { DetailSection } from '@/components/ui/detail-section';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 
 const loading = () => {
   const t = useTranslations('CottageDetail');
@@ -27,6 +27,7 @@ const loading = () => {
           <Skeleton className="h-10 w-4/5 lg:h-12" />
           <div className="space-y-1">
             {Array.from(Array(9).keys()).map((_, index) => (
+              // biome-ignore lint: TODO - fix later
               <Skeleton key={index} className="h-5 w-full" />
             ))}
           </div>
@@ -35,14 +36,15 @@ const loading = () => {
         {/* DETAIL GALLERY */}
         <div className="hidden lg:block">
           <ul className="relative grid flex-1 content-stretch items-stretch rounded-lg sm:max-h-[400px] lg:grid-cols-3 lg:grid-rows-2 lg:gap-4">
-            {Array.from(Array(3).keys()).map((_, index) => (
-              <li
-                key={index}
-                className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2"
-              >
-                <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
-              </li>
-            ))}
+            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            </li>
+            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            </li>
+            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            </li>
           </ul>
         </div>
       </DetailSection>

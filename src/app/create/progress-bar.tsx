@@ -1,7 +1,7 @@
 'use client';
 
-import { ROUTES } from '@/lib/constants';
 import { usePathname } from 'next/navigation';
+import { ROUTES } from '@/lib/constants';
 
 const multistepNavigationLinks = [
   { id: 1, link: ROUTES.CREATE_COTTAGE.STEP_ONE },

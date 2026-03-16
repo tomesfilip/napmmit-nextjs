@@ -1,5 +1,5 @@
-import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirect } from 'next/navigation';
+import { validateRequest } from '@/lib/auth/validateRequest';
 import ProgressBar from '../../create/progress-bar';
 
 const EditLayout = async ({

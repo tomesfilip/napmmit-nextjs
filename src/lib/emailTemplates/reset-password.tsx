@@ -1,4 +1,3 @@
-import { APP_TITLE } from '@/lib/constants';
 import {
   Body,
   Button,
@@ -10,6 +9,7 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { createTranslator } from 'next-intl';
+import { APP_TITLE } from '@/lib/constants';
 
 interface Props {
   link: string;

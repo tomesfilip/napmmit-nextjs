@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import {
   Card,
   CardContent,
@@ -7,8 +9,6 @@ import {
 } from '@/components/ui/card';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { ROUTES } from '@/lib/constants';
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
 import { SendResetEmail } from './send-reset-email';
 
 export const metadata = {

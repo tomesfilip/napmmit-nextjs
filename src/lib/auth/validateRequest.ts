@@ -1,7 +1,7 @@
-import { lucia } from '@/lib/auth';
 import type { Session, User } from 'lucia';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
+import { lucia } from '@/lib/auth';
 
 export const uncachedValidateRequest = async (): Promise<
   { user: User; session: Session } | { user: null; session: null }
@@ -13,7 +13,7 @@ export const uncachedValidateRequest = async (): Promise<
   }
   const result = await lucia.validateSession(sessionId);
   try {
-    if (result.session && result.session.fresh) {
+    if (result?.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
       cookiesStore.set(
         sessionCookie.name,

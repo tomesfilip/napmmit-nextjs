@@ -14,6 +14,7 @@ export const LocationSection = ({ address, locationURL }: Props) => {
       </div>
       {locationURL && (
         <iframe
+          title="Location map"
           className="w-full rounded-lg"
           style={{ border: 'none' }}
           src={locationURL}

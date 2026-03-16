@@ -1,7 +1,8 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+
 const SvgFood = (props: SVGProps<SVGSVGElement>) => (
   <svg
+    aria-label="food-icon"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 16 16"

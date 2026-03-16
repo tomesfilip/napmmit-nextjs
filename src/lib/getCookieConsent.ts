@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { CookieConsentType } from './appTypes';
+import type { CookieConsentType } from './appTypes';
 import { COOKIE_KEY } from './constants';
 
 export async function getCookieConsent(): Promise<CookieConsentType> {

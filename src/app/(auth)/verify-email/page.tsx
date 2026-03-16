@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -7,7 +8,6 @@ import {
 } from '@/components/ui/card';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { ROUTES } from '@/lib/constants';
-import { redirect } from 'next/navigation';
 import { VerifyCode } from './verify-code';
 
 export const metadata = {

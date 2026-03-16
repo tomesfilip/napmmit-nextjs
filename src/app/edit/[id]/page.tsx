@@ -1,10 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { use, useEffect } from 'react';
 import { ROUTES } from '@/lib/constants';
 import { getCottage } from '@/server/db/queries';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { useRouter } from 'next/navigation';
-import { use, useEffect } from 'react';
 
 const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -16,7 +16,7 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
   useEffect(() => {
     const loadCottageData = async () => {
       const cottageId = Number(id);
-      if (isNaN(cottageId)) {
+      if (Number.isNaN(cottageId)) {
         router.push('/dashboard');
         return;
       }
@@ -58,7 +58,7 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     };
 
     loadCottageData();
-  }, [id, setData, router]);
+  }, [id, setData, router, setMode]);
 
   return <div>Loading...</div>;
 };

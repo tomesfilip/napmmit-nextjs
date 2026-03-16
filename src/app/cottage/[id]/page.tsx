@@ -1,12 +1,11 @@
-import { DetailSection } from '@/components/ui/detail-section';
-import { getCottage, getCottageReservedRanges } from '@/server/db/queries';
-
 import { ContactSection } from '@/components/cottageDetail/contact-section';
 import { DetailGallery } from '@/components/cottageDetail/detail-gallery';
 import { LocationSection } from '@/components/cottageDetail/location-section';
 import { MobileGallery } from '@/components/cottageDetail/mobile-gallery';
 import { ReservationSection } from '@/components/cottageDetail/reservation-section';
+import { DetailSection } from '@/components/ui/detail-section';
 import { validateRequest } from '@/lib/auth/validateRequest';
+import { getCottage, getCottageReservedRanges } from '@/server/db/queries';
 
 const CottageDetail = async ({
   params,

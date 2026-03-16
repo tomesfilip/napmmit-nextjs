@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import { forwardRef, type SVGProps } from 'react';
+import { cn } from '@/lib/utils';
 
 export const AnimatedSpinner = forwardRef<
   SVGSVGElement,
@@ -8,6 +8,7 @@ export const AnimatedSpinner = forwardRef<
   <svg
     ref={ref}
     {...props}
+    aria-label="animated-spinner"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"

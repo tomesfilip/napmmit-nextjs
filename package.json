@@ -10,8 +10,8 @@
     "db:studio": "bun drizzle-kit studio",
     "db:push": "bun drizzle-kit push",
     "db:seed": "tsx ./scripts/seed.ts",
-    "icons:generate": "npx @svgr/cli src/assets/svg --out-dir src/components/icons --typescript --filename-case camel",
-    "lint-format": "@biomejs/biome format --write"
+    "icons:generate": "bunx @svgr/cli src/assets/svg --out-dir src/components/icons --typescript --filename-case camel",
+    "lint-format": "bunx --bun @biomejs/biome check --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -1,7 +1,8 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+
 const SvgTrash = (props: SVGProps<SVGSVGElement>) => (
   <svg
+    aria-label="trash"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     stroke="currentColor"

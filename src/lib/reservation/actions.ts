@@ -1,8 +1,8 @@
 'use server';
 
+import { eq } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { reservations } from '@/server/db/schema';
-import { eq } from 'drizzle-orm';
 import { validateRequest } from '../auth/validateRequest';
 
 export type CreateReservationInput = {
@@ -49,7 +49,7 @@ export async function createReservation(
     const dateFrom = new Date(data.from);
     const dateTo = new Date(data.to);
 
-    if (isNaN(dateFrom.getTime()) || isNaN(dateTo.getTime())) {
+    if (Number.isNaN(dateFrom.getTime()) || Number.isNaN(dateTo.getTime())) {
       return { error: 'invalid_dates' };
     }
 

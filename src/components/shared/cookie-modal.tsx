@@ -1,9 +1,9 @@
 'use client';
 
-import { COOKIE_KEY } from '@/lib/constants';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { COOKIE_KEY } from '@/lib/constants';
 
 export const CookieConsent = () => {
   const t = useTranslations('CookieModal');
@@ -28,9 +28,14 @@ export const CookieConsent = () => {
     }
   }, []);
 
-  const saveConsent = (newConsent: typeof consent) => {
+  const saveConsent = async (newConsent: typeof consent) => {
     localStorage.setItem(COOKIE_KEY, JSON.stringify(newConsent));
-    document.cookie = `${COOKIE_KEY}=${JSON.stringify(newConsent)}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    await cookieStore.set({
+      name: COOKIE_KEY,
+      value: JSON.stringify(newConsent),
+      expires: 60 * 60 * 60 * 24 * 365,
+      path: '/',
+    });
     setConsent(newConsent);
     setOpen(false);
     setSettingsOpen(false);
@@ -67,18 +72,21 @@ export const CookieConsent = () => {
               <button
                 onClick={rejectAll}
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                type="button"
               >
                 {t('Reject')}
               </button>
               <button
                 onClick={() => setSettingsOpen(true)}
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                type="button"
               >
                 {t('Settings')}
               </button>
               <button
                 onClick={acceptAll}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white"
+                type="button"
               >
                 {t('AcceptAll')}
               </button>
@@ -120,12 +128,14 @@ export const CookieConsent = () => {
               <button
                 onClick={() => setSettingsOpen(false)}
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                type="button"
               >
                 {t('Back')}
               </button>
               <button
                 onClick={() => saveConsent(consent)}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white"
+                type="button"
               >
                 {t('SaveSettings')}
               </button>

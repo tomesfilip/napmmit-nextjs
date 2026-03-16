@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+import { use } from 'react';
 import { AvailabilityForm } from '@/app/create/availability/availability-form';
 import { StepFiveForm } from '@/app/create/step-five/step-five-form';
 import { StepFourForm } from '@/app/create/step-four/step-four-form';
@@ -6,8 +8,6 @@ import { StepSixForm } from '@/app/create/step-six/step-six-form';
 import { StepThreeForm } from '@/app/create/step-three/step-three-form';
 import { StepTwoForm } from '@/app/create/step-two/step-two-form';
 import { ROUTES } from '@/lib/constants';
-import { redirect } from 'next/navigation';
-import { use } from 'react';
 
 const steps = {
   'step-one': StepOneForm,

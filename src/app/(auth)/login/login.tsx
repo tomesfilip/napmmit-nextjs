@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useActionState } from 'react';
 import { PasswordInput } from '@/components/form/password-input';
 import { SubmitButton } from '@/components/form/submit-button';
 import { Button } from '@/components/ui/button';
@@ -14,9 +17,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useActionState } from 'react';
 
 export const Login = () => {
   const [state, formAction] = useActionState(login, null);

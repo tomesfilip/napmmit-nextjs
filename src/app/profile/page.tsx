@@ -1,6 +1,6 @@
-import { validateRequest } from '@/lib/auth/validateRequest';
-import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import { validateRequest } from '@/lib/auth/validateRequest';
 
 const Profile = async () => {
   const { user } = await validateRequest();

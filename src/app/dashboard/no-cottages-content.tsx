@@ -1,6 +1,6 @@
-import { ROUTES } from '@/lib/constants';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { ROUTES } from '@/lib/constants';
 
 export const NoCottagesContent = () => {
   const t = useTranslations('Dashboard');
@@ -14,7 +14,7 @@ export const NoCottagesContent = () => {
         {t('NoCottages.Description')}
       </p>
       <Link
-        href={'create/' + ROUTES.CREATE_COTTAGE.STEP_ONE}
+        href={`create/${ROUTES.CREATE_COTTAGE.STEP_ONE}`}
         className="rounded-lg bg-gray-600 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-700"
       >
         {t('NoCottages.CreateButton')}

@@ -1,7 +1,8 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+
 const SvgFacebook = (props: SVGProps<SVGSVGElement>) => (
   <svg
+    aria-label="facebook"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 20 20"

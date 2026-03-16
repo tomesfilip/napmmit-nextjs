@@ -1,3 +1,8 @@
+'use client';
+
+import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -6,11 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { HikerReservationType } from '@/lib/appTypes';
+import type { HikerReservationType } from '@/lib/appTypes';
 import { deleteReservation } from '@/lib/reservation/actions';
-import { format } from 'date-fns';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 
 type Props = {
   reservation: HikerReservationType;

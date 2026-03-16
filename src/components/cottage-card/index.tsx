@@ -1,10 +1,10 @@
 'use client';
 
-import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
-import { CottageDetailType } from '@/lib/appTypes';
-import { ROUTES } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
+import cottageFallbackImg from '@/assets/img/cottage-fallback.webp';
+import type { CottageDetailType } from '@/lib/appTypes';
+import { ROUTES } from '@/lib/constants';
 import { Icon } from '../shared/icon';
 import { ServiceBadge } from '../shared/service-badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '../ui/card';

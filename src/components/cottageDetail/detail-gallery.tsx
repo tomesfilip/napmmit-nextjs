@@ -1,11 +1,11 @@
 'use client';
 
-import { ImageType } from '@/server/db/schema';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Counter from 'yet-another-react-lightbox/plugins/counter';
+import type { ImageType } from '@/server/db/schema';
 import NextImage from '../next-image';
 
 import 'yet-another-react-lightbox/plugins/counter.css';
@@ -35,6 +35,7 @@ export const DetailGallery = ({ images }: Props) => {
               </p>
             )}
             <button
+              type="button"
               className="size-full cursor-pointer border-none outline-none"
               onClick={() => setIndex(index)}
             >

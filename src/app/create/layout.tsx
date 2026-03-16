@@ -1,5 +1,5 @@
-import { validateRequest } from '@/lib/auth/validateRequest';
 import { redirect } from 'next/navigation';
+import { validateRequest } from '@/lib/auth/validateRequest';
 import { CreateFormInit } from './create-form-init';
 import ProgressBar from './progress-bar';
 

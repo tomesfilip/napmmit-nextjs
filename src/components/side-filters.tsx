@@ -1,9 +1,9 @@
 'use client';
 
-import { SERVICES } from '@/lib/constants';
-import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
+import { SERVICES } from '@/lib/constants';
 import { ServiceBadge } from './shared/service-badge';
 import {
   Select,

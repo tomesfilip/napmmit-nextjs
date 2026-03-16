@@ -1,5 +1,11 @@
 'use client';
 
+import { differenceInDays, format } from 'date-fns';
+import type { User } from 'lucia';
+import { CalendarIcon, Users } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useMemo, useState, useTransition } from 'react';
+import type { DateRange, Matcher } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -9,17 +15,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CottageDetailType, ReservedRangeType } from '@/lib/appTypes';
+import type { CottageDetailType, ReservedRangeType } from '@/lib/appTypes';
 import {
+  type CreateReservationInput,
   createReservation,
-  CreateReservationInput,
 } from '@/lib/reservation/actions';
-import { differenceInDays, format, isAfter, isBefore } from 'date-fns';
-import type { User } from 'lucia';
-import { CalendarIcon, Users } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useMemo, useState, useTransition } from 'react';
-import { DateRange, Matcher } from 'react-day-picker';
 
 type ReservationSectionProps = CottageDetailType & {
   reservedRanges: ReservedRangeType[];
@@ -152,7 +152,6 @@ export const ReservationSection = ({
         return t('ErrorInvalidDates');
       case 'to_date_before_from':
         return t('ErrorToBeforeFrom');
-      case 'reservation_failed':
       default:
         return t('ErrorReservationFailed');
     }
@@ -229,7 +228,7 @@ export const ReservationSection = ({
               min="1"
               max={availableBeds}
               value={guests}
-              onChange={(e) => setGuests(parseInt(e.target.value) || 1)}
+              onChange={(e) => setGuests(parseInt(e.target.value, 10) || 1)}
               className="w-20"
             />
             <span className="text-sm text-gray-500">

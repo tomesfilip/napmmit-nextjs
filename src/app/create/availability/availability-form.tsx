@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -143,7 +142,7 @@ export const AvailabilityForm = () => {
                                   .sort((a, b) => a.getTime() - b.getTime())
                                   .map((date) => (
                                     <Button
-                                      key={uuidv4()}
+                                      key={date.toString()}
                                       type="button"
                                       variant="outline"
                                       size="sm"

@@ -37,8 +37,8 @@ export const getCottages = cache(
       }));
 
       return { success: normalizedData };
-    } catch (err) {
-      return { error: `Couldn't find any cottages: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find any cottages." };
     }
   },
 );
@@ -75,8 +75,8 @@ export const getCottage = cache(
       };
 
       return { success: normalizedData };
-    } catch (err) {
-      return { error: `Couldn't find the specified cottage: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find the specified cottage." };
     }
   },
 );
@@ -110,8 +110,8 @@ export const getMyCottages = cache(
       }));
 
       return { success: normalizedData };
-    } catch (err) {
-      return { error: `Couldn't find any cottages: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find any cottages." };
     }
   },
 );
@@ -137,8 +137,8 @@ export const getCottageReservedRanges = cache(
       });
 
       return { success: data };
-    } catch (err) {
-      return { error: `Couldn't find reservation ranges: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find reservation ranges." };
     }
   },
 );
@@ -173,8 +173,8 @@ export const getOwnerReservations = cache(
       });
 
       return { success: data };
-    } catch (err) {
-      return { error: `Couldn't find any reservations: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find any reservations." };
     }
   },
 );
@@ -200,8 +200,8 @@ export const getHikerReservations = cache(
       });
 
       return { success: data };
-    } catch (err) {
-      return { error: `Couldn't find any reservations: ${err}` };
+    } catch (_err) {
+      return { error: "Couldn't find any reservations." };
     }
   },
 );

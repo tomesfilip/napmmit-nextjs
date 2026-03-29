@@ -327,8 +327,8 @@ export const sendPasswordResetLink = async (
     });
 
     return { success: true };
-  } catch (err) {
-    return { error: `Failed to send verification email: ${err}` };
+  } catch (_err) {
+    return { error: 'Failed to send verification email.' };
   }
 };
 

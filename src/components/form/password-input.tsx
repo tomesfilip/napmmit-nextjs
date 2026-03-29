@@ -1,4 +1,4 @@
-'user client';
+'use client';
 
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';

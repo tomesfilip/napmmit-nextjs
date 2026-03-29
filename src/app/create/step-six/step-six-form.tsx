@@ -1,5 +1,10 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   Form,
   FormControl,
@@ -13,13 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ROUTES } from '@/lib/constants';
 import { createCottage, updateCottage } from '@/lib/cottage/actions';
-import { stepSixSchema, StepSixSchemaType } from '@/lib/formSchemas';
+import { type StepSixSchemaType, stepSixSchema } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import { StepNavigation } from '../step-navigation';
 

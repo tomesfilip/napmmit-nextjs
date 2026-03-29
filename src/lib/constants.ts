@@ -1,5 +1,5 @@
-import { Service } from '@/server/db/schema';
-import { CottageArea } from './appTypes';
+import type { Service } from '@/server/db/schema';
+import type { CottageArea } from './appTypes';
 
 export const USER_ID_LENGTH = 21;
 export const PASSWORD_ID_LENGTH = 40;

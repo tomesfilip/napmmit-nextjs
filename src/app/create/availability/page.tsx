@@ -1,11 +1,7 @@
 import { AvailabilityForm } from './availability-form';
 
 const Availability = () => {
-  return (
-    <>
-      <AvailabilityForm />
-    </>
-  );
+  return <AvailabilityForm />;
 };
 
 export default Availability;

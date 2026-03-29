@@ -1,11 +1,7 @@
 import { StepSixForm } from './step-six-form';
 
 const StepSix = () => {
-  return (
-    <>
-      <StepSixForm />
-    </>
-  );
+  return <StepSixForm />;
 };
 
 export default StepSix;

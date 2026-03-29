@@ -1,11 +1,7 @@
 import { StepFourForm } from './step-four-form';
 
 const StepFour = () => {
-  return (
-    <>
-      <StepFourForm />
-    </>
-  );
+  return <StepFourForm />;
 };
 
 export default StepFour;

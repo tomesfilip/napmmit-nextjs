@@ -1,7 +1,7 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export const Footer = () => {
   const t = useTranslations('Footer');
@@ -48,7 +48,7 @@ export const Footer = () => {
             </li>
           </ul>
           <p className="text-sm">
-            ©{new Date().getFullYear() + ' ' + t('AllRightsReserved')}
+            ©{`${new Date().getFullYear()} ${t('AllRightsReserved')}`}
           </p>
         </div>
       </div>

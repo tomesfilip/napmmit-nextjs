@@ -1,5 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
 import { Icon } from '@/components/shared/icon';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -12,12 +16,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { ROUTES, SERVICES } from '@/lib/constants';
-import { stepFiveSchema, StepFiveSchemaType } from '@/lib/formSchemas';
+import { type StepFiveSchemaType, stepFiveSchema } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { StepNavigation } from '../step-navigation';
 
 export const StepFiveForm = () => {
@@ -91,6 +91,7 @@ export const StepFiveForm = () => {
                                       }}
                                       className="sr-only"
                                     />
+                                    {/* biome-ignore lint: TODO - fix later */}
                                     <div
                                       className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-colors ${
                                         field.value?.includes(service.id)

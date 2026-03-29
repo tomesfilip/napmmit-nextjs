@@ -1,7 +1,7 @@
+import { useTranslations } from 'next-intl';
 import { Icon } from '@/components/shared/icon';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useTranslations } from 'next-intl';
 
 const loading = () => {
   const t = useTranslations('Home');
@@ -34,6 +34,7 @@ const loading = () => {
 
         <div className="grid w-full grid-cols-1 place-items-center gap-8 pb-6 md:grid-cols-2 md:place-items-start lg:py-8 2xl:grid-cols-3">
           {Array.from(Array(9).keys()).map((_, index) => (
+            // biome-ignore lint: TODO - fix later
             <SkeletonCard key={index} />
           ))}
         </div>

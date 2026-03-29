@@ -1,6 +1,6 @@
-import { MAX_IMAGES_PER_COTTAGE } from '@/lib/constants';
 import { useTranslations } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
+import { MAX_IMAGES_PER_COTTAGE } from '@/lib/constants';
 
 interface Props {
   onDrop: (acceptedFiles: File[]) => void;

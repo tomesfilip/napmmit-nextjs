@@ -1,10 +1,10 @@
 'use client';
 
-import { CottageDetailType } from '@/lib/appTypes';
-import { lowerCaseNoDiacriticsText } from '@/lib/utils';
-import { useCottageAreas } from '@/stores/cottageAreas';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
+import type { CottageDetailType } from '@/lib/appTypes';
+import { lowerCaseNoDiacriticsText } from '@/lib/utils';
+import { useCottageAreas } from '@/stores/cottageAreas';
 import { CottageCard } from './cottage-card';
 import { NoCottageFoundContent } from './no-cottage-found-content';
 import { Icon } from './shared/icon';
@@ -31,7 +31,7 @@ export const CottageContent = ({ cottages }: Props) => {
 
     setCottageAreas(areas);
     return areas;
-  }, [cottages]);
+  }, [cottages, setCottageAreas]);
 
   const filterServices = useMemo(() => {
     return searchParams.get('service')?.split('-') || [];

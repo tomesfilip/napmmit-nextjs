@@ -1,14 +1,13 @@
 'use server';
 
-import {
+import { cache } from 'react';
+import type {
   CottageDetailType,
   HikerReservationType,
   OwnerReservationType,
   ReservedRangeType,
 } from '@/lib/appTypes';
-import { cache } from 'react';
 import db from './drizzle';
-import { Cottage, ImageType, ReservationType } from './schema';
 
 export const getCottages = cache(
   async (): Promise<{ success?: CottageDetailType[]; error?: string }> => {
@@ -38,7 +37,7 @@ export const getCottages = cache(
       }));
 
       return { success: normalizedData };
-    } catch (err) {
+    } catch (_err) {
       return { error: "Couldn't find any cottages." };
     }
   },
@@ -76,7 +75,7 @@ export const getCottage = cache(
       };
 
       return { success: normalizedData };
-    } catch (error) {
+    } catch (_err) {
       return { error: "Couldn't find the specified cottage." };
     }
   },
@@ -111,7 +110,7 @@ export const getMyCottages = cache(
       }));
 
       return { success: normalizedData };
-    } catch (err) {
+    } catch (_err) {
       return { error: "Couldn't find any cottages." };
     }
   },
@@ -138,7 +137,7 @@ export const getCottageReservedRanges = cache(
       });
 
       return { success: data };
-    } catch (err) {
+    } catch (_err) {
       return { error: "Couldn't find reservation ranges." };
     }
   },
@@ -174,7 +173,7 @@ export const getOwnerReservations = cache(
       });
 
       return { success: data };
-    } catch (err) {
+    } catch (_err) {
       return { error: "Couldn't find any reservations." };
     }
   },
@@ -201,7 +200,7 @@ export const getHikerReservations = cache(
       });
 
       return { success: data };
-    } catch (err) {
+    } catch (_err) {
       return { error: "Couldn't find any reservations." };
     }
   },

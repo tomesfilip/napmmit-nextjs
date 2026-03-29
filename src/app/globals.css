@@ -1,5 +1,8 @@
+/* biome-ignore lint: TODO - upgrade tailwind */
 @tailwind base;
+/* biome-ignore lint: TODO - upgrade tailwind */
 @tailwind components;
+/* biome-ignore lint: TODO - upgrade tailwind */
 @tailwind utilities;
 
 @layer base {

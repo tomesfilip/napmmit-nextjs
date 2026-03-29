@@ -1,5 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -18,12 +22,11 @@ import {
 } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ROUTES } from '@/lib/constants';
-import { availabilitySchema, AvailabilitySchemaType } from '@/lib/formSchemas';
+import {
+  type AvailabilitySchemaType,
+  availabilitySchema,
+} from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { StepNavigation } from '../step-navigation';
 
 export const AvailabilityForm = () => {
@@ -137,9 +140,9 @@ export const AvailabilityForm = () => {
                               <div className="flex flex-wrap gap-1">
                                 {watchedDates
                                   .sort((a, b) => a.getTime() - b.getTime())
-                                  .map((date, index) => (
+                                  .map((date) => (
                                     <Button
-                                      key={index}
+                                      key={date.toString()}
                                       type="button"
                                       variant="outline"
                                       size="sm"

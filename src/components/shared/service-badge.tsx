@@ -1,8 +1,8 @@
 'use client';
 
-import type { Service } from '@/server/db/schema';
 import clsx from 'clsx';
-import { Badge, BadgeProps } from '../ui/badge';
+import type { Service } from '@/server/db/schema';
+import { Badge, type BadgeProps } from '../ui/badge';
 import { Icon } from './icon';
 
 interface Props extends BadgeProps {

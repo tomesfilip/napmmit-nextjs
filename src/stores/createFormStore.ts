@@ -1,6 +1,6 @@
-import { CreateCottageSchemaType } from '@/lib/formSchemas';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import type { CreateCottageSchemaType } from '@/lib/formSchemas';
 
 type Mode = 'create' | 'edit';
 
@@ -26,7 +26,7 @@ const initialState: State = {
 
 export const useCreateFormStore = create<State & Actions>()(
   persist(
-    (set, get, api) => ({
+    (set, _get, api) => ({
       ...initialState,
       setData: (data) => set((state) => ({ ...state, ...data })),
       setMode: (mode, cottageId) => set({ mode, cottageId }),

@@ -1,5 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -11,12 +15,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/lib/constants';
-import { stepTwoSchema, StepTwoSchemaType } from '@/lib/formSchemas';
+import { type StepTwoSchemaType, stepTwoSchema } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { StepNavigation } from '../step-navigation';
 
 export const StepTwoForm = () => {

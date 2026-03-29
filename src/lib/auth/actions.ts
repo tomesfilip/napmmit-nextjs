@@ -1,14 +1,13 @@
 'use server';
 
-import { lucia } from '@/lib/auth';
-import { Scrypt, generateId } from 'lucia';
+import { eq } from 'drizzle-orm';
+import { generateId, Scrypt } from 'lucia';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
 import { alphabet, generateRandomString } from 'oslo/crypto';
 import { z } from 'zod';
-
-import { eq } from 'drizzle-orm';
-import { TimeSpan, createDate, isWithinExpirationDate } from 'oslo';
+import { lucia } from '@/lib/auth';
 import db from '../../server/db/drizzle';
 import {
   emailVerificationCodes,
@@ -20,11 +19,11 @@ import { PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
-  LoginInput,
-  ResetPasswordInput,
-  SignupInput,
+  type LoginInput,
   loginSchema,
+  type ResetPasswordInput,
   resetPasswordSchema,
+  type SignupInput,
   signupSchema,
 } from '../validators/auth';
 import { validateRequest } from './validateRequest';
@@ -248,7 +247,7 @@ const timeFromNow = (time: Date) => {
 export const verifyEmail = async (
   _: any,
   formData: FormData,
-): Promise<{ error: string } | void> => {
+): Promise<{ error: string } | undefined> => {
   const code = formData.get('code');
   if (typeof code !== 'string' || code.length !== 8) {
     return { error: 'Invalid code' };
@@ -328,7 +327,7 @@ export const sendPasswordResetLink = async (
     });
 
     return { success: true };
-  } catch (error) {
+  } catch (_err) {
     return { error: 'Failed to send verification email.' };
   }
 };

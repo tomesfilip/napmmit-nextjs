@@ -1,7 +1,7 @@
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { ROUTES } from '@/lib/constants';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { LogoutButton } from './logout-button';
 
 export const NavHeader = async () => {

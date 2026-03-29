@@ -1,17 +1,17 @@
 'use server';
 
+import { eq, inArray } from 'drizzle-orm';
 import { validateRequest } from '@/lib/auth/validateRequest';
-import { CreateCottageSchemaType } from '@/lib/formSchemas';
+import type { CreateCottageSchemaType } from '@/lib/formSchemas';
 import db from '@/server/db/drizzle';
 import {
-  cottages,
   cottageServices,
+  cottages,
   images,
   reservations,
   services,
 } from '@/server/db/schema';
-import { eq, inArray } from 'drizzle-orm';
-import { CottageDetailType } from '../appTypes';
+import type { CottageDetailType } from '../appTypes';
 
 type ImageInput = {
   src: string;

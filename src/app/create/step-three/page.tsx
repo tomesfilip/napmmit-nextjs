@@ -1,11 +1,7 @@
 import { StepThreeForm } from './step-three-form';
 
 const StepThree = () => {
-  return (
-    <>
-      <StepThreeForm />
-    </>
-  );
+  return <StepThreeForm />;
 };
 
 export default StepThree;

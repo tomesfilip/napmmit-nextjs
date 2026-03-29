@@ -1,5 +1,5 @@
-import { IconType } from '@/lib/appTypes';
-import { createElement, SVGProps } from 'react';
+import { createElement, type SVGProps } from 'react';
+import type { IconType } from '@/lib/appTypes';
 import * as Icons from '../icons/index';
 
 interface Props extends SVGProps<SVGSVGElement> {

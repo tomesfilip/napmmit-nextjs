@@ -1,10 +1,10 @@
-import { CottageDetailType } from '@/lib/appTypes';
-import { ROUTES } from '@/lib/constants';
-import { deleteCottage } from '@/lib/cottage/actions';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import type { CottageDetailType } from '@/lib/appTypes';
+import { ROUTES } from '@/lib/constants';
+import { deleteCottage } from '@/lib/cottage/actions';
 import { Icon } from '../shared/icon';
 import { Button } from '../ui/button';
 import {

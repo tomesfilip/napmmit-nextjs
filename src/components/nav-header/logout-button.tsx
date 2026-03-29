@@ -1,5 +1,5 @@
-import { logout } from '@/lib/auth/actions';
 import { useTranslations } from 'next-intl';
+import { logout } from '@/lib/auth/actions';
 
 export const LogoutButton = () => {
   const t = useTranslations('NavHeader');

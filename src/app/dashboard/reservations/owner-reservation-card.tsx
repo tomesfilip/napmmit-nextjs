@@ -1,5 +1,10 @@
 'use client';
 
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,16 +14,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { OwnerReservationType } from '@/lib/appTypes';
+import type { OwnerReservationType } from '@/lib/appTypes';
 import {
   confirmReservation,
   deleteReservation,
 } from '@/lib/reservation/actions';
-import clsx from 'clsx';
-import { format } from 'date-fns';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
 type Props = {
   reservation: OwnerReservationType;

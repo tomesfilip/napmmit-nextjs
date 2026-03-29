@@ -1,9 +1,9 @@
 'use client';
 
-import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { LuSearch } from 'react-icons/lu';
 import { useDebouncedCallback } from 'use-debounce';
+import { lowerCaseNoDiacriticsText } from '@/lib/utils';
 
 type Props = {
   placeholder: string;

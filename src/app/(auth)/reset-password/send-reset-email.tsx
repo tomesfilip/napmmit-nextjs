@@ -1,17 +1,17 @@
 'use client';
 
+import { MailWarningIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useActionState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { SubmitButton } from '@/components/form/submit-button';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { sendPasswordResetLink } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants';
-import { MailWarningIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useActionState, useEffect } from 'react';
-import { toast } from 'sonner';
 
 export const SendResetEmail = () => {
   const [state, formAction] = useActionState(sendPasswordResetLink, null);

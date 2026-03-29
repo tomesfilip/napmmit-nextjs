@@ -1,6 +1,6 @@
-import { CottageDetailType } from '@/lib/appTypes';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import type { CottageDetailType } from '@/lib/appTypes';
 import { Icon } from '../shared/icon';
 
 export const ContactSection = ({

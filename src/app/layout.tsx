@@ -1,14 +1,13 @@
+import clsx from 'clsx';
+import type { Metadata } from 'next';
+import { Alatsi, Work_Sans } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { NavHeader } from '@/components/nav-header';
 import { CookieConsent } from '@/components/shared/cookie-modal';
 import { Footer } from '@/components/shared/footer';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { getCookieConsent } from '@/lib/getCookieConsent';
-import clsx from 'clsx';
-import type { Metadata } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale } from 'next-intl/server';
-import { Alatsi, Work_Sans } from 'next/font/google';
 import './globals.css';
 
 const workSans = Work_Sans({ subsets: ['latin'] });
@@ -30,7 +29,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
-  // const consent = getCookieConsent();
 
   return (
     <html lang={locale}>

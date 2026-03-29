@@ -1,3 +1,8 @@
+'use client';
+
+import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -6,11 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { HikerReservationType } from '@/lib/appTypes';
+import type { HikerReservationType } from '@/lib/appTypes';
 import { deleteReservation } from '@/lib/reservation/actions';
-import { format } from 'date-fns';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 
 type Props = {
   reservation: HikerReservationType;
@@ -27,7 +29,6 @@ export const HikerReservationCard = ({ reservation }: Props) => {
       toast.error(error);
     }
   };
-
 
   return (
     <Card className="rounded-lg border bg-white p-4 shadow-sm">
@@ -78,7 +79,9 @@ export const HikerReservationCard = ({ reservation }: Props) => {
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={() => handleCancelReservation(reservation.id)}>{t('Reservations.Actions.Cancel')}</Button>
+        <Button onClick={() => handleCancelReservation(reservation.id)}>
+          {t('Reservations.Actions.Cancel')}
+        </Button>
       </CardFooter>
     </Card>
   );

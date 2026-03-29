@@ -1,5 +1,9 @@
 'use client';
 
+import { Label } from '@radix-ui/react-label';
+import { MailWarningIcon } from 'lucide-react';
+import { useActionState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { SubmitButton } from '@/components/form/submit-button';
 import { Input } from '@/components/ui/input';
 import {
@@ -7,10 +11,6 @@ import {
   resendVerificationEmail as resendEmail,
   verifyEmail,
 } from '@/lib/auth/actions';
-import { Label } from '@radix-ui/react-label';
-import { MailWarningIcon } from 'lucide-react';
-import { useActionState, useEffect, useRef } from 'react';
-import { toast } from 'sonner';
 
 export const VerifyCode = () => {
   const [verifyEmailState, verifyEmailAction] = useActionState(

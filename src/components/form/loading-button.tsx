@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { forwardRef } from 'react';
+import { cn } from '@/lib/utils';
 import { AnimatedSpinner } from '../icons';
-import { Button, ButtonProps } from '../ui/button';
+import { Button, type ButtonProps } from '../ui/button';
 
 type LoadingButtonProps = {
   loading?: boolean;

@@ -1,4 +1,3 @@
-import { APP_TITLE } from '@/lib/constants';
 import {
   Body,
   Container,
@@ -9,13 +8,17 @@ import {
 } from '@react-email/components';
 import { render } from '@react-email/render';
 import { createTranslator } from 'next-intl';
+import { APP_TITLE } from '@/lib/constants';
 
-type Props = { 
+type Props = {
   code: string;
   locale?: string;
 };
 
-export default async function VerificationCodeEmail({ code, locale = 'sk' }: Props) {
+export default async function VerificationCodeEmail({
+  code,
+  locale = 'sk',
+}: Props) {
   const t = createTranslator({
     messages: await import(`../../../messages/${locale}.json`),
     namespace: 'EmailTemplates.EmailVerification',
@@ -25,9 +28,7 @@ export default async function VerificationCodeEmail({ code, locale = 'sk' }: Pro
   return (
     <Html>
       <Head />
-      <Preview>
-        {t('Preview', { appTitle: APP_TITLE })}
-      </Preview>
+      <Preview>{t('Preview', { appTitle: APP_TITLE })}</Preview>
       <Body style={main}>
         <Container style={container}>
           <div>
@@ -51,8 +52,10 @@ VerificationCodeEmail.PreviewProps = {
   locale: 'sk',
 };
 
-export const renderVerificationCodeEmail = async ({ code, locale = 'sk' }: Props) =>
-  render(<VerificationCodeEmail code={code} locale={locale} />);
+export const renderVerificationCodeEmail = async ({
+  code,
+  locale = 'sk',
+}: Props) => render(<VerificationCodeEmail code={code} locale={locale} />);
 
 const main = { backgroundColor: '#f6f9fc', padding: '10px 0' };
 

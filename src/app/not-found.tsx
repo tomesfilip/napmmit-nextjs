@@ -1,9 +1,8 @@
-import Image from 'next/image';
-
-import img404 from '@/assets/img/404.jpg';
 import { HomeIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import img404 from '@/assets/img/404.jpg';
 
 export default function NotFound() {
   const t = useTranslations('404');

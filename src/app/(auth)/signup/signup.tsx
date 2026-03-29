@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useActionState, useState } from 'react';
 import { PasswordInput } from '@/components/form/password-input';
 import { SubmitButton } from '@/components/form/submit-button';
 import { Button } from '@/components/ui/button';
@@ -13,11 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UserRole } from '@/lib/appTypes';
+import type { UserRole } from '@/lib/appTypes';
 import { signup } from '@/lib/auth/actions';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useActionState, useState } from 'react';
 
 export function Signup() {
   const [state, formAction] = useActionState(signup, null);

@@ -1,5 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
 import { Icon } from '@/components/shared/icon';
 import {
   Form,
@@ -25,12 +29,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { COTTAGE_AREAS, ROUTES } from '@/lib/constants';
-import { stepOneSchema, StepOneSchemaType } from '@/lib/formSchemas';
+import { type StepOneSchemaType, stepOneSchema } from '@/lib/formSchemas';
 import { useCreateFormStore } from '@/stores/createFormStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { StepNavigation } from '../step-navigation';
 
 export const StepOneForm = () => {

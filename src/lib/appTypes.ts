@@ -1,5 +1,5 @@
 import type * as Icons from '@/components/icons/index';
-import {
+import type {
   Cottage,
   ImageType,
   ReservationType,

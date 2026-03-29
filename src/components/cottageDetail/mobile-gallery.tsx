@@ -1,15 +1,14 @@
 'use client';
 
-import { ImageType } from '@/server/db/schema';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Counter from 'yet-another-react-lightbox/plugins/counter';
-import NextImage from '../next-image';
-
-import Link from 'next/link';
+import type { ImageType } from '@/server/db/schema';
 import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/styles.css';
+import NextImage from '../next-image';
 import { Icon } from '../shared/icon';
 
 interface Props {
@@ -63,6 +62,7 @@ export const MobileGallery = ({ images }: Props) => {
               <button
                 className="size-full cursor-pointer border-none outline-none"
                 onClick={() => setLightboxIndex(index)}
+                type="button"
               >
                 <Image
                   src={img.src}

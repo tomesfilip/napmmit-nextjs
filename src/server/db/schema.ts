@@ -1,5 +1,3 @@
-import { IconType } from '@/lib/appTypes';
-import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -14,6 +12,8 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
+import type { IconType } from '@/lib/appTypes';
+import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
 
 export const userRoleEnum = pgEnum('user_role', [
   'hiker',

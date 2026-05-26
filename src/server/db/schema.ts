@@ -39,6 +39,7 @@ export const cottages = pgTable('cottages', {
   description: varchar('description'),
   address: varchar('address').notNull(),
   mountainArea: varchar('mountain_area', { length: 255 }).notNull(),
+  // TODO: Rename to totalBeds
   capacity: integer('capacity').notNull(),
   availableBeds: integer('available_beds').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
@@ -91,7 +92,7 @@ export const reservations = pgTable('reservations', {
   from: date('from').notNull(),
   to: date('to').notNull(),
 
-  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled
+  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled | completed
 
   accessToken: varchar('access_token', { length: 64 }).unique(),
 
@@ -119,13 +120,17 @@ export const cottagesRelations = relations(cottages, ({ many, one }) => ({
   images: many(images),
 }));
 
-export const reservationsRelations = relations(reservations, ({ one }) => ({
-  user: one(users, { fields: [reservations.userId], references: [users.id] }),
-  cottage: one(cottages, {
-    fields: [reservations.cottageId],
-    references: [cottages.id],
+export const reservationsRelations = relations(
+  reservations,
+  ({ one, many }) => ({
+    user: one(users, { fields: [reservations.userId], references: [users.id] }),
+    cottage: one(cottages, {
+      fields: [reservations.cottageId],
+      references: [cottages.id],
+    }),
+    reservationDays: many(reservationDays),
   }),
-}));
+);
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
@@ -223,9 +228,31 @@ export const imagesRelations = relations(images, ({ one }) => ({
   }),
 }));
 
+export const reservationDays = pgTable('reservation_days', {
+  id: serial('id').primaryKey(),
+  reservationId: integer('reservation_id')
+    .notNull()
+    .references(() => reservations.id, { onDelete: 'cascade' }),
+  date: date('date').notNull(),
+  bedsReserved: integer('beds_reserved').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export const reservationDaysRelations = relations(
+  reservationDays,
+  ({ one }) => ({
+    reservation: one(reservations, {
+      fields: [reservationDays.reservationId],
+      references: [reservations.id],
+    }),
+  }),
+);
+
 export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
 export type ImageType = typeof images.$inferSelect;
 export type ReservationType = typeof reservations.$inferSelect;
+export type ReservationDayType = typeof reservationDays.$inferSelect;

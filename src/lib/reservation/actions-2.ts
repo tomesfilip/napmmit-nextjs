@@ -1,8 +1,8 @@
 'use server';
 
-import { and, eq, sum } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
-import { cottages, reservationDays, reservations } from '@/server/db/schema';
+import { reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
 
 export type CreateReservationInput = {
@@ -23,7 +23,6 @@ export async function createReservation(
   data: CreateReservationInput,
 ): Promise<CreateReservationResult> {
   try {
-    // Input validation
     if (!data.bedsReserved || data.bedsReserved < 1) {
       return { error: 'beds_required' };
     }
@@ -61,50 +60,27 @@ export async function createReservation(
     const fromISO = dateFrom.toISOString().split('T')[0];
     const toISO = dateTo.toISOString().split('T')[0];
 
+    // Overlap check: find any non-cancelled reservation that overlaps.
+    // Two ranges overlap if: from < existing.to AND to > existing.from
+    const overlappingReservations = await db.query.reservations.findMany({
+      where: (table, funcs) =>
+        funcs.and(
+          funcs.eq(table.cottageId, data.cottageId),
+          funcs.not(funcs.eq(table.status, 'cancelled')),
+          funcs.lt(table.from, toISO),
+          funcs.gt(table.to, fromISO),
+        ),
+      columns: { id: true },
+      limit: 1,
+    });
+
+    if (overlappingReservations.length > 0) {
+      return { error: 'dates_unavailable' };
+    }
+
     const diffTime = dateTo.getTime() - dateFrom.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const pricePerNight = Math.round(data.totalPrice / diffDays);
-
-    // Validate bed availability for each day
-    const cottage = await db.query.cottages.findFirst({
-      where: eq(cottages.id, data.cottageId),
-      columns: { availableBeds: true },
-    });
-
-    if (!cottage) {
-      return { error: 'cottage_not_found' };
-    }
-
-    // Check availability for each day in the reservation period
-    const reservationDates = [];
-    for (let d = new Date(dateFrom); d < dateTo; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().split('T')[0];
-      reservationDates.push(dateStr);
-    }
-
-    for (const date of reservationDates) {
-      const existingReservations = await db
-        .select({ totalBeds: sum(reservationDays.bedsReserved) })
-        .from(reservationDays)
-        .innerJoin(
-          reservations,
-          eq(reservationDays.reservationId, reservations.id),
-        )
-        .where(
-          and(
-            eq(reservationDays.date, date),
-            eq(reservations.cottageId, data.cottageId),
-            eq(reservations.status, 'confirmed'),
-          ),
-        );
-
-      const bookedBeds = Number(existingReservations[0]?.totalBeds) || 0;
-      const availableBeds = cottage.availableBeds - bookedBeds;
-
-      if (availableBeds < data.bedsReserved) {
-        return { error: 'insufficient_beds_available' };
-      }
-    }
 
     const reservationData = {
       userId: user?.id ?? null,
@@ -128,15 +104,6 @@ export async function createReservation(
     if (!newReservation) {
       return { error: 'reservation_failed' };
     }
-
-    // Create reservation day records
-    const reservationDayRecords = reservationDates.map((date) => ({
-      reservationId: newReservation.id,
-      date,
-      bedsReserved: data.bedsReserved,
-    }));
-
-    await db.insert(reservationDays).values(reservationDayRecords);
 
     return { success: true, reservationId: newReservation.id };
   } catch (error) {

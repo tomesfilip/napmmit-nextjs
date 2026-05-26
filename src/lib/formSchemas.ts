@@ -7,7 +7,7 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  occupancy: z.coerce.number<number>().min(1),
+  capacity: z.coerce.number<number>().min(1),
   email: z.email('Musí byť platný email'),
   phone: z.string().min(1),
   website: z.url().optional().or(z.literal('')),

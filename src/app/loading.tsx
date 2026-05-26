@@ -23,7 +23,7 @@ const loading = () => {
       </div>
 
       <div className="w-full space-y-4">
-        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all md:p-0 xl:relative xl:justify-start xl:bg-none xl:backdrop-blur-none">
+        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-xs transition-all md:p-0 xl:relative xl:justify-start xl:bg-none xl:backdrop-blur-none">
           <Skeleton className="h-[46px] w-full rounded-md lg:max-w-[400px]" />
           <div className="block xl:hidden">
             <div className="flex size-10 items-center justify-center rounded-full bg-slate-100">

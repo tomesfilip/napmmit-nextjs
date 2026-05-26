@@ -14,7 +14,7 @@ const loading = () => {
         <div className="relative rounded-b-lg">
           <Link
             href="/"
-            className="absolute left-4 top-4 z-[2] rounded-full bg-slate-100 p-2"
+            className="absolute left-4 top-4 z-2 rounded-full bg-slate-100 p-2"
           >
             <Icon icon="ArrowRight" className="size-6 rotate-180 fill-black" />
           </Link>
@@ -36,14 +36,14 @@ const loading = () => {
         {/* DETAIL GALLERY */}
         <div className="hidden lg:block">
           <ul className="relative grid flex-1 content-stretch items-stretch rounded-lg sm:max-h-[400px] lg:grid-cols-3 lg:grid-rows-2 lg:gap-4">
-            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
-              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            <li className="relative flex size-full items-center justify-center outline-hidden first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-4/3 h-full w-full self-stretch" />
             </li>
-            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
-              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            <li className="relative flex size-full items-center justify-center outline-hidden first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-4/3 h-full w-full self-stretch" />
             </li>
-            <li className="relative flex size-full items-center justify-center outline-none first:col-span-2 first:row-span-2">
-              <Skeleton className="aspect-[4/3] h-full w-full self-stretch" />
+            <li className="relative flex size-full items-center justify-center outline-hidden first:col-span-2 first:row-span-2">
+              <Skeleton className="aspect-4/3 h-full w-full self-stretch" />
             </li>
           </ul>
         </div>

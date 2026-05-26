@@ -31,7 +31,7 @@ export const HikerReservationCard = ({ reservation }: Props) => {
   };
 
   return (
-    <Card className="rounded-lg border bg-white p-4 shadow-sm">
+    <Card className="rounded-lg border bg-white p-4 shadow-xs">
       <CardHeader>
         <CardTitle>{reservation.cottage.name}</CardTitle>
       </CardHeader>

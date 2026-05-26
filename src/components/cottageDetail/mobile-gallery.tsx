@@ -46,7 +46,7 @@ export const MobileGallery = ({ images }: Props) => {
       <div className="relative">
         <Link
           href="/"
-          className="absolute left-4 top-4 z-[2] rounded-full bg-slate-100 p-2"
+          className="absolute left-4 top-4 z-2 rounded-full bg-slate-100 p-2"
         >
           <Icon icon="ArrowRight" className="size-6 rotate-180 fill-black" />
         </Link>
@@ -60,7 +60,7 @@ export const MobileGallery = ({ images }: Props) => {
               className="relative flex w-full shrink-0 snap-center items-center justify-center"
             >
               <button
-                className="size-full cursor-pointer border-none outline-none"
+                className="size-full cursor-pointer border-none outline-hidden"
                 onClick={() => setLightboxIndex(index)}
                 type="button"
               >
@@ -69,7 +69,7 @@ export const MobileGallery = ({ images }: Props) => {
                   width={600}
                   height={600}
                   alt=""
-                  className="aspect-[3/4] h-full w-full self-stretch bg-gray-400 object-cover"
+                  className="aspect-3/4 h-full w-full self-stretch bg-gray-400 object-cover"
                 />
               </button>
             </li>

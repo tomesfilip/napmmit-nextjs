@@ -73,7 +73,7 @@ const CottageDetail = async ({
           <div className="grid w-full grid-flow-row justify-center gap-8 px-4 lg:px-12 xl:grid-cols-12">
             <Suspense
               fallback={
-                <div className="min-h-[320px] rounded-lg border bg-white p-6 shadow-sm xl:col-span-5 2xl:col-span-4" />
+                <div className="min-h-[320px] rounded-lg border bg-white p-6 shadow-xs xl:col-span-5 2xl:col-span-4" />
               }
             >
               <ReservationSection

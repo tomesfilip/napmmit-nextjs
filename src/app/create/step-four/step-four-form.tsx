@@ -232,7 +232,7 @@ export const StepFourForm = () => {
                         />
                       )}
                       {displayImageGrid && (
-                        <div className="grid h-[17rem] grid-cols-2 place-content-between gap-4 overflow-y-auto overflow-x-hidden md:grid-cols-3">
+                        <div className="grid h-68 grid-cols-2 place-content-between gap-4 overflow-y-auto overflow-x-hidden md:grid-cols-3">
                           {images.map((image, index) => (
                             <div key={image.id} className="group relative h-32">
                               <Image

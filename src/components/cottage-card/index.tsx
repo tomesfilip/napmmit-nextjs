@@ -17,7 +17,7 @@ type Props = {
 
 export const CottageCard = ({ cottage, isEditable }: Props) => {
   return (
-    <Card className="group relative aspect-[16/9] h-fit min-h-[260px] w-full cursor-pointer overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
+    <Card className="group relative aspect-video h-fit min-h-[260px] w-full cursor-pointer overflow-hidden xl:min-h-[280px] 2xl:min-h-[260px]">
       <Link
         href={`${ROUTES.COTTAGE_DETAIL}/${cottage.id}`}
         className="absolute left-0 top-0 size-full"

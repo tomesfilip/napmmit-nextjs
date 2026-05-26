@@ -51,7 +51,7 @@ export const OwnerReservationCard = ({ reservation }: Props) => {
   const isConfirmed = reservation.status === 'confirmed';
 
   return (
-    <Card className="relative rounded-lg border bg-white p-4 shadow-sm">
+    <Card className="relative rounded-lg border bg-white p-4 shadow-xs">
       <CardHeader>
         <CardTitle className="text-xl">
           Rezervácia #{reservation.id} pre {reservation.cottage.name}
@@ -65,7 +65,7 @@ export const OwnerReservationCard = ({ reservation }: Props) => {
         >
           <div
             className={clsx(
-              'size-2 flex-shrink-0 rounded-full',
+              'size-2 shrink-0 rounded-full',
               reservation.status === 'confirmed' && 'bg-green-600',
               reservation.status === 'pending' && 'bg-yellow-500',
               reservation.status === 'cancelled' && 'bg-red-500',

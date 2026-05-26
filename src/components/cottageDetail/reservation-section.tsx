@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import type { CottageDetailType, ReservedRangeType } from '@/lib/appTypes';
+import type { CottageDetailType } from '@/lib/appTypes';
 import type { AvailabilityResponseType } from '@/lib/availability';
 import { checkAvailability } from '@/lib/availability/actions';
 import { cottageAvailabilityQueryKey } from '@/lib/query';
@@ -26,13 +26,13 @@ import {
   createReservation,
 } from '@/lib/reservation/actions';
 import {
+  formatReservationDate,
   getDefaultReservationDateRange,
   parseReservationDateParam,
   RESERVATION_DATE_PARAM_FORMAT,
 } from '@/lib/reservation-date-range';
 
 type ReservationSectionProps = CottageDetailType & {
-  reservedRanges?: ReservedRangeType[];
   user: User | null;
   initialAvailability: AvailabilityResponseType[];
   urlRangeFrom: string;
@@ -87,12 +87,13 @@ export const ReservationSection = ({
       if (!fromStr || !toStr) {
         throw new Error('Missing date range');
       }
-      const from = parseReservationDateParam(fromStr);
-      const to = parseReservationDateParam(toStr);
-      if (!from || !to) {
+      if (
+        !parseReservationDateParam(fromStr) ||
+        !parseReservationDateParam(toStr)
+      ) {
         throw new Error('Invalid date range');
       }
-      return checkAvailability(id, from, to);
+      return checkAvailability(id, fromStr, toStr);
     },
     enabled: Boolean(
       fromStr &&
@@ -216,8 +217,8 @@ export const ReservationSection = ({
 
     const input: CreateReservationInput = {
       cottageId: id,
-      from: dateRange.from.toISOString().split('T')[0],
-      to: dateRange.to.toISOString().split('T')[0],
+      from: formatReservationDate(dateRange.from),
+      to: formatReservationDate(dateRange.to),
       bedsReserved: guests,
       totalPrice,
       ...(guestEmail && { guestEmail }),

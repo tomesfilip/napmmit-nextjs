@@ -29,8 +29,6 @@ export type CookieConsentType = {
 
 export type ReservationStatusType = 'pending' | 'confirmed' | 'cancelled';
 
-export type ReservedRangeType = { from: string; to: string };
-
 export type OwnerReservationType = ReservationType & {
   cottage: Pick<Cottage, 'id' | 'name'> & {
     images: ImageType[];

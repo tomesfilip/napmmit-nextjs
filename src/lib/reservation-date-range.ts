@@ -1,6 +1,15 @@
-import { addDays, format, startOfDay } from 'date-fns';
+import {
+  addDays,
+  differenceInCalendarDays,
+  format,
+  startOfDay,
+} from 'date-fns';
 
 export const RESERVATION_DATE_PARAM_FORMAT = 'yyyy-MM-dd';
+
+export function formatReservationDate(date: Date) {
+  return format(date, RESERVATION_DATE_PARAM_FORMAT);
+}
 
 /** Check-in = today (local), check-out = 7 days later (exclusive end for availability query). */
 export function getDefaultReservationDateRange(now = new Date()) {
@@ -9,8 +18,8 @@ export function getDefaultReservationDateRange(now = new Date()) {
   return {
     from,
     to,
-    fromParam: format(from, RESERVATION_DATE_PARAM_FORMAT),
-    toParam: format(to, RESERVATION_DATE_PARAM_FORMAT),
+    fromParam: formatReservationDate(from),
+    toParam: formatReservationDate(to),
   };
 }
 
@@ -31,4 +40,22 @@ export function parseReservationDateParam(ymd: string): Date | null {
 
 export function isValidReservationRange(from: Date, to: Date) {
   return from.getTime() < to.getTime();
+}
+
+export function getReservationNightCount(from: Date, to: Date) {
+  return differenceInCalendarDays(to, from);
+}
+
+export function getReservationDateStrings(from: Date, to: Date) {
+  const dates: string[] = [];
+
+  for (
+    let current = startOfDay(from);
+    current < to;
+    current = addDays(current, 1)
+  ) {
+    dates.push(formatReservationDate(current));
+  }
+
+  return dates;
 }

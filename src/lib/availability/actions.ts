@@ -1,11 +1,26 @@
 'use server';
 
 import { getAvailableBeds } from '@/lib/availability';
+import {
+  isValidReservationRange,
+  parseReservationDateParam,
+} from '@/lib/reservation-date-range';
 
 export async function checkAvailability(
   cottageId: number,
-  checkIn: Date,
-  checkOut: Date,
+  checkIn: string,
+  checkOut: string,
 ) {
-  return getAvailableBeds(cottageId, checkIn, checkOut);
+  const checkInDate = parseReservationDateParam(checkIn);
+  const checkOutDate = parseReservationDateParam(checkOut);
+
+  if (
+    !checkInDate ||
+    !checkOutDate ||
+    !isValidReservationRange(checkInDate, checkOutDate)
+  ) {
+    return [];
+  }
+
+  return getAvailableBeds(cottageId, checkInDate, checkOutDate);
 }

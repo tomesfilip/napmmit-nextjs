@@ -4,11 +4,18 @@ import { and, eq, sum } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
+import {
+  formatReservationDate,
+  getReservationDateStrings,
+  getReservationNightCount,
+  isValidReservationRange,
+  parseReservationDateParam,
+} from '../reservation-date-range';
 
 export type CreateReservationInput = {
   cottageId: number;
-  from: string; // ISO date string
-  to: string; // ISO date string
+  from: string; // yyyy-MM-dd date string
+  to: string; // yyyy-MM-dd date string
   bedsReserved: number;
   totalPrice: number;
   guestEmail?: string;
@@ -47,22 +54,21 @@ export async function createReservation(
       return { error: 'missing_guest_contact' };
     }
 
-    const dateFrom = new Date(data.from);
-    const dateTo = new Date(data.to);
+    const dateFrom = parseReservationDateParam(data.from);
+    const dateTo = parseReservationDateParam(data.to);
 
-    if (Number.isNaN(dateFrom.getTime()) || Number.isNaN(dateTo.getTime())) {
+    if (!dateFrom || !dateTo) {
       return { error: 'invalid_dates' };
     }
 
-    if (dateTo <= dateFrom) {
+    if (!isValidReservationRange(dateFrom, dateTo)) {
       return { error: 'to_date_before_from' };
     }
 
-    const fromISO = dateFrom.toISOString().split('T')[0];
-    const toISO = dateTo.toISOString().split('T')[0];
+    const fromISO = formatReservationDate(dateFrom);
+    const toISO = formatReservationDate(dateTo);
 
-    const diffTime = dateTo.getTime() - dateFrom.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = getReservationNightCount(dateFrom, dateTo);
     const pricePerNight = Math.round(data.totalPrice / diffDays);
 
     // Validate bed availability for each day
@@ -76,11 +82,7 @@ export async function createReservation(
     }
 
     // Check availability for each day in the reservation period
-    const reservationDates = [];
-    for (let d = new Date(dateFrom); d < dateTo; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().split('T')[0];
-      reservationDates.push(dateStr);
-    }
+    const reservationDates = getReservationDateStrings(dateFrom, dateTo);
 
     for (const date of reservationDates) {
       const existingReservations = await db
@@ -145,8 +147,6 @@ export async function createReservation(
   }
 }
 
-export async function updateReservation(data: any) {}
-
 export async function deleteReservation(reservationId: number) {
   try {
     const { user } = await validateRequest();
@@ -201,7 +201,7 @@ export async function confirmReservation(reservationId: number) {
       .update(reservations)
       .set({
         status: 'confirmed',
-        updatedAt: new Date().toISOString().split('T')[0],
+        updatedAt: formatReservationDate(new Date()),
       })
       .where(eq(reservations.id, reservationId));
     return { success: true };

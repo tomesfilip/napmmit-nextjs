@@ -78,7 +78,6 @@ const CottageDetail = async ({
             >
               <ReservationSection
                 {...cottage}
-                reservedRanges={[]}
                 user={user}
                 initialAvailability={initialAvailability}
                 urlRangeFrom={fromParam}

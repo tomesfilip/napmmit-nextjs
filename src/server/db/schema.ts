@@ -14,6 +14,10 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { IconType } from '@/lib/appTypes';
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
+import {
+  formatReservationDate,
+  parseReservationDateParam,
+} from '@/lib/reservation-date-range';
 
 export const userRoleEnum = pgEnum('user_role', [
   'hiker',
@@ -57,12 +61,14 @@ export const cottages = pgTable('cottages', {
     dataType: () => 'date[]',
     toDriver: (val) => {
       if (!val || val.length === 0) return '{}';
-      return `{${val.map((date) => date.toISOString().split('T')[0]).join(',')}}`;
+      return `{${val.map(formatReservationDate).join(',')}}`;
     },
     fromDriver: (val) => {
       if (!val || val === '{}') return [];
       const dates = val.slice(1, -1).split(',');
-      return dates.map((date) => new Date(date));
+      return dates.map(
+        (date) => parseReservationDateParam(date) ?? new Date(date),
+      );
     },
   })().default([]),
 });

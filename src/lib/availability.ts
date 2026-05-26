@@ -1,6 +1,11 @@
 import { and, eq, gt, lt, or } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { cottages, reservations } from '@/server/db/schema';
+import {
+  formatReservationDate,
+  getReservationDateStrings,
+  parseReservationDateParam,
+} from './reservation-date-range';
 
 export type AvailabilityResponseType = {
   date: Date;
@@ -20,16 +25,8 @@ export async function getAvailableBeds(
 
   if (!cottage) return [];
 
-  console.log(
-    'AVAILABILITY.TS: Cottage available (total) beds:',
-    cottage.totalBeds,
-  );
-
-  const checkInStr = checkIn.toISOString().split('T')[0];
-  const checkOutStr = checkOut.toISOString().split('T')[0];
-
-  console.log('AVAILABILITY.TS: Check in:', checkInStr);
-  console.log('AVAILABILITY.TS: Check out:', checkOutStr);
+  const checkInStr = formatReservationDate(checkIn);
+  const checkOutStr = formatReservationDate(checkOut);
 
   // Get all reserved beds for each date in the date range and group by date
   const overlappingReservations = await db
@@ -51,24 +48,20 @@ export async function getAvailableBeds(
       ),
     );
 
-  const result: AvailabilityResponseType[] = [];
-  const current = new Date(checkIn);
-
-  while (current < checkOut) {
-    const dateStr = current.toISOString().split('T')[0];
-
+  const result: AvailabilityResponseType[] = getReservationDateStrings(
+    checkIn,
+    checkOut,
+  ).map((dateStr) => {
     // Sum bedsReserved for all reservations that cover this specific date
     const reservedOnDate = overlappingReservations
       .filter((res) => res.from <= dateStr && res.to > dateStr)
       .reduce((sum, res) => sum + res.bedsReserved, 0);
 
-    result.push({
-      date: new Date(current),
+    return {
+      date: parseReservationDateParam(dateStr) ?? new Date(dateStr),
       availableBeds: cottage.totalBeds - reservedOnDate,
-    });
-
-    current.setDate(current.getDate() + 1);
-  }
+    };
+  });
 
   return result;
 }

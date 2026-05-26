@@ -38,9 +38,9 @@ describe('Availability Service', () => {
       expect(result).toBe(0);
     });
 
-    it('should return full capacity when no reservations exist', async () => {
+    it('should return total beds when no reservations exist', async () => {
       const totalBeds = 10;
-      mockCottageQuery({ availableBeds: totalBeds });
+      mockCottageQuery({ totalBeds });
       mockReservationsQuery(null);
 
       const result = await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -51,7 +51,7 @@ describe('Availability Service', () => {
     it('should return available beds when some are reserved', async () => {
       const totalBeds = 10;
       const reservedBeds = 4;
-      mockCottageQuery({ availableBeds: totalBeds });
+      mockCottageQuery({ totalBeds });
       mockReservationsQuery(reservedBeds);
 
       const result = await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -62,7 +62,7 @@ describe('Availability Service', () => {
     it('should return 0 when all beds are reserved', async () => {
       const totalBeds = 5;
       const reservedBeds = 5;
-      mockCottageQuery({ availableBeds: totalBeds });
+      mockCottageQuery({ totalBeds });
       mockReservationsQuery(reservedBeds);
 
       const result = await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -73,7 +73,7 @@ describe('Availability Service', () => {
     it('should return 0 when more beds are reserved than available', async () => {
       const totalBeds = 5;
       const reservedBeds = 8;
-      mockCottageQuery({ availableBeds: totalBeds });
+      mockCottageQuery({ totalBeds });
       mockReservationsQuery(reservedBeds);
 
       const result = await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -83,7 +83,7 @@ describe('Availability Service', () => {
 
     it('should handle null reservation total correctly', async () => {
       const totalBeds = 10;
-      mockCottageQuery({ availableBeds: totalBeds });
+      mockCottageQuery({ totalBeds });
       mockReservationsQuery(null);
 
       const result = await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -92,7 +92,7 @@ describe('Availability Service', () => {
     });
 
     it('should convert dates to correct string format for database queries', async () => {
-      mockCottageQuery({ availableBeds: 10 });
+      mockCottageQuery({ totalBeds: 10 });
       mockReservationsQuery(0);
 
       await getAvailableBeds(cottageId, checkIn, checkOut);
@@ -113,7 +113,7 @@ describe('Availability Service', () => {
 
     it('should return true when enough beds are available', async () => {
       const requestedBeds = 3;
-      mockCottageQuery({ availableBeds: 10 });
+      mockCottageQuery({ totalBeds: 10 });
       mockReservationsQuery(2);
 
       const result = await canMakeReservation(
@@ -128,7 +128,7 @@ describe('Availability Service', () => {
 
     it('should return true when exactly enough beds are available', async () => {
       const requestedBeds = 5;
-      mockCottageQuery({ availableBeds: 10 });
+      mockCottageQuery({ totalBeds: 10 });
       mockReservationsQuery(5);
 
       const result = await canMakeReservation(
@@ -143,7 +143,7 @@ describe('Availability Service', () => {
 
     it('should return false when not enough beds are available', async () => {
       const requestedBeds = 6;
-      mockCottageQuery({ availableBeds: 10 });
+      mockCottageQuery({ totalBeds: 10 });
       mockReservationsQuery(5);
 
       const result = await canMakeReservation(
@@ -172,7 +172,7 @@ describe('Availability Service', () => {
 
     it('should return false when requesting zero beds', async () => {
       const requestedBeds = 0;
-      mockCottageQuery({ availableBeds: 10 });
+      mockCottageQuery({ totalBeds: 10 });
       mockReservationsQuery(0);
 
       const result = await canMakeReservation(
@@ -190,7 +190,7 @@ describe('Availability Service', () => {
     it('should handle same day check-in and check-out', async () => {
       const cottageId = 1;
       const sameDate = new Date('2024-01-15');
-      mockCottageQuery({ availableBeds: 5 });
+      mockCottageQuery({ totalBeds: 5 });
       mockReservationsQuery(0);
 
       const result = await getAvailableBeds(cottageId, sameDate, sameDate);
@@ -202,7 +202,7 @@ describe('Availability Service', () => {
       const cottageId = 1;
       const futureCheckIn = new Date('2025-12-25');
       const futureCheckOut = new Date('2025-12-27');
-      mockCottageQuery({ availableBeds: 8 });
+      mockCottageQuery({ totalBeds: 8 });
       mockReservationsQuery(2);
 
       const result = await getAvailableBeds(
@@ -217,11 +217,11 @@ describe('Availability Service', () => {
 });
 
 // Test Helpers
-function mockCottageQuery(cottage: { availableBeds: number } | null) {
+function mockCottageQuery(cottage: { totalBeds: number } | null) {
   const cottageChain = {
     from: vi.fn().mockReturnThis(),
     where: vi.fn().mockReturnThis(),
-    then: vi.fn().mockResolvedValue(cottage ? [cottage] : []),
+    mockResolvedValue: vi.fn().mockResolvedValue(cottage ? [cottage] : []),
   };
 
   mockDb.select.mockReturnValueOnce(cottageChain);
@@ -231,7 +231,7 @@ function mockReservationsQuery(totalReserved: number | null) {
   const reservationsChain = {
     from: vi.fn().mockReturnThis(),
     where: vi.fn().mockReturnThis(),
-    then: vi.fn().mockResolvedValue([{ total: totalReserved }]),
+    mockResolvedValue: vi.fn().mockResolvedValue([{ total: totalReserved }]),
   };
 
   mockDb.select.mockReturnValueOnce(reservationsChain);

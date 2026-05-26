@@ -13,7 +13,7 @@ export async function getAvailableBeds(
   checkOut: Date,
 ): Promise<AvailabilityResponseType[]> {
   const cottage = await db
-    .select({ capacity: cottages.capacity })
+    .select({ totalBeds: cottages.totalBeds })
     .from(cottages)
     .where(eq(cottages.id, cottageId))
     .then((rows) => rows[0]);
@@ -22,7 +22,7 @@ export async function getAvailableBeds(
 
   console.log(
     'AVAILABILITY.TS: Cottage available (total) beds:',
-    cottage.capacity,
+    cottage.totalBeds,
   );
 
   const checkInStr = checkIn.toISOString().split('T')[0];
@@ -64,7 +64,7 @@ export async function getAvailableBeds(
 
     result.push({
       date: new Date(current),
-      availableBeds: cottage.capacity - reservedOnDate,
+      availableBeds: cottage.totalBeds - reservedOnDate,
     });
 
     current.setDate(current.getDate() + 1);

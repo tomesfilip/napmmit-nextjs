@@ -48,7 +48,7 @@ mv src/lib/reservation/actions-updated.ts src/lib/reservation/actions.ts
 
 ## Database Schema
 Your current schema already supports this system:
-- `cottages.availableBeds`: Total beds per cottage
+- `cottages.totalBeds`: Total beds per cottage
 - `reservations.bedsReserved`: Beds reserved per booking
 - `reservations.from/to`: Date range for reservations
 - `reservations.status`: Reservation status (pending/confirmed/cancelled)

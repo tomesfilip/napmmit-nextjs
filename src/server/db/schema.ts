@@ -39,9 +39,7 @@ export const cottages = pgTable('cottages', {
   description: varchar('description'),
   address: varchar('address').notNull(),
   mountainArea: varchar('mountain_area', { length: 255 }).notNull(),
-  // TODO: Rename to totalBeds
-  capacity: integer('capacity').notNull(),
-  availableBeds: integer('available_beds').notNull(),
+  totalBeds: integer('total_beds').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
   priceLowPerNight: integer('price_low_per_night'),
   priceBreakfast: integer('price_breakfast'),

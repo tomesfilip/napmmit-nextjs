@@ -68,7 +68,7 @@ export async function createReservation(
     // Validate bed availability for each day
     const cottage = await db.query.cottages.findFirst({
       where: eq(cottages.id, data.cottageId),
-      columns: { availableBeds: true },
+      columns: { totalBeds: true },
     });
 
     if (!cottage) {
@@ -99,7 +99,7 @@ export async function createReservation(
         );
 
       const bookedBeds = Number(existingReservations[0]?.totalBeds) || 0;
-      const availableBeds = cottage.availableBeds - bookedBeds;
+      const availableBeds = cottage.totalBeds - bookedBeds;
 
       if (availableBeds < data.bedsReserved) {
         return { error: 'insufficient_beds_available' };

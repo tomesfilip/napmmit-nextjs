@@ -42,7 +42,7 @@ type ReservationSectionProps = CottageDetailType & {
 export const ReservationSection = ({
   id,
   unAvailabilityDates,
-  availableBeds: totalBeds,
+  totalBeds,
   pricePerNight,
   user,
   initialAvailability,

@@ -30,7 +30,7 @@ export const StepTwoForm = () => {
   const form = useForm<StepTwoSchemaType>({
     resolver: zodResolver(stepTwoSchema),
     defaultValues: {
-      occupancy: storedData.occupancy || 1,
+      totalBeds: storedData.totalBeds || 1,
       email: storedData.email || '',
       phone: storedData.phone || '',
       website: storedData.website || '',
@@ -55,7 +55,7 @@ export const StepTwoForm = () => {
           <div className="space-y-5">
             <FormField
               control={form.control}
-              name="occupancy"
+              name="totalBeds"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('Occupancy.Label')}</FormLabel>

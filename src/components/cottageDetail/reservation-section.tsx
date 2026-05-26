@@ -161,8 +161,8 @@ export const ReservationSection = ({
       return 0;
     }
     const nights = differenceInDays(dateRange.to, dateRange.from);
-    return nights * pricePerNight;
-  }, [dateRange, pricePerNight]);
+    return nights * pricePerNight * guests;
+  }, [dateRange, guests, pricePerNight]);
 
   const nights = useMemo(() => {
     if (!dateRange?.from || !dateRange?.to) return 0;
@@ -426,7 +426,8 @@ export const ReservationSection = ({
             <div className="space-y-1">
               <p className="text-xs text-gray-500">
                 {pricePerNight} {currency} × {nights}{' '}
-                {nights === 1 ? 'noc' : nights < 5 ? 'noci' : 'nocí'}
+                {nights === 1 ? 'noc' : nights < 5 ? 'noci' : 'nocí'} ×{' '}
+                {guests} {getGuestsLabel(guests).toLowerCase()}
               </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t('TotalPrice')}</span>

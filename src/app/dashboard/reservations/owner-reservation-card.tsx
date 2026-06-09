@@ -29,12 +29,12 @@ export const OwnerReservationCard = ({ reservation }: Props) => {
   const t = useTranslations('Dashboard.Reservations');
 
   const handleCancelReservation = async (reservationId: number) => {
-    const { success, error } = await deleteReservation(reservationId);
-    if (success) {
+    const result = await deleteReservation(reservationId);
+    if ('success' in result) {
       toast.success('Rezervácia bola zrušená');
       router.refresh();
     } else {
-      toast.error(error);
+      toast.error(result.error);
     }
   };
 
@@ -89,11 +89,16 @@ export const OwnerReservationCard = ({ reservation }: Props) => {
           <span className="font-medium">Celková cena:</span>{' '}
           {reservation.totalPrice} €
         </p>
+        {reservation.paymentStatus === 'refund_failed' && (
+          <p className="text-red-600">
+            Refundácia zlyhala. Vyžaduje manuálnu kontrolu.
+          </p>
+        )}
       </CardContent>
       <CardFooter className="gap-2 border-t-0 bg-transparent">
         <Button
           onClick={() => handleConfirmReservation(reservation.id)}
-          disabled={isConfirmed}
+          disabled={isConfirmed || reservation.status === 'cancelled'}
         >
           {t('Actions.Confirm')}
         </Button>
@@ -101,6 +106,7 @@ export const OwnerReservationCard = ({ reservation }: Props) => {
           variant="outline"
           className="text-black transition-colors duration-200 ease-in-out hover:bg-destructive/10"
           onClick={() => handleCancelReservation(reservation.id)}
+          disabled={reservation.status === 'cancelled'}
         >
           {t('Actions.Cancel')}
         </Button>

@@ -1,7 +1,19 @@
+import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
+import {
+  type CreateReservationInput,
+  createPaidReservation,
+} from '@/lib/reservation/actions';
 import { stripe } from '@/lib/stripe';
+import { parseReservationCheckoutMetadata } from '@/lib/stripe/reservation-checkout';
+import db from '@/server/db/drizzle';
+import { reservations } from '@/server/db/schema';
+
+type CheckoutSessionProcessingResult =
+  | { success: true }
+  | { error: string; status: number };
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -22,35 +34,10 @@ export async function POST(req: Request) {
     );
   }
 
+  let event: Stripe.Event;
+
   try {
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      webhookSecret,
-    );
-
-    // Handle the event
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-
-      const userId = session.metadata?.userId;
-      if (!userId) {
-        return NextResponse.json(
-          { error: 'User ID is not set' },
-          { status: 400 },
-        );
-      }
-
-      const priceId = session.metadata?.priceId;
-      if (!priceId) {
-        return NextResponse.json(
-          { error: 'Price ID is not set' },
-          { status: 400 },
-        );
-      }
-
-      console.log(`Payment confirmed for ${session.id}`);
-    }
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     const message =
       err instanceof Error ? err.message : 'Unknown webhook error';
@@ -61,5 +48,67 @@ export async function POST(req: Request) {
     );
   }
 
+  if (event.type === 'checkout.session.completed') {
+    const result = await processCompletedCheckoutSession(event.data.object);
+
+    if ('error' in result) {
+      return NextResponse.json(
+        { error: result.error },
+        { status: result.status },
+      );
+    }
+  }
+
   return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
+}
+
+async function processCompletedCheckoutSession(
+  session: Stripe.Checkout.Session,
+): Promise<CheckoutSessionProcessingResult> {
+  const existingReservation = await db.query.reservations.findFirst({
+    where: eq(reservations.stripeCheckoutSessionId, session.id),
+    columns: { id: true },
+  });
+
+  if (existingReservation) {
+    return { success: true };
+  }
+
+  const parsedMetadata = parseReservationCheckoutMetadata(
+    session.metadata ?? {},
+  );
+
+  if (!parsedMetadata.success) {
+    return { error: parsedMetadata.error, status: 400 };
+  }
+
+  const result = await createPaidReservation(
+    parsedMetadata.data satisfies CreateReservationInput,
+    {
+      stripeCheckoutSessionId: session.id,
+      stripePaymentIntentId: getPaymentIntentId(session.payment_intent),
+      paidAt: session.created ? new Date(session.created * 1000) : new Date(),
+    },
+  );
+
+  if ('error' in result) {
+    if (result.error === 'insufficient_beds_available') {
+      console.error(
+        'Paid checkout session could not create reservation because availability was gone:',
+        { checkoutSessionId: session.id },
+      );
+      return { success: true };
+    }
+
+    return { error: result.error, status: 400 };
+  }
+
+  return { success: true };
+}
+
+function getPaymentIntentId(
+  paymentIntent: string | Stripe.PaymentIntent | null,
+) {
+  if (!paymentIntent) return null;
+  return typeof paymentIntent === 'string' ? paymentIntent : paymentIntent.id;
 }

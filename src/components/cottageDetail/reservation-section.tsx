@@ -426,8 +426,8 @@ export const ReservationSection = ({
             <div className="space-y-1">
               <p className="text-xs text-gray-500">
                 {pricePerNight} {currency} × {nights}{' '}
-                {nights === 1 ? 'noc' : nights < 5 ? 'noci' : 'nocí'} ×{' '}
-                {guests} {getGuestsLabel(guests).toLowerCase()}
+                {nights === 1 ? 'noc' : nights < 5 ? 'noci' : 'nocí'} × {guests}{' '}
+                {getGuestsLabel(guests).toLowerCase()}
               </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t('TotalPrice')}</span>

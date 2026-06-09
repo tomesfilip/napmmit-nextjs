@@ -1,150 +1,173 @@
 'use server';
 
-import { and, eq, sum } from 'drizzle-orm';
+import { and, eq, or, sum } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
+import { formatReservationDate } from '../reservation-date-range';
+import { RESERVATION_FEE_CENTS } from '../stripe/reservation-checkout';
 import {
-  formatReservationDate,
-  getReservationDateStrings,
-  getReservationNightCount,
-  isValidReservationRange,
-  parseReservationDateParam,
-} from '../reservation-date-range';
+  type ReservationValidationInput,
+  type ValidatedReservationInput,
+  validateReservationInputData,
+} from './validation';
 
-export type CreateReservationInput = {
-  cottageId: number;
-  from: string; // yyyy-MM-dd date string
-  to: string; // yyyy-MM-dd date string
-  bedsReserved: number;
-  totalPrice: number;
-  guestEmail?: string;
-  guestPhone?: string;
-};
+export type CreateReservationInput = ReservationValidationInput;
 
 export type CreateReservationResult =
   | { success: true; reservationId: number }
   | { error: string };
 
+export type ReservationPaymentInput = {
+  stripeCheckoutSessionId: string;
+  stripePaymentIntentId?: string | null;
+  paidAt?: Date;
+};
+
+export async function validateReservationInput(
+  data: CreateReservationInput,
+): Promise<
+  { success: true; data: ValidatedReservationInput } | { error: string }
+> {
+  return validateReservationInputData(data);
+}
+
+export async function assertReservationAvailability(
+  data: ValidatedReservationInput,
+): Promise<{ success: true } | { error: string }> {
+  const cottage = await db.query.cottages.findFirst({
+    where: eq(cottages.id, data.cottageId),
+    columns: { totalBeds: true },
+  });
+
+  if (!cottage) {
+    return { error: 'cottage_not_found' };
+  }
+
+  for (const date of data.reservationDates) {
+    const existingReservations = await db
+      .select({ totalBeds: sum(reservationDays.bedsReserved) })
+      .from(reservationDays)
+      .innerJoin(
+        reservations,
+        eq(reservationDays.reservationId, reservations.id),
+      )
+      .where(
+        and(
+          eq(reservationDays.date, date),
+          eq(reservations.cottageId, data.cottageId),
+          or(
+            eq(reservations.status, 'pending'),
+            eq(reservations.status, 'confirmed'),
+          ),
+        ),
+      );
+
+    const bookedBeds = Number(existingReservations[0]?.totalBeds) || 0;
+    const availableBeds = cottage.totalBeds - bookedBeds;
+
+    if (availableBeds < data.bedsReserved) {
+      return { error: 'insufficient_beds_available' };
+    }
+  }
+
+  return { success: true };
+}
+
 export async function createReservation(
   data: CreateReservationInput,
 ): Promise<CreateReservationResult> {
   try {
-    // Input validation
-    if (!data.bedsReserved || data.bedsReserved < 1) {
-      return { error: 'beds_required' };
-    }
-    if (!data.from) {
-      return { error: 'from_date_required' };
-    }
-    if (!data.to) {
-      return { error: 'to_date_required' };
-    }
-    if (!data.cottageId) {
-      return { error: 'cottage_id_required' };
-    }
-    if (!data.totalPrice || data.totalPrice < 0) {
-      return { error: 'total_price_required' };
-    }
-
     const { user } = await validateRequest();
-
-    // If no user, require guest contact info
-    if (!user && !data.guestEmail && !data.guestPhone) {
-      return { error: 'missing_guest_contact' };
-    }
-
-    const dateFrom = parseReservationDateParam(data.from);
-    const dateTo = parseReservationDateParam(data.to);
-
-    if (!dateFrom || !dateTo) {
-      return { error: 'invalid_dates' };
-    }
-
-    if (!isValidReservationRange(dateFrom, dateTo)) {
-      return { error: 'to_date_before_from' };
-    }
-
-    const fromISO = formatReservationDate(dateFrom);
-    const toISO = formatReservationDate(dateTo);
-
-    const diffDays = getReservationNightCount(dateFrom, dateTo);
-    const pricePerNight = Math.round(data.totalPrice / diffDays);
-
-    // Validate bed availability for each day
-    const cottage = await db.query.cottages.findFirst({
-      where: eq(cottages.id, data.cottageId),
-      columns: { totalBeds: true },
+    const validated = await validateReservationInput({
+      ...data,
+      userId: user?.id ?? null,
     });
 
-    if (!cottage) {
-      return { error: 'cottage_not_found' };
+    if ('error' in validated) {
+      return validated;
     }
 
-    // Check availability for each day in the reservation period
-    const reservationDates = getReservationDateStrings(dateFrom, dateTo);
-
-    for (const date of reservationDates) {
-      const existingReservations = await db
-        .select({ totalBeds: sum(reservationDays.bedsReserved) })
-        .from(reservationDays)
-        .innerJoin(
-          reservations,
-          eq(reservationDays.reservationId, reservations.id),
-        )
-        .where(
-          and(
-            eq(reservationDays.date, date),
-            eq(reservations.cottageId, data.cottageId),
-            eq(reservations.status, 'confirmed'),
-          ),
-        );
-
-      const bookedBeds = Number(existingReservations[0]?.totalBeds) || 0;
-      const availableBeds = cottage.totalBeds - bookedBeds;
-
-      if (availableBeds < data.bedsReserved) {
-        return { error: 'insufficient_beds_available' };
-      }
+    const availability = await assertReservationAvailability(validated.data);
+    if ('error' in availability) {
+      return availability;
     }
 
-    const reservationData = {
-      userId: user?.id ?? null,
-      guestEmail: data.guestEmail ?? null,
-      guestPhone: data.guestPhone ?? null,
-      bedsReserved: data.bedsReserved,
-      from: fromISO,
-      to: toISO,
-      pricePerNight: pricePerNight,
-      totalPrice: data.totalPrice,
-      status: 'pending' as const,
-      cottageId: data.cottageId,
-      accessToken: crypto.randomUUID(),
-    };
+    return createReservationRecord(validated.data, { paymentStatus: 'unpaid' });
+  } catch (error) {
+    console.error('Reservation creation failed:', error);
+    return { error: 'reservation_failed' };
+  }
+}
 
-    const [newReservation] = await db
+export async function createPaidReservation(
+  data: CreateReservationInput,
+  payment: ReservationPaymentInput,
+): Promise<CreateReservationResult> {
+  const validated = await validateReservationInput(data);
+  if ('error' in validated) {
+    return validated;
+  }
+
+  const availability = await assertReservationAvailability(validated.data);
+  if ('error' in availability) {
+    return availability;
+  }
+
+  return createReservationRecord(validated.data, {
+    paymentStatus: 'paid',
+    paidAt: payment.paidAt ?? new Date(),
+    stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+    stripePaymentIntentId: payment.stripePaymentIntentId ?? null,
+  });
+}
+
+async function createReservationRecord(
+  data: ValidatedReservationInput,
+  payment: {
+    paymentStatus: 'unpaid' | 'paid';
+    paidAt?: Date;
+    stripeCheckoutSessionId?: string;
+    stripePaymentIntentId?: string | null;
+  },
+): Promise<CreateReservationResult> {
+  return db.transaction(async (tx) => {
+    const [newReservation] = await tx
       .insert(reservations)
-      .values(reservationData)
+      .values({
+        userId: data.userId,
+        guestEmail: data.guestEmail ?? null,
+        guestPhone: data.guestPhone ?? null,
+        bedsReserved: data.bedsReserved,
+        reservationFeeCents: RESERVATION_FEE_CENTS,
+        paymentStatus: payment.paymentStatus,
+        stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+        stripePaymentIntentId: payment.stripePaymentIntentId,
+        paidAt: payment.paidAt,
+        from: data.fromISO,
+        to: data.toISO,
+        pricePerNight: data.pricePerNight,
+        totalPrice: data.totalPrice,
+        status: 'pending',
+        cottageId: data.cottageId,
+        accessToken: crypto.randomUUID(),
+      })
       .returning({ id: reservations.id });
 
     if (!newReservation) {
       return { error: 'reservation_failed' };
     }
 
-    // Create reservation day records
-    const reservationDayRecords = reservationDates.map((date) => ({
-      reservationId: newReservation.id,
-      date,
-      bedsReserved: data.bedsReserved,
-    }));
-
-    await db.insert(reservationDays).values(reservationDayRecords);
+    await tx.insert(reservationDays).values(
+      data.reservationDates.map((date) => ({
+        reservationId: newReservation.id,
+        date,
+        bedsReserved: data.bedsReserved,
+      })),
+    );
 
     return { success: true, reservationId: newReservation.id };
-  } catch (error) {
-    console.error('Reservation creation failed:', error);
-    return { error: 'reservation_failed' };
-  }
+  });
 }
 
 export async function deleteReservation(reservationId: number) {

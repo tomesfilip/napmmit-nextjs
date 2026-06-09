@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -98,7 +98,6 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
-
 
 @layer base {
   :root {

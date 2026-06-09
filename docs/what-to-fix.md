@@ -5,5 +5,4 @@
 - menu items are overflowed on smaller devices (under tablet resolution), create a mobile menu (hamburger nav) 
 
 # Reservation
-- calendar: add button to confirm dates
-- change order, first select number of guests (then, it's faster to calculate availability)
+- calendar: add button to clear dates (if selected)

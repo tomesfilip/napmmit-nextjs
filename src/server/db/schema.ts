@@ -25,6 +25,13 @@ export const userRoleEnum = pgEnum('user_role', [
   'admin',
 ]);
 
+export const paymentStatusEnum = pgEnum('payment_status', [
+  'unpaid',
+  'paid',
+  'refunded',
+  'refund_failed',
+]);
+
 export const users = pgTable('users', {
   id: varchar('id', { length: USER_ID_LENGTH }).primaryKey(),
   email: varchar('email', { length: 100 }).unique().notNull(),
@@ -88,8 +95,16 @@ export const reservations = pgTable('reservations', {
 
   bedsReserved: integer('beds_reserved').notNull(),
 
-  reservationFee: integer('reservation_fee').notNull().default(1),
-  refundAmount: integer('refund_amount').default(0),
+  reservationFeeCents: integer('reservation_fee_cents').notNull().default(100),
+  refundAmountCents: integer('refund_amount_cents').notNull().default(0),
+  paymentStatus: paymentStatusEnum('payment_status')
+    .notNull()
+    .default('unpaid'),
+  stripeCheckoutSessionId: varchar('stripe_checkout_session_id', {
+    length: 255,
+  }).unique(),
+  stripePaymentIntentId: varchar('stripe_payment_intent_id', { length: 255 }),
+  stripeRefundId: varchar('stripe_refund_id', { length: 255 }),
   pricePerNight: integer('price_per_night').notNull(),
   totalPrice: integer('total_price').notNull(),
 
@@ -99,6 +114,8 @@ export const reservations = pgTable('reservations', {
   status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled | completed
 
   accessToken: varchar('access_token', { length: 64 }).unique(),
+  paidAt: timestamp('paid_at'),
+  refundedAt: timestamp('refunded_at'),
 
   createdAt: date('created_at').defaultNow().notNull(),
   updatedAt: date('updated_at').defaultNow().notNull(),

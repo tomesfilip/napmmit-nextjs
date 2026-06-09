@@ -11,7 +11,8 @@
     "db:push": "bun drizzle-kit push",
     "db:seed": "tsx ./scripts/seed.ts",
     "icons:generate": "bunx @svgr/cli src/assets/svg --out-dir src/components/icons --typescript --filename-case camel",
-    "lint-format": "bunx --bun @biomejs/biome check --write"
+    "lint-format": "bunx --bun @biomejs/biome check --write",
+    "test": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -60,7 +61,7 @@
     "resend": "^6.12.4",
     "sonner": "^2.0.7",
     "stripe": "^22.2.0",
-    "tailwind-merge": "^2.6.1",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.1.1",
     "uuid": "^14.0.0",

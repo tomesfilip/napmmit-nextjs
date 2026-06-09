@@ -1,16 +1,13 @@
 import { and, eq, gt, lt, or } from 'drizzle-orm';
+import {
+  type AvailabilityResponseType,
+  calculateDailyAvailability,
+} from '@/lib/availability/logic';
 import db from '@/server/db/drizzle';
 import { cottages, reservations } from '@/server/db/schema';
-import {
-  formatReservationDate,
-  getReservationDateStrings,
-  parseReservationDateParam,
-} from './reservation-date-range';
+import { formatReservationDate } from './reservation-date-range';
 
-export type AvailabilityResponseType = {
-  date: Date;
-  availableBeds: number;
-};
+export type { AvailabilityResponseType } from '@/lib/availability/logic';
 
 export async function getAvailableBeds(
   cottageId: number,
@@ -34,6 +31,7 @@ export async function getAvailableBeds(
       from: reservations.from,
       to: reservations.to,
       bedsReserved: reservations.bedsReserved,
+      status: reservations.status,
     })
     .from(reservations)
     .where(
@@ -48,20 +46,12 @@ export async function getAvailableBeds(
       ),
     );
 
-  const result: AvailabilityResponseType[] = getReservationDateStrings(
+  const result: AvailabilityResponseType[] = calculateDailyAvailability(
+    cottage.totalBeds,
     checkIn,
     checkOut,
-  ).map((dateStr) => {
-    // Sum bedsReserved for all reservations that cover this specific date
-    const reservedOnDate = overlappingReservations
-      .filter((res) => res.from <= dateStr && res.to > dateStr)
-      .reduce((sum, res) => sum + res.bedsReserved, 0);
-
-    return {
-      date: parseReservationDateParam(dateStr) ?? new Date(dateStr),
-      availableBeds: cottage.totalBeds - reservedOnDate,
-    };
-  });
+    overlappingReservations,
+  );
 
   return result;
 }
@@ -72,6 +62,8 @@ export async function canMakeReservation(
   checkOut: Date,
   requestedBeds: number,
 ): Promise<boolean> {
+  if (requestedBeds < 1) return false;
+
   const availableBeds = await getAvailableBeds(cottageId, checkIn, checkOut);
-  return availableBeds.some((res) => res.availableBeds >= requestedBeds);
+  return availableBeds.every((res) => res.availableBeds >= requestedBeds);
 }

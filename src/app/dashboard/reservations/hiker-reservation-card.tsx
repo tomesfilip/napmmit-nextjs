@@ -22,11 +22,11 @@ export const HikerReservationCard = ({ reservation }: Props) => {
   const t = useTranslations('Dashboard');
 
   const handleCancelReservation = async (reservationId: number) => {
-    const { success, error } = await deleteReservation(reservationId);
-    if (success) {
+    const result = await deleteReservation(reservationId);
+    if ('success' in result) {
       toast.success('Rezervácia bola zrušená');
     } else {
-      toast.error(error);
+      toast.error(result.error);
     }
   };
 
@@ -77,9 +77,17 @@ export const HikerReservationCard = ({ reservation }: Props) => {
             {reservation.guestPhone}
           </p>
         )}
+        {reservation.paymentStatus === 'refund_failed' && (
+          <p className="text-red-600">
+            Refundácia zlyhala. Kontaktujte prosím podporu.
+          </p>
+        )}
       </CardContent>
       <CardFooter>
-        <Button onClick={() => handleCancelReservation(reservation.id)}>
+        <Button
+          onClick={() => handleCancelReservation(reservation.id)}
+          disabled={reservation.status === 'cancelled'}
+        >
           {t('Reservations.Actions.Cancel')}
         </Button>
       </CardFooter>

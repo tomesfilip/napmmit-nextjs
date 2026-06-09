@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { differenceInDays, format } from 'date-fns';
 import type { User } from 'lucia';
 import { CalendarIcon, Users } from 'lucide-react';
@@ -8,6 +8,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef, useState, useTransition } from 'react';
 import type { DateRange, Matcher } from 'react-day-picker';
+import { createReservationCheckoutSession } from '@/app/actions/stripe';
+import { ReservationCheckoutDialog } from '@/components/cottageDetail/reservation-checkout-dialog';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -21,13 +23,9 @@ import type { CottageDetailType } from '@/lib/appTypes';
 import type { AvailabilityResponseType } from '@/lib/availability';
 import { checkAvailability } from '@/lib/availability/actions';
 import { cottageAvailabilityQueryKey } from '@/lib/query';
-import {
-  type CreateReservationInput,
-  createReservation,
-} from '@/lib/reservation/actions';
+import type { CreateReservationInput } from '@/lib/reservation/actions';
 import {
   formatReservationDate,
-  getDefaultReservationDateRange,
   parseReservationDateParam,
   RESERVATION_DATE_PARAM_FORMAT,
 } from '@/lib/reservation-date-range';
@@ -53,7 +51,6 @@ export const ReservationSection = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
 
   const fromStr = searchParams.get('from');
   const toStr = searchParams.get('to');
@@ -64,6 +61,10 @@ export const ReservationSection = ({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [checkoutClientSecret, setCheckoutClientSecret] = useState<
+    string | null
+  >(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [datesPopoverOpen, setDatesPopoverOpen] = useState(false);
   const [draftDateRange, setDraftDateRange] = useState<DateRange | undefined>();
   const guestsInputRef = useRef<HTMLInputElement>(null);
@@ -226,22 +227,14 @@ export const ReservationSection = ({
     };
 
     startTransition(async () => {
-      const result = await createReservation(input);
+      const result = await createReservationCheckoutSession(input);
 
       if ('error' in result) {
         setError(result.error);
       } else {
+        setCheckoutClientSecret(result.clientSecret);
+        setCheckoutOpen(true);
         setSuccess(true);
-        setGuests(1);
-        setGuestEmail('');
-        setGuestPhone('');
-        const def = getDefaultReservationDateRange();
-        queryClient.invalidateQueries({
-          queryKey: ['cottageAvailability', id],
-        });
-        router.replace(`${pathname}?from=${def.fromParam}&to=${def.toParam}`, {
-          scroll: false,
-        });
       }
     });
   };
@@ -262,6 +255,9 @@ export const ReservationSection = ({
       case 'cottage_id_required':
       case 'total_price_required':
         return t('ErrorInvalidInput');
+      case 'missing_origin':
+      case 'checkout_session_failed':
+        return t('ErrorCheckoutFailed');
       case 'invalid_dates':
         return t('ErrorInvalidDates');
       case 'to_date_before_from':
@@ -273,6 +269,12 @@ export const ReservationSection = ({
 
   return (
     <section className="rounded-lg border bg-white p-6 shadow-xs xl:col-span-5 2xl:col-span-4">
+      <ReservationCheckoutDialog
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        clientSecret={checkoutClientSecret}
+      />
+
       <h2 className="mb-4 text-xl font-semibold">{t('Reservation')}</h2>
 
       <div className="max-w-[400px] space-y-4">

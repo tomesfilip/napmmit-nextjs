@@ -1,11 +1,18 @@
 'use server';
 
+import { differenceInHours } from 'date-fns';
 import { and, eq, or, sum } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
-import { formatReservationDate } from '../reservation-date-range';
-import { RESERVATION_FEE_CENTS } from '../stripe/reservation-checkout';
+import {
+  formatReservationDate,
+  parseReservationDateParam,
+} from '../reservation-date-range';
+import {
+  RESERVATION_FEE_CENTS,
+  RESERVATION_REFUND_CENTS,
+} from '../stripe/reservation-checkout';
 import {
   type ReservationValidationInput,
   type ValidatedReservationInput,
@@ -17,6 +24,8 @@ export type CreateReservationInput = ReservationValidationInput;
 export type CreateReservationResult =
   | { success: true; reservationId: number }
   | { error: string };
+
+export type DeleteReservationResult = { success: true } | { error: string };
 
 export type ReservationPaymentInput = {
   stripeCheckoutSessionId: string;
@@ -170,7 +179,9 @@ async function createReservationRecord(
   });
 }
 
-export async function deleteReservation(reservationId: number) {
+export async function deleteReservation(
+  reservationId: number,
+): Promise<DeleteReservationResult> {
   try {
     const { user } = await validateRequest();
     if (!user) {
@@ -193,11 +204,81 @@ export async function deleteReservation(reservationId: number) {
       return { error: 'unauthorized' };
     }
 
-    await db.delete(reservations).where(eq(reservations.id, reservationId));
+    if (reservation.status === 'cancelled') {
+      return { success: true };
+    }
+
+    const refundUpdate =
+      isReservationHolder && reservation.paymentStatus === 'paid'
+        ? await refundEligibleHikerCancellation(reservation)
+        : { success: true as const };
+
+    if ('error' in refundUpdate) {
+      await db
+        .update(reservations)
+        .set({
+          status: 'cancelled',
+          paymentStatus: 'refund_failed',
+          updatedAt: formatReservationDate(new Date()),
+        })
+        .where(eq(reservations.id, reservationId));
+
+      return refundUpdate;
+    }
+
+    await db
+      .update(reservations)
+      .set({
+        status: 'cancelled',
+        ...('data' in refundUpdate ? refundUpdate.data : {}),
+        updatedAt: formatReservationDate(new Date()),
+      })
+      .where(eq(reservations.id, reservationId));
+
     return { success: true };
   } catch (error) {
     console.error('Reservation deletion failed:', error);
     return { error: 'reservation_deletion_failed' };
+  }
+}
+
+async function refundEligibleHikerCancellation(reservation: {
+  from: string;
+  stripePaymentIntentId: string | null;
+}) {
+  const checkInDate = parseReservationDateParam(reservation.from);
+
+  if (!checkInDate) {
+    return { error: 'invalid_dates' };
+  }
+
+  if (differenceInHours(checkInDate, new Date()) < 48) {
+    return { error: 'cancellation_cutoff_passed' };
+  }
+
+  if (!reservation.stripePaymentIntentId) {
+    return { error: 'missing_payment_intent' };
+  }
+
+  try {
+    const { stripe } = await import('../stripe');
+    const refund = await stripe.refunds.create({
+      payment_intent: reservation.stripePaymentIntentId,
+      amount: RESERVATION_REFUND_CENTS,
+    });
+
+    return {
+      success: true as const,
+      data: {
+        refundAmountCents: RESERVATION_REFUND_CENTS,
+        stripeRefundId: refund.id,
+        refundedAt: new Date(),
+        paymentStatus: 'refunded' as const,
+      },
+    };
+  } catch (error) {
+    console.error('Reservation refund failed:', error);
+    return { error: 'refund_failed' };
   }
 }
 

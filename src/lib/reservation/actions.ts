@@ -1,7 +1,7 @@
 'use server';
 
 import { differenceInHours } from 'date-fns';
-import { and, eq, or, sum } from 'drizzle-orm';
+import { and, eq, gte, lt, or, sum } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
@@ -53,26 +53,28 @@ export async function assertReservationAvailability(
     return { error: 'cottage_not_found' };
   }
 
-  for (const date of data.reservationDates) {
-    const existingReservations = await db
-      .select({ totalBeds: sum(reservationDays.bedsReserved) })
-      .from(reservationDays)
-      .innerJoin(
-        reservations,
-        eq(reservationDays.reservationId, reservations.id),
-      )
-      .where(
-        and(
-          eq(reservationDays.date, date),
-          eq(reservations.cottageId, data.cottageId),
-          or(
-            eq(reservations.status, 'pending'),
-            eq(reservations.status, 'confirmed'),
-          ),
+  const reservedBedsByDate = await db
+    .select({
+      date: reservationDays.date,
+      totalBeds: sum(reservationDays.bedsReserved),
+    })
+    .from(reservationDays)
+    .innerJoin(reservations, eq(reservationDays.reservationId, reservations.id))
+    .where(
+      and(
+        eq(reservations.cottageId, data.cottageId),
+        gte(reservationDays.date, data.fromISO),
+        lt(reservationDays.date, data.toISO),
+        or(
+          eq(reservations.status, 'pending'),
+          eq(reservations.status, 'confirmed'),
         ),
-      );
+      ),
+    )
+    .groupBy(reservationDays.date);
 
-    const bookedBeds = Number(existingReservations[0]?.totalBeds) || 0;
+  for (const { totalBeds } of reservedBedsByDate) {
+    const bookedBeds = Number(totalBeds) || 0;
     const availableBeds = cottage.totalBeds - bookedBeds;
 
     if (availableBeds < data.bedsReserved) {
@@ -97,11 +99,6 @@ export async function createReservation(
       return validated;
     }
 
-    const availability = await assertReservationAvailability(validated.data);
-    if ('error' in availability) {
-      return availability;
-    }
-
     return createReservationRecord(validated.data, { paymentStatus: 'unpaid' });
   } catch (error) {
     console.error('Reservation creation failed:', error);
@@ -116,11 +113,6 @@ export async function createPaidReservation(
   const validated = await validateReservationInput(data);
   if ('error' in validated) {
     return validated;
-  }
-
-  const availability = await assertReservationAvailability(validated.data);
-  if ('error' in availability) {
-    return availability;
   }
 
   return createReservationRecord(validated.data, {
@@ -141,6 +133,49 @@ async function createReservationRecord(
   },
 ): Promise<CreateReservationResult> {
   return db.transaction(async (tx) => {
+    // Serialize reservation writes per cottage so availability is checked against a stable occupancy snapshot.
+    const [cottage] = await tx
+      .select({ totalBeds: cottages.totalBeds })
+      .from(cottages)
+      .where(eq(cottages.id, data.cottageId))
+      .for('update');
+
+    if (!cottage) {
+      return { error: 'cottage_not_found' };
+    }
+
+    const reservedBedsByDate = await tx
+      .select({
+        date: reservationDays.date,
+        totalBeds: sum(reservationDays.bedsReserved),
+      })
+      .from(reservationDays)
+      .innerJoin(
+        reservations,
+        eq(reservationDays.reservationId, reservations.id),
+      )
+      .where(
+        and(
+          eq(reservations.cottageId, data.cottageId),
+          gte(reservationDays.date, data.fromISO),
+          lt(reservationDays.date, data.toISO),
+          or(
+            eq(reservations.status, 'pending'),
+            eq(reservations.status, 'confirmed'),
+          ),
+        ),
+      )
+      .groupBy(reservationDays.date);
+
+    for (const { totalBeds } of reservedBedsByDate) {
+      const bookedBeds = Number(totalBeds) || 0;
+      const availableBeds = cottage.totalBeds - bookedBeds;
+
+      if (availableBeds < data.bedsReserved) {
+        return { error: 'insufficient_beds_available' };
+      }
+    }
+
     const [newReservation] = await tx
       .insert(reservations)
       .values({

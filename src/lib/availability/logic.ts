@@ -48,7 +48,7 @@ export function calculateDailyAvailability(
 
     return {
       date: parseReservationDateParam(dateStr) ?? new Date(dateStr),
-      availableBeds: totalBeds - reservedOnDate,
+      availableBeds: Math.max(0, totalBeds - reservedOnDate),
     };
   });
 }

@@ -249,16 +249,18 @@ export async function deleteReservation(
         : { success: true as const };
 
     if ('error' in refundUpdate) {
+      const refundFailed = isRefundExecutionFailure(refundUpdate.error);
+
       await db
         .update(reservations)
         .set({
           status: 'cancelled',
-          paymentStatus: 'refund_failed',
+          ...(refundFailed ? { paymentStatus: 'refund_failed' as const } : {}),
           updatedAt: formatReservationDate(new Date()),
         })
         .where(eq(reservations.id, reservationId));
 
-      return refundUpdate;
+      return refundFailed ? refundUpdate : { success: true };
     }
 
     await db
@@ -275,6 +277,10 @@ export async function deleteReservation(
     console.error('Reservation deletion failed:', error);
     return { error: 'reservation_deletion_failed' };
   }
+}
+
+function isRefundExecutionFailure(error: string | undefined) {
+  return error === 'refund_failed';
 }
 
 async function refundEligibleHikerCancellation(reservation: {

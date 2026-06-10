@@ -93,11 +93,8 @@ async function processCompletedCheckoutSession(
 
   if ('error' in result) {
     if (result.error === 'insufficient_beds_available') {
-      console.error(
-        'Paid checkout session could not create reservation because availability was gone:',
-        { checkoutSessionId: session.id },
-      );
-      return { success: true };
+      await refundFailedPaidCheckoutSession(session, result.error);
+      return { error: result.error, status: 500 };
     }
 
     return { error: result.error, status: 400 };
@@ -111,4 +108,40 @@ function getPaymentIntentId(
 ) {
   if (!paymentIntent) return null;
   return typeof paymentIntent === 'string' ? paymentIntent : paymentIntent.id;
+}
+
+async function refundFailedPaidCheckoutSession(
+  session: Stripe.Checkout.Session,
+  error: string,
+) {
+  const paymentIntentId = getPaymentIntentId(session.payment_intent);
+
+  if (!paymentIntentId) {
+    console.error('Paid checkout session failed without a payment intent:', {
+      checkoutSessionId: session.id,
+      error,
+    });
+    return;
+  }
+
+  try {
+    const refund = await stripe.refunds.create(
+      { payment_intent: paymentIntentId },
+      { idempotencyKey: `failed-paid-reservation:${session.id}` },
+    );
+
+    console.error('Paid checkout session failed and was refunded:', {
+      checkoutSessionId: session.id,
+      paymentIntentId,
+      refundId: refund.id,
+      error,
+    });
+  } catch (refundError) {
+    console.error('Paid checkout session failed and refund failed:', {
+      checkoutSessionId: session.id,
+      paymentIntentId,
+      error,
+      refundError,
+    });
+  }
 }

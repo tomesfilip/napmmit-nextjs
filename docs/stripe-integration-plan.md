@@ -266,6 +266,7 @@ export async function createReservationCheckoutSession(
     mode: 'payment',
     return_url: `${origin}/reservation/return?session_id={CHECKOUT_SESSION_ID}`,
     metadata: {
+      userId: input.userId ?? '',
       cottageId: String(input.cottageId),
       from: input.from,
       to: input.to,

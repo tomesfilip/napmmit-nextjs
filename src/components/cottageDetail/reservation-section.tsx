@@ -60,7 +60,6 @@ export const ReservationSection = ({
   const [guestPhone, setGuestPhone] = useState('');
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const [checkoutClientSecret, setCheckoutClientSecret] = useState<
     string | null
   >(null);
@@ -214,7 +213,6 @@ export const ReservationSection = ({
     }
 
     setError(null);
-    setSuccess(false);
 
     const input: CreateReservationInput = {
       cottageId: id,
@@ -234,7 +232,6 @@ export const ReservationSection = ({
       } else {
         setCheckoutClientSecret(result.clientSecret);
         setCheckoutOpen(true);
-        setSuccess(true);
       }
     });
   };
@@ -278,12 +275,6 @@ export const ReservationSection = ({
       <h2 className="mb-4 text-xl font-semibold">{t('Reservation')}</h2>
 
       <div className="max-w-[400px] space-y-4">
-        {success && (
-          <div className="rounded-md bg-green-50 p-3 text-sm text-green-800">
-            <p className="whitespace-pre-line">{t('ReservationSuccess')}</p>
-          </div>
-        )}
-
         {error && (
           <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
             {getErrorMessage(error)}

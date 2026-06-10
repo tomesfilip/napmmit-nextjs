@@ -1,6 +1,6 @@
 ### If action is "review":
 
-1. Read current-feature.md to understadn the goals
+1. Read current-feature.md to understand the goals
 2. Review all code changes made for this feature
 3. Check for:
   - Goals missing or incomplete

@@ -56,9 +56,7 @@ export function ReservationReturnStatus({
       <p className="mb-2 text-sm font-medium text-yellow-700">
         Rezerváciu pripravujeme
       </p>
-      <h1 className="mb-3 text-2xl font-semibold">
-        Rezervácia sa spracováva
-      </h1>
+      <h1 className="mb-3 text-2xl font-semibold">Rezervácia sa spracováva</h1>
       <p className="text-sm text-gray-600">
         Čakáme na potvrdenie platby zo Stripe. Keď bude rezervácia pripravená,
         presmerujeme vás na vaše rezervácie.

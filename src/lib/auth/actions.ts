@@ -62,7 +62,7 @@ export const login = async (
     };
   }
 
-  if (!existingUser || !existingUser?.password) {
+  if (!existingUser?.password) {
     return {
       formError: 'Nesprávny mail alebo heslo',
     };
@@ -314,7 +314,7 @@ export const sendPasswordResetLink = async (
       where: (table, { eq }) => eq(table.email, parsed.data),
     });
 
-    if (!user || !user.isEmailVerified)
+    if (!user?.isEmailVerified)
       return { error: 'Provided email is invalid.' };
 
     const verificationToken = await generatePasswordResetToken(user.id);

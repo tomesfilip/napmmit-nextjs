@@ -8,7 +8,7 @@
   - Highlight any key functions, components, or patterns used
 4. End with a brief summary of how the pieces fit together
 
-Ouput format:
+Output format:
 
 ## Files Changed
 

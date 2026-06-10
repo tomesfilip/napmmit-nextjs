@@ -4,6 +4,7 @@ import { Alatsi, Work_Sans } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 import { NavHeader } from '@/components/nav-header';
+import Providers from '@/components/Providers';
 import { CookieConsent } from '@/components/shared/cookie-modal';
 import { Footer } from '@/components/shared/footer';
 import { Toaster } from '@/components/ui/sonner';
@@ -42,7 +43,9 @@ export default async function RootLayout({
         >
           <NavHeader />
           <main className="flex size-full max-w-[1600px] flex-col items-center">
-            <TooltipProvider>{children}</TooltipProvider>
+            <Providers>
+              <TooltipProvider>{children}</TooltipProvider>
+            </Providers>
           </main>
           <Footer />
           <Toaster />

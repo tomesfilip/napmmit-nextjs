@@ -36,7 +36,7 @@ async function prepareCottageData(data: CreateUpdateDataType) {
   if (!data.description?.trim()) throw new Error('Description is required');
   if (!data.address?.trim()) throw new Error('Address is required');
   if (!data.mountainArea?.trim()) throw new Error('Mountain area is required');
-  if (!data.occupancy || data.occupancy < 1)
+  if (!data.totalBeds || data.totalBeds < 1)
     throw new Error('Valid occupancy is required');
 
   return {
@@ -44,8 +44,7 @@ async function prepareCottageData(data: CreateUpdateDataType) {
     description: data.description,
     address: data.address || '',
     mountainArea: data.mountainArea || '',
-    capacity: data.occupancy || 1,
-    availableBeds: data.occupancy || 1,
+    totalBeds: data.totalBeds || 1,
     pricePerNight: Math.round(data.pricePerNight || 0),
     priceLowPerNight: data.lowPricePerNight
       ? Math.round(Number(data.lowPricePerNight))

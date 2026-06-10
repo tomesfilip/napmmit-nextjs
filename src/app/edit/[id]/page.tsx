@@ -44,7 +44,7 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
             };
           }) || [],
         pricePerNight: cottage.pricePerNight,
-        occupancy: cottage.capacity,
+        totalBeds: cottage.totalBeds,
         email: cottage.email || '',
         phone: cottage.phoneNumber || '',
         address: cottage.address,

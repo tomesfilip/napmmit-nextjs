@@ -32,9 +32,9 @@ export const Login = () => {
       </CardHeader>
       <CardContent>
         <div className="my-2 flex items-center">
-          <div className="flex-grow border-t border-muted" />
+          <div className="grow border-t border-muted" />
           <div className="mx-2 text-muted-foreground">{t('OrDivider')}</div>
-          <div className="flex-grow border-t border-muted" />
+          <div className="grow border-t border-muted" />
         </div>
         <form action={formAction} className="grid gap-4">
           <div className="space-y-2">

@@ -56,7 +56,7 @@ export default function NextImage({ slide, offset, rect }: Props) {
         src={slide.src}
         loading="eager"
         draggable={false}
-        // placeholder={slide.blurDataURL ? 'blur' : undefined}
+        // placeholder={slide.blurDataURL ? 'blur-sm' : undefined}
         style={{
           objectFit: cover ? 'cover' : 'contain',
           cursor: click ? 'pointer' : undefined,

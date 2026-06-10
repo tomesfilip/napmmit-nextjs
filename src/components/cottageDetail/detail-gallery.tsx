@@ -25,18 +25,18 @@ export const DetailGallery = ({ images }: Props) => {
           <li
             key={img.id}
             className={clsx(
-              'relative flex size-full items-center justify-center outline-none after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:z-[2] after:bg-black after:opacity-0 after:transition-opacity first:col-span-2 first:row-span-2 hover:after:opacity-15 focus:after:opacity-15 [&:nth-child(n+4)]:hidden',
-              images.length > 3 && '[&:nth-child(3)]:after:opacity-40',
+              'relative flex size-full items-center justify-center outline-hidden after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:z-2 after:bg-black after:opacity-0 after:transition-opacity first:col-span-2 first:row-span-2 hover:after:opacity-15 focus:after:opacity-15 nth-[n+4]:hidden',
+              images.length > 3 && 'nth-3:after:opacity-40',
             )}
           >
             {index === 2 && images.length > 3 && (
-              <p className="pointer-events-none absolute z-[3] hidden select-none text-xl font-medium text-white lg:block lg:text-3xl">
+              <p className="pointer-events-none absolute z-3 hidden select-none text-xl font-medium text-white lg:block lg:text-3xl">
                 +{images.length - 3} fotky
               </p>
             )}
             <button
               type="button"
-              className="size-full cursor-pointer border-none outline-none"
+              className="size-full cursor-pointer border-none outline-hidden"
               onClick={() => setIndex(index)}
             >
               <Image
@@ -44,7 +44,7 @@ export const DetailGallery = ({ images }: Props) => {
                 width={600}
                 height={600}
                 alt=""
-                className="aspect-[4/3] h-full w-full self-stretch bg-gray-400 object-cover"
+                className="aspect-4/3 h-full w-full self-stretch bg-gray-400 object-cover"
               />
             </button>
           </li>

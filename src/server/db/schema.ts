@@ -14,11 +14,22 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { IconType } from '@/lib/appTypes';
 import { PASSWORD_ID_LENGTH, USER_ID_LENGTH } from '@/lib/constants';
+import {
+  formatReservationDate,
+  parseReservationDateParam,
+} from '@/lib/reservation-date-range';
 
 export const userRoleEnum = pgEnum('user_role', [
   'hiker',
   'cottage_owner',
   'admin',
+]);
+
+export const paymentStatusEnum = pgEnum('payment_status', [
+  'unpaid',
+  'paid',
+  'refunded',
+  'refund_failed',
 ]);
 
 export const users = pgTable('users', {
@@ -39,8 +50,7 @@ export const cottages = pgTable('cottages', {
   description: varchar('description'),
   address: varchar('address').notNull(),
   mountainArea: varchar('mountain_area', { length: 255 }).notNull(),
-  capacity: integer('capacity').notNull(),
-  availableBeds: integer('available_beds').notNull(),
+  totalBeds: integer('total_beds').notNull(),
   pricePerNight: integer('price_per_night').notNull(),
   priceLowPerNight: integer('price_low_per_night'),
   priceBreakfast: integer('price_breakfast'),
@@ -58,12 +68,14 @@ export const cottages = pgTable('cottages', {
     dataType: () => 'date[]',
     toDriver: (val) => {
       if (!val || val.length === 0) return '{}';
-      return `{${val.map((date) => date.toISOString().split('T')[0]).join(',')}}`;
+      return `{${val.map(formatReservationDate).join(',')}}`;
     },
     fromDriver: (val) => {
       if (!val || val === '{}') return [];
       const dates = val.slice(1, -1).split(',');
-      return dates.map((date) => new Date(date));
+      return dates.map(
+        (date) => parseReservationDateParam(date) ?? new Date(date),
+      );
     },
   })().default([]),
 });
@@ -83,17 +95,27 @@ export const reservations = pgTable('reservations', {
 
   bedsReserved: integer('beds_reserved').notNull(),
 
-  reservationFee: integer('reservation_fee').notNull().default(1),
-  refundAmount: integer('refund_amount').default(0),
+  reservationFeeCents: integer('reservation_fee_cents').notNull().default(100),
+  refundAmountCents: integer('refund_amount_cents').notNull().default(0),
+  paymentStatus: paymentStatusEnum('payment_status')
+    .notNull()
+    .default('unpaid'),
+  stripeCheckoutSessionId: varchar('stripe_checkout_session_id', {
+    length: 255,
+  }).unique(),
+  stripePaymentIntentId: varchar('stripe_payment_intent_id', { length: 255 }),
+  stripeRefundId: varchar('stripe_refund_id', { length: 255 }),
   pricePerNight: integer('price_per_night').notNull(),
   totalPrice: integer('total_price').notNull(),
 
   from: date('from').notNull(),
   to: date('to').notNull(),
 
-  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled
+  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled | completed
 
   accessToken: varchar('access_token', { length: 64 }).unique(),
+  paidAt: timestamp('paid_at'),
+  refundedAt: timestamp('refunded_at'),
 
   createdAt: date('created_at').defaultNow().notNull(),
   updatedAt: date('updated_at').defaultNow().notNull(),
@@ -119,13 +141,17 @@ export const cottagesRelations = relations(cottages, ({ many, one }) => ({
   images: many(images),
 }));
 
-export const reservationsRelations = relations(reservations, ({ one }) => ({
-  user: one(users, { fields: [reservations.userId], references: [users.id] }),
-  cottage: one(cottages, {
-    fields: [reservations.cottageId],
-    references: [cottages.id],
+export const reservationsRelations = relations(
+  reservations,
+  ({ one, many }) => ({
+    user: one(users, { fields: [reservations.userId], references: [users.id] }),
+    cottage: one(cottages, {
+      fields: [reservations.cottageId],
+      references: [cottages.id],
+    }),
+    reservationDays: many(reservationDays),
   }),
-}));
+);
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
@@ -223,9 +249,31 @@ export const imagesRelations = relations(images, ({ one }) => ({
   }),
 }));
 
+export const reservationDays = pgTable('reservation_days', {
+  id: serial('id').primaryKey(),
+  reservationId: integer('reservation_id')
+    .notNull()
+    .references(() => reservations.id, { onDelete: 'cascade' }),
+  date: date('date').notNull(),
+  bedsReserved: integer('beds_reserved').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export const reservationDaysRelations = relations(
+  reservationDays,
+  ({ one }) => ({
+    reservation: one(reservations, {
+      fields: [reservationDays.reservationId],
+      references: [reservations.id],
+    }),
+  }),
+);
+
 export type User = typeof users.$inferSelect;
 export type Cottage = typeof cottages.$inferSelect;
 export type Service = typeof services.$inferSelect;
 export type CottageService = typeof cottageServices.$inferSelect;
 export type ImageType = typeof images.$inferSelect;
 export type ReservationType = typeof reservations.$inferSelect;
+export type ReservationDayType = typeof reservationDays.$inferSelect;

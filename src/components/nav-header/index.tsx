@@ -9,7 +9,7 @@ export const NavHeader = async () => {
   const { user } = await validateRequest();
 
   return (
-    <header className="flex w-full max-w-[1600px] items-center justify-between border-b-[1px] px-4 py-3 lg:px-12">
+    <header className="flex w-full max-w-[1600px] items-center justify-between border-b px-4 py-3 lg:px-12">
       <Link href="/" className="w-max font-alatsi text-xl uppercase">
         Napmmit
       </Link>

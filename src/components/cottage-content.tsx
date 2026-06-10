@@ -75,7 +75,7 @@ export const CottageContent = ({ cottages }: Props) => {
         <SideFiltersContent availableMountainAreas={availableMountainAreas} />
       </div>
       <div className="w-full space-y-4">
-        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-sm transition-all xl:relative xl:justify-start xl:bg-none xl:p-0 xl:backdrop-blur-none">
+        <div className="sticky top-0 z-10 flex w-full items-center justify-center gap-4 bg-white bg-opacity-75 py-4 backdrop-blur-xs transition-all xl:relative xl:justify-start xl:bg-none xl:p-0 xl:backdrop-blur-none">
           <Search placeholder="Vysoké Tatry, Bílkova Chata, ..." />
           <div className="block xl:hidden">
             <Sheet>

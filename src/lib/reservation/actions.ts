@@ -1,120 +1,222 @@
 'use server';
 
-import { eq } from 'drizzle-orm';
+import { differenceInHours } from 'date-fns';
+import { and, eq, gte, lt, or, sum } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
-import { reservations } from '@/server/db/schema';
+import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
+import {
+  formatReservationDate,
+  parseReservationDateParam,
+} from '../reservation-date-range';
+import {
+  RESERVATION_FEE_CENTS,
+  RESERVATION_REFUND_CENTS,
+} from '../stripe/reservation-checkout';
+import {
+  type ReservationValidationInput,
+  type ValidatedReservationInput,
+  validateReservationInputData,
+} from './validation';
 
-export type CreateReservationInput = {
-  cottageId: number;
-  from: string; // ISO date string
-  to: string; // ISO date string
-  bedsReserved: number;
-  totalPrice: number;
-  guestEmail?: string;
-  guestPhone?: string;
-};
+export type CreateReservationInput = ReservationValidationInput;
 
 export type CreateReservationResult =
   | { success: true; reservationId: number }
   | { error: string };
 
+export type DeleteReservationResult = { success: true } | { error: string };
+
+export type ReservationPaymentInput = {
+  stripeCheckoutSessionId: string;
+  stripePaymentIntentId?: string | null;
+  paidAt?: Date;
+};
+
+export async function validateReservationInput(
+  data: CreateReservationInput,
+): Promise<
+  { success: true; data: ValidatedReservationInput } | { error: string }
+> {
+  return validateReservationInputData(data);
+}
+
+export async function assertReservationAvailability(
+  data: ValidatedReservationInput,
+): Promise<{ success: true } | { error: string }> {
+  const cottage = await db.query.cottages.findFirst({
+    where: eq(cottages.id, data.cottageId),
+    columns: { totalBeds: true },
+  });
+
+  if (!cottage) {
+    return { error: 'cottage_not_found' };
+  }
+
+  const reservedBedsByDate = await db
+    .select({
+      date: reservationDays.date,
+      totalBeds: sum(reservationDays.bedsReserved),
+    })
+    .from(reservationDays)
+    .innerJoin(reservations, eq(reservationDays.reservationId, reservations.id))
+    .where(
+      and(
+        eq(reservations.cottageId, data.cottageId),
+        gte(reservationDays.date, data.fromISO),
+        lt(reservationDays.date, data.toISO),
+        or(
+          eq(reservations.status, 'pending'),
+          eq(reservations.status, 'confirmed'),
+        ),
+      ),
+    )
+    .groupBy(reservationDays.date);
+
+  for (const { totalBeds } of reservedBedsByDate) {
+    const bookedBeds = Number(totalBeds) || 0;
+    const availableBeds = cottage.totalBeds - bookedBeds;
+
+    if (availableBeds < data.bedsReserved) {
+      return { error: 'insufficient_beds_available' };
+    }
+  }
+
+  return { success: true };
+}
+
 export async function createReservation(
   data: CreateReservationInput,
 ): Promise<CreateReservationResult> {
   try {
-    if (!data.bedsReserved || data.bedsReserved < 1) {
-      return { error: 'beds_required' };
-    }
-    if (!data.from) {
-      return { error: 'from_date_required' };
-    }
-    if (!data.to) {
-      return { error: 'to_date_required' };
-    }
-    if (!data.cottageId) {
-      return { error: 'cottage_id_required' };
-    }
-    if (!data.totalPrice || data.totalPrice < 0) {
-      return { error: 'total_price_required' };
-    }
-
     const { user } = await validateRequest();
-
-    // If no user, require guest contact info
-    if (!user && !data.guestEmail && !data.guestPhone) {
-      return { error: 'missing_guest_contact' };
-    }
-
-    const dateFrom = new Date(data.from);
-    const dateTo = new Date(data.to);
-
-    if (Number.isNaN(dateFrom.getTime()) || Number.isNaN(dateTo.getTime())) {
-      return { error: 'invalid_dates' };
-    }
-
-    if (dateTo <= dateFrom) {
-      return { error: 'to_date_before_from' };
-    }
-
-    const fromISO = dateFrom.toISOString().split('T')[0];
-    const toISO = dateTo.toISOString().split('T')[0];
-
-    // Overlap check: find any non-cancelled reservation that overlaps.
-    // Two ranges overlap if: from < existing.to AND to > existing.from
-    const overlappingReservations = await db.query.reservations.findMany({
-      where: (table, funcs) =>
-        funcs.and(
-          funcs.eq(table.cottageId, data.cottageId),
-          funcs.not(funcs.eq(table.status, 'cancelled')),
-          funcs.lt(table.from, toISO),
-          funcs.gt(table.to, fromISO),
-        ),
-      columns: { id: true },
-      limit: 1,
+    const validated = await validateReservationInput({
+      ...data,
+      userId: user?.id ?? null,
     });
 
-    if (overlappingReservations.length > 0) {
-      return { error: 'dates_unavailable' };
+    if ('error' in validated) {
+      return validated;
     }
 
-    const diffTime = dateTo.getTime() - dateFrom.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const pricePerNight = Math.round(data.totalPrice / diffDays);
-
-    const reservationData = {
-      userId: user?.id ?? null,
-      guestEmail: data.guestEmail ?? null,
-      guestPhone: data.guestPhone ?? null,
-      bedsReserved: data.bedsReserved,
-      from: fromISO,
-      to: toISO,
-      pricePerNight: pricePerNight,
-      totalPrice: data.totalPrice,
-      status: 'pending' as const,
-      cottageId: data.cottageId,
-      accessToken: crypto.randomUUID(),
-    };
-
-    const [newReservation] = await db
-      .insert(reservations)
-      .values(reservationData)
-      .returning({ id: reservations.id });
-
-    if (!newReservation) {
-      return { error: 'reservation_failed' };
-    }
-
-    return { success: true, reservationId: newReservation.id };
+    return createReservationRecord(validated.data, { paymentStatus: 'unpaid' });
   } catch (error) {
     console.error('Reservation creation failed:', error);
     return { error: 'reservation_failed' };
   }
 }
 
-export async function updateReservation(data: any) {}
+export async function createPaidReservation(
+  data: CreateReservationInput,
+  payment: ReservationPaymentInput,
+): Promise<CreateReservationResult> {
+  const validated = await validateReservationInput(data);
+  if ('error' in validated) {
+    return validated;
+  }
 
-export async function deleteReservation(reservationId: number) {
+  return createReservationRecord(validated.data, {
+    paymentStatus: 'paid',
+    paidAt: payment.paidAt ?? new Date(),
+    stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+    stripePaymentIntentId: payment.stripePaymentIntentId ?? null,
+  });
+}
+
+async function createReservationRecord(
+  data: ValidatedReservationInput,
+  payment: {
+    paymentStatus: 'unpaid' | 'paid';
+    paidAt?: Date;
+    stripeCheckoutSessionId?: string;
+    stripePaymentIntentId?: string | null;
+  },
+): Promise<CreateReservationResult> {
+  return db.transaction(async (tx) => {
+    // Serialize reservation writes per cottage so availability is checked against a stable occupancy snapshot.
+    const [cottage] = await tx
+      .select({ totalBeds: cottages.totalBeds })
+      .from(cottages)
+      .where(eq(cottages.id, data.cottageId))
+      .for('update');
+
+    if (!cottage) {
+      return { error: 'cottage_not_found' };
+    }
+
+    const reservedBedsByDate = await tx
+      .select({
+        date: reservationDays.date,
+        totalBeds: sum(reservationDays.bedsReserved),
+      })
+      .from(reservationDays)
+      .innerJoin(
+        reservations,
+        eq(reservationDays.reservationId, reservations.id),
+      )
+      .where(
+        and(
+          eq(reservations.cottageId, data.cottageId),
+          gte(reservationDays.date, data.fromISO),
+          lt(reservationDays.date, data.toISO),
+          or(
+            eq(reservations.status, 'pending'),
+            eq(reservations.status, 'confirmed'),
+          ),
+        ),
+      )
+      .groupBy(reservationDays.date);
+
+    for (const { totalBeds } of reservedBedsByDate) {
+      const bookedBeds = Number(totalBeds) || 0;
+      const availableBeds = cottage.totalBeds - bookedBeds;
+
+      if (availableBeds < data.bedsReserved) {
+        return { error: 'insufficient_beds_available' };
+      }
+    }
+
+    const [newReservation] = await tx
+      .insert(reservations)
+      .values({
+        userId: data.userId,
+        guestEmail: data.guestEmail ?? null,
+        guestPhone: data.guestPhone ?? null,
+        bedsReserved: data.bedsReserved,
+        reservationFeeCents: RESERVATION_FEE_CENTS,
+        paymentStatus: payment.paymentStatus,
+        stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+        stripePaymentIntentId: payment.stripePaymentIntentId,
+        paidAt: payment.paidAt,
+        from: data.fromISO,
+        to: data.toISO,
+        pricePerNight: data.pricePerNight,
+        totalPrice: data.totalPrice,
+        status: 'pending',
+        cottageId: data.cottageId,
+        accessToken: crypto.randomUUID(),
+      })
+      .returning({ id: reservations.id });
+
+    if (!newReservation) {
+      return { error: 'reservation_failed' };
+    }
+
+    await tx.insert(reservationDays).values(
+      data.reservationDates.map((date) => ({
+        reservationId: newReservation.id,
+        date,
+        bedsReserved: data.bedsReserved,
+      })),
+    );
+
+    return { success: true, reservationId: newReservation.id };
+  });
+}
+
+export async function deleteReservation(
+  reservationId: number,
+): Promise<DeleteReservationResult> {
   try {
     const { user } = await validateRequest();
     if (!user) {
@@ -137,11 +239,87 @@ export async function deleteReservation(reservationId: number) {
       return { error: 'unauthorized' };
     }
 
-    await db.delete(reservations).where(eq(reservations.id, reservationId));
+    if (reservation.status === 'cancelled') {
+      return { success: true };
+    }
+
+    const refundUpdate =
+      isReservationHolder && reservation.paymentStatus === 'paid'
+        ? await refundEligibleHikerCancellation(reservation)
+        : { success: true as const };
+
+    if ('error' in refundUpdate) {
+      const refundFailed = isRefundExecutionFailure(refundUpdate.error);
+
+      await db
+        .update(reservations)
+        .set({
+          status: 'cancelled',
+          ...(refundFailed ? { paymentStatus: 'refund_failed' as const } : {}),
+          updatedAt: formatReservationDate(new Date()),
+        })
+        .where(eq(reservations.id, reservationId));
+
+      return refundFailed ? refundUpdate : { success: true };
+    }
+
+    await db
+      .update(reservations)
+      .set({
+        status: 'cancelled',
+        ...('data' in refundUpdate ? refundUpdate.data : {}),
+        updatedAt: formatReservationDate(new Date()),
+      })
+      .where(eq(reservations.id, reservationId));
+
     return { success: true };
   } catch (error) {
     console.error('Reservation deletion failed:', error);
     return { error: 'reservation_deletion_failed' };
+  }
+}
+
+function isRefundExecutionFailure(error: string | undefined) {
+  return error === 'refund_failed';
+}
+
+async function refundEligibleHikerCancellation(reservation: {
+  from: string;
+  stripePaymentIntentId: string | null;
+}) {
+  const checkInDate = parseReservationDateParam(reservation.from);
+
+  if (!checkInDate) {
+    return { error: 'invalid_dates' };
+  }
+
+  if (differenceInHours(checkInDate, new Date()) < 48) {
+    return { error: 'cancellation_cutoff_passed' };
+  }
+
+  if (!reservation.stripePaymentIntentId) {
+    return { error: 'missing_payment_intent' };
+  }
+
+  try {
+    const { stripe } = await import('../stripe');
+    const refund = await stripe.refunds.create({
+      payment_intent: reservation.stripePaymentIntentId,
+      amount: RESERVATION_REFUND_CENTS,
+    });
+
+    return {
+      success: true as const,
+      data: {
+        refundAmountCents: RESERVATION_REFUND_CENTS,
+        stripeRefundId: refund.id,
+        refundedAt: new Date(),
+        paymentStatus: 'refunded' as const,
+      },
+    };
+  } catch (error) {
+    console.error('Reservation refund failed:', error);
+    return { error: 'refund_failed' };
   }
 }
 
@@ -168,7 +346,7 @@ export async function confirmReservation(reservationId: number) {
       .update(reservations)
       .set({
         status: 'confirmed',
-        updatedAt: new Date().toISOString().split('T')[0],
+        updatedAt: formatReservationDate(new Date()),
       })
       .where(eq(reservations.id, reservationId));
     return { success: true };

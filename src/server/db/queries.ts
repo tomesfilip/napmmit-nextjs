@@ -5,7 +5,6 @@ import type {
   CottageDetailType,
   HikerReservationType,
   OwnerReservationType,
-  ReservedRangeType,
 } from '@/lib/appTypes';
 import db from './drizzle';
 
@@ -112,33 +111,6 @@ export const getMyCottages = cache(
       return { success: normalizedData };
     } catch (_err) {
       return { error: "Couldn't find any cottages." };
-    }
-  },
-);
-
-export const getCottageReservedRanges = cache(
-  async (
-    cottageId: number,
-  ): Promise<{
-    success?: ReservedRangeType[];
-    error?: string;
-  }> => {
-    try {
-      const data = await db.query.reservations.findMany({
-        columns: { from: true, to: true },
-        where: (table, funcs) =>
-          funcs.and(
-            funcs.eq(table.cottageId, cottageId),
-            funcs.or(
-              funcs.eq(table.status, 'pending'),
-              funcs.eq(table.status, 'confirmed'),
-            ),
-          ),
-      });
-
-      return { success: data };
-    } catch (_err) {
-      return { error: "Couldn't find reservation ranges." };
     }
   },
 );

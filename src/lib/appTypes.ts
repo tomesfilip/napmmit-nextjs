@@ -27,9 +27,16 @@ export type CookieConsentType = {
   marketing: boolean;
 };
 
-export type ReservationStatusType = 'pending' | 'confirmed' | 'cancelled';
-
-export type ReservedRangeType = { from: string; to: string };
+export type ReservationStatusType =
+  | 'pending'
+  | 'confirmed'
+  | 'cancelled'
+  | 'completed';
+export type PaymentStatusType =
+  | 'unpaid'
+  | 'paid'
+  | 'refunded'
+  | 'refund_failed';
 
 export type OwnerReservationType = ReservationType & {
   cottage: Pick<Cottage, 'id' | 'name'> & {

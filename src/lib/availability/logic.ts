@@ -29,8 +29,8 @@ export function calculateDailyAvailability(
   checkOut: Date,
   reservationsToCheck: AvailabilityReservation[],
 ): AvailabilityResponseType[] {
-  if (totalBeds < 0) {
-    throw new Error('totalBeds must be non-negative');
+  if (totalBeds <= 0) {
+    throw new Error('totalBeds must be positive');
   }
   if (checkIn >= checkOut) {
     throw new Error('checkIn must be before checkOut');

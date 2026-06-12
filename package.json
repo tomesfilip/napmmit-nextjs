@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:studio": "bun drizzle-kit studio",
+    "db:generate": "bun drizzle-kit generate",
+    "db:migrate": "bun drizzle-kit migrate",
     "db:push": "bun drizzle-kit push",
     "db:seed": "tsx ./scripts/seed.ts",
     "icons:generate": "bunx @svgr/cli src/assets/svg --out-dir src/components/icons --typescript --filename-case camel",

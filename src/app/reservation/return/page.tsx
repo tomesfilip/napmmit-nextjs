@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
+import { ROUTES } from '@/lib/constants';
+import { sendReservationConfirmationEmailOnce } from '@/lib/reservation/confirmation';
 import { getReservationPaymentStatus } from '@/lib/reservation/payment-status';
 import { ReservationReturnStatus } from './reservation-return-status';
 
@@ -14,7 +17,10 @@ export default async function ReservationReturnPage({
   const paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
 
   if (paymentStatus.status === 'reservation_created') {
-    redirect('/dashboard/reservations');
+    after(() =>
+      sendReservationConfirmationEmailOnce(paymentStatus.reservationId),
+    );
+    redirect(ROUTES.DASHBOARD.RESERVATIONS);
   }
 
   return (

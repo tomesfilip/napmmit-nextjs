@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ROUTES } from '@/lib/constants';
 import { getReservationReturnStatus } from './actions';
 
 type ReservationReturnStatusProps = {
@@ -29,7 +30,7 @@ export function ReservationReturnStatus({
       if (cancelled) return;
 
       if (status.status === 'reservation_created') {
-        router.replace('/dashboard/reservations');
+        router.replace(ROUTES.DASHBOARD.RESERVATIONS);
         return;
       }
 

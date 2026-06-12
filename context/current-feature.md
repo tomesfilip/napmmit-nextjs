@@ -4,8 +4,6 @@
 
 ## Status
 
-<!-- Not Started|In Progress|Completed -->
-
 Not Started
 
 ## Goals
@@ -27,3 +25,4 @@ Not Started
 - Fixed reservation total price calculation to update when the guest count changes by including guests in the `nights × pricePerNight` calculation and display breakdown.
 - Completed Stripe Integration Phase 1 core infrastructure: environment-driven Stripe config, reservation payment schema and migration, reusable checkout metadata and reservation helpers, transaction-safe reservation creation, pending/confirmed availability blocking, and focused unit tests.
 - Completed Stripe Integration Phase 2 UI flow: reservation form now opens embedded Stripe Checkout for the fixed reservation fee, signed webhooks create paid pending reservations idempotently, the return page redirects to reservations after webhook processing, and paid cancellation preserves audit rows with eligible refund handling.
+- Completed Reservation Confirmed Flow Phase 1: added confirmation email tracking columns and migration, shared `ReservationConfirmationSummary` module, idempotent `sendReservationConfirmationEmailOnce()` coordinator, expanded confirmation email template with Slovak translations, background email trigger on the Stripe return page via `after()`, and unit tests for summary formatting, recipient resolution, and send idempotency.

@@ -4,6 +4,8 @@
 
 ## Status
 
+<!-- Not Started|In Progress|Completed -->
+
 Not Started
 
 ## Goals

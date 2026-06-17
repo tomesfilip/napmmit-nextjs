@@ -7,10 +7,14 @@ import { getReservationPaymentStatus } from '@/lib/reservation/payment-status';
 export async function getReservationReturnStatus(checkoutSessionId: string) {
   const paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
 
-  if (paymentStatus.status === 'reservation_created') {
+  if (
+    paymentStatus.status === 'reservation_created' &&
+    paymentStatus.paymentStatus === 'paid'
+  ) {
     after(() =>
       sendReservationConfirmationEmailOnce(paymentStatus.reservationId),
     );
+  }
   }
 
   return paymentStatus;

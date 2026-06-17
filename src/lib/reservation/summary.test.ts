@@ -36,6 +36,7 @@ describe('reservation confirmation summary', () => {
     const breakdown = getReservationPriceBreakdown(summary);
 
     expect(summary.nights).toBe(1);
+    expect(summary.pricePerNight).toBe(40);
     expect(breakdown).toEqual({
       accommodation: 40,
       reservationFee: 1,
@@ -49,10 +50,12 @@ describe('reservation confirmation summary', () => {
       from: '2024-07-15',
       to: '2024-07-18',
       totalPrice: 120,
+      pricePerNight: 40,
     });
     const breakdown = getReservationPriceBreakdown(summary);
 
     expect(getReservationNightCount(summary.from, summary.to)).toBe(3);
+    expect(summary.pricePerNight).toBe(40);
     expect(breakdown).toEqual({
       accommodation: 120,
       reservationFee: 1,
@@ -65,13 +68,29 @@ describe('reservation confirmation summary', () => {
       ...baseReservation,
       bedsReserved: 3,
       totalPrice: 120,
+      pricePerNight: 120,
     });
     const breakdown = getReservationPriceBreakdown(summary);
 
+    expect(summary.pricePerNight).toBe(40);
     expect(breakdown.accommodation).toBe(120);
-    expect(breakdown.accommodation).toBe(
-      summary.nights * summary.pricePerNight * summary.bedsReserved,
-    );
+  });
+
+  it('normalizes persisted total-per-night price for multi-bed reservations', () => {
+    const summary = mapReservationToConfirmationSummary({
+      ...baseReservation,
+      from: '2024-07-15',
+      to: '2024-07-17',
+      bedsReserved: 2,
+      totalPrice: 160,
+      pricePerNight: 80,
+    });
+    const breakdown = getReservationPriceBreakdown(summary);
+
+    expect(summary.nights).toBe(2);
+    expect(summary.accommodationTotal).toBe(160);
+    expect(summary.pricePerNight).toBe(40);
+    expect(breakdown.accommodation).toBe(160);
   });
 
   it('converts reservation fee cents to euros', () => {

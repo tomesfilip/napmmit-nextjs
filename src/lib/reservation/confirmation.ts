@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { ROUTES } from '@/lib/constants';
 import { renderReservationCreatedEmail } from '@/lib/emailTemplates/reservation-created';
 import {
@@ -50,7 +50,10 @@ export function resolveConfirmationEmailRecipient(
 }
 
 function getConfirmationEmailUrls(summary: ReservationConfirmationSummary) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? '';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (!appUrl) {
+    throw new Error('NEXT_PUBLIC_APP_URL is not set');
+  }
   const dashboardUrl = summary.guest.isLoggedIn
     ? `${appUrl}${ROUTES.DASHBOARD.RESERVATIONS}`
     : undefined;
@@ -111,6 +114,32 @@ export async function sendReservationConfirmationEmailOnce(
     return { success: true };
   }
 
+  const claimToken = crypto.randomUUID();
+  const [claimedReservation] = await db
+    .update(reservations)
+    .set({
+      confirmationEmailClaimedAt: new Date(),
+      confirmationEmailClaimToken: claimToken,
+    })
+    .where(
+      and(
+        eq(reservations.id, reservationId),
+        isNull(reservations.confirmationEmailSentAt),
+        isNull(reservations.confirmationEmailClaimedAt),
+        isNull(reservations.confirmationEmailClaimToken),
+      ),
+    )
+    .returning({ id: reservations.id });
+
+  if (!claimedReservation) {
+    return { success: true };
+  }
+
+  const claimedReservationWhere = and(
+    eq(reservations.id, reservationId),
+    eq(reservations.confirmationEmailClaimToken, claimToken),
+  );
+
   const recipient = resolveConfirmationEmailRecipient(reservation);
   if (!recipient) {
     const reason = reservation.guestPhone
@@ -119,8 +148,12 @@ export async function sendReservationConfirmationEmailOnce(
 
     await db
       .update(reservations)
-      .set({ confirmationEmailFailedAt: new Date() })
-      .where(eq(reservations.id, reservationId));
+      .set({
+        confirmationEmailFailedAt: new Date(),
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      })
+      .where(claimedReservationWhere);
 
     console.warn(
       `Confirmation email skipped for reservation ${reservationId}: ${reason}`,
@@ -129,24 +162,56 @@ export async function sendReservationConfirmationEmailOnce(
     return { success: true };
   }
 
-  const summary = mapReservationToConfirmationSummary(reservation);
-  const { dashboardUrl, pdfUrl } = getConfirmationEmailUrls(summary);
+  try {
+    const summary = mapReservationToConfirmationSummary(reservation);
+    const { dashboardUrl, pdfUrl } = getConfirmationEmailUrls(summary);
+    const { data, error } = await sendMail({
+      to: recipient,
+      subject: `Potvrdenie rezervácie – ${summary.cottage.name}`,
+      body: await renderReservationCreatedEmail({
+        summary,
+        dashboardUrl,
+        pdfUrl,
+      }),
+    });
 
-  const { data, error } = await sendMail({
-    to: recipient,
-    subject: `Potvrdenie rezervácie – ${summary.cottage.name}`,
-    body: await renderReservationCreatedEmail({
-      summary,
-      dashboardUrl,
-      pdfUrl,
-    }),
-  });
+    if (error) {
+      await db
+        .update(reservations)
+        .set({
+          confirmationEmailFailedAt: new Date(),
+          confirmationEmailClaimedAt: null,
+          confirmationEmailClaimToken: null,
+        })
+        .where(claimedReservationWhere);
 
-  if (error) {
+      console.error(
+        `Confirmation email failed for reservation ${reservationId}:`,
+        error,
+      );
+
+      return { error: 'confirmation_email_failed' };
+    }
+
     await db
       .update(reservations)
-      .set({ confirmationEmailFailedAt: new Date() })
-      .where(eq(reservations.id, reservationId));
+      .set({
+        confirmationEmailSentAt: new Date(),
+        confirmationEmailMessageId: data?.id ?? null,
+        confirmationEmailFailedAt: null,
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      })
+      .where(claimedReservationWhere);
+  } catch (error) {
+    await db
+      .update(reservations)
+      .set({
+        confirmationEmailFailedAt: new Date(),
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      })
+      .where(claimedReservationWhere);
 
     console.error(
       `Confirmation email failed for reservation ${reservationId}:`,
@@ -155,15 +220,6 @@ export async function sendReservationConfirmationEmailOnce(
 
     return { error: 'confirmation_email_failed' };
   }
-
-  await db
-    .update(reservations)
-    .set({
-      confirmationEmailSentAt: new Date(),
-      confirmationEmailMessageId: data?.id ?? null,
-      confirmationEmailFailedAt: null,
-    })
-    .where(eq(reservations.id, reservationId));
 
   return { success: true };
 }

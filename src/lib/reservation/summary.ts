@@ -62,7 +62,7 @@ export function getReservationNightCount(from: string, to: string) {
   const fromDate = parseReservationDateParam(from);
   const toDate = parseReservationDateParam(to);
   if (!fromDate || !toDate) {
-    return 0;
+    throw new Error(`Invalid reservation dates: from=${from}, to=${to}`);
   }
   return differenceInDays(toDate, fromDate);
 }
@@ -72,6 +72,10 @@ export function mapReservationToConfirmationSummary(
 ): ReservationConfirmationSummary {
   const nights = getReservationNightCount(reservation.from, reservation.to);
   const accommodationTotal = reservation.totalPrice;
+  const pricePerBedPerNight =
+    nights > 0 && reservation.bedsReserved > 0
+      ? accommodationTotal / (nights * reservation.bedsReserved)
+      : 0;
   const reservationFee = reservation.reservationFeeCents / 100;
 
   return {
@@ -83,7 +87,7 @@ export function mapReservationToConfirmationSummary(
     to: reservation.to,
     nights,
     bedsReserved: reservation.bedsReserved,
-    pricePerNight: reservation.pricePerNight,
+    pricePerNight: pricePerBedPerNight,
     accommodationTotal,
     reservationFeeCents: reservation.reservationFeeCents,
     grandTotal: accommodationTotal + reservationFee,
@@ -101,8 +105,7 @@ export function getReservationPriceBreakdown(
   summary: ReservationConfirmationSummary,
 ) {
   return {
-    accommodation:
-      summary.nights * summary.pricePerNight * summary.bedsReserved,
+    accommodation: summary.accommodationTotal,
     reservationFee: summary.reservationFeeCents / 100,
     grandTotal: summary.grandTotal,
   };

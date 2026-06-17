@@ -321,6 +321,12 @@
       "PaymentConfirmedMessage": "Platba bola potvrdená a rezervácia je uložená.",
       "PendingOwnerMessage": "Rezervácia čaká na schválenie majiteľom chaty. O zmene stavu Vás budeme informovať.",
       "StatusMessage": "Stav rezervácie: {status}.",
+      "Status": {
+        "pending": "čaká na schválenie",
+        "confirmed": "potvrdená",
+        "cancelled": "zrušená",
+        "completed": "dokončená"
+      },
       "StaySectionTitle": "Termín pobytu",
       "DateMessage": "Od {fromDate} do {toDate} ({nights, plural, one {# noc} few {# noci} other {# nocí}})",
       "BedsMessage": "Počet rezervovaných lôžok: {bedsCount}",

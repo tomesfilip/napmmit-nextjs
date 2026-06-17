@@ -4,27 +4,42 @@ import {
   sendReservationConfirmationEmailOnce,
 } from './confirmation';
 
-const mockFindFirst = vi.fn();
-const mockUpdate = vi.fn(() => ({
-  set: vi.fn(() => ({
-    where: vi.fn(),
-  })),
-}));
-const mockSendMail = vi.fn();
+const mocks = vi.hoisted(() => {
+  const mockFindFirst = vi.fn();
+  const mockReturning = vi.fn();
+  const mockWhere = vi.fn(() => ({
+    returning: mockReturning,
+  }));
+  const mockSet = vi.fn(() => ({
+    where: mockWhere,
+  }));
+  const mockUpdate = vi.fn(() => ({
+    set: mockSet,
+  }));
+  const mockSendMail = vi.fn();
+
+  return {
+    mockFindFirst,
+    mockReturning,
+    mockSet,
+    mockUpdate,
+    mockSendMail,
+  };
+});
 
 vi.mock('@/server/db/drizzle', () => ({
   default: {
     query: {
       reservations: {
-        findFirst: (...args: unknown[]) => mockFindFirst(...args),
+        findFirst: mocks.mockFindFirst,
       },
     },
-    update: (...args: unknown[]) => mockUpdate(...args),
+    update: mocks.mockUpdate,
   },
 }));
 
 vi.mock('@/server/db/sendMail', () => ({
-  sendMail: (...args: unknown[]) => mockSendMail(...args),
+  sendMail: mocks.mockSendMail,
 }));
 
 vi.mock('@/lib/emailTemplates/reservation-created', () => ({
@@ -56,6 +71,14 @@ const baseReservation = {
   },
   user: null,
 };
+
+const {
+  mockFindFirst,
+  mockReturning,
+  mockSet,
+  mockUpdate,
+  mockSendMail,
+} = mocks;
 
 describe('resolveConfirmationEmailRecipient', () => {
   it('uses logged-in hiker email', () => {
@@ -99,6 +122,8 @@ describe('resolveConfirmationEmailRecipient', () => {
 describe('sendReservationConfirmationEmailOnce', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.NEXT_PUBLIC_APP_URL = 'https://napmmit.test';
+    mockReturning.mockResolvedValue([{ id: 42 }]);
     mockSendMail.mockResolvedValue({ data: { id: 'msg_123' }, error: null });
   });
 
@@ -115,6 +140,17 @@ describe('sendReservationConfirmationEmailOnce', () => {
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
+  it('does not send when another caller already claimed the email', async () => {
+    mockFindFirst.mockResolvedValue(baseReservation);
+    mockReturning.mockResolvedValueOnce([]);
+
+    const result = await sendReservationConfirmationEmailOnce(42);
+
+    expect(result).toEqual({ success: true });
+    expect(mockSendMail).not.toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+  });
+
   it('marks sent after successful Resend response', async () => {
     mockFindFirst.mockResolvedValue(baseReservation);
 
@@ -124,7 +160,15 @@ describe('sendReservationConfirmationEmailOnce', () => {
     expect(mockSendMail).toHaveBeenCalledWith(
       expect.objectContaining({ to: 'guest@example.com' }),
     );
-    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledTimes(2);
+    expect(mockSet).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        confirmationEmailMessageId: 'msg_123',
+        confirmationEmailFailedAt: null,
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      }),
+    );
   });
 
   it('marks failed and returns error on send failure', async () => {
@@ -137,7 +181,13 @@ describe('sendReservationConfirmationEmailOnce', () => {
     const result = await sendReservationConfirmationEmailOnce(42);
 
     expect(result).toEqual({ error: 'confirmation_email_failed' });
-    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledTimes(2);
+    expect(mockSet).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      }),
+    );
   });
 
   it('skips email for phone-only anonymous reservation', async () => {
@@ -151,6 +201,12 @@ describe('sendReservationConfirmationEmailOnce', () => {
 
     expect(result).toEqual({ success: true });
     expect(mockSendMail).not.toHaveBeenCalled();
-    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledTimes(2);
+    expect(mockSet).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        confirmationEmailClaimedAt: null,
+        confirmationEmailClaimToken: null,
+      }),
+    );
   });
 });

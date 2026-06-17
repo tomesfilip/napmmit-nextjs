@@ -41,10 +41,11 @@ export default async function ReservationCreatedEmail({
 
   const priceBreakdown = getReservationPriceBreakdown(summary);
   const guestName = summary.guest.name ?? summary.guest.email ?? 'there';
+  const statusLabel = t(`Status.${summary.status}`);
   const statusMessage =
     summary.status === 'pending'
       ? t('PendingOwnerMessage')
-      : t('StatusMessage', { status: summary.status });
+      : t('StatusMessage', { status: statusLabel });
 
   return (
     <Html>

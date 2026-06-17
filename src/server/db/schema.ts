@@ -117,6 +117,16 @@ export const reservations = pgTable('reservations', {
   paidAt: timestamp('paid_at'),
   refundedAt: timestamp('refunded_at'),
 
+  confirmationEmailSentAt: timestamp('confirmation_email_sent_at'),
+  confirmationEmailMessageId: varchar('confirmation_email_message_id', {
+    length: 255,
+  }),
+  confirmationEmailFailedAt: timestamp('confirmation_email_failed_at'),
+  confirmationEmailClaimedAt: timestamp('confirmation_email_claimed_at'),
+  confirmationEmailClaimToken: varchar('confirmation_email_claim_token', {
+    length: 64,
+  }),
+
   createdAt: date('created_at').defaultNow().notNull(),
   updatedAt: date('updated_at').defaultNow().notNull(),
 });

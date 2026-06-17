@@ -10,5 +10,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: false,
+    env: {
+      DATABASE_URL: 'postgresql://localhost:5432/napmmit_test',
+    },
   },
 });

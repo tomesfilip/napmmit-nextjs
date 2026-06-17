@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { reservations } from '@/server/db/schema';
 import {
   resolveConfirmationEmailRecipient,
   sendReservationConfirmationEmailOnce,
@@ -17,6 +18,7 @@ const mocks = vi.hoisted(() => {
     set: mockSet,
   }));
   const mockSendMail = vi.fn();
+  const mockLte = vi.fn();
 
   return {
     mockFindFirst,
@@ -24,6 +26,19 @@ const mocks = vi.hoisted(() => {
     mockSet,
     mockUpdate,
     mockSendMail,
+    mockLte,
+  };
+});
+
+vi.mock('drizzle-orm', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('drizzle-orm')>();
+
+  return {
+    ...actual,
+    lte: (...args: Parameters<typeof actual.lte>) => {
+      mocks.mockLte(...args);
+      return actual.lte(...args);
+    },
   };
 });
 
@@ -78,6 +93,7 @@ const {
   mockSet,
   mockUpdate,
   mockSendMail,
+  mockLte,
 } = mocks;
 
 describe('resolveConfirmationEmailRecipient', () => {
@@ -169,6 +185,32 @@ describe('sendReservationConfirmationEmailOnce', () => {
         confirmationEmailClaimToken: null,
       }),
     );
+  });
+
+  it('allows reclaiming stale confirmation email claims', async () => {
+    const now = new Date('2024-02-02T12:00:00.000Z');
+    const staleClaimBefore = new Date('2024-02-02T08:00:00.000Z');
+    vi.useFakeTimers();
+    vi.setSystemTime(now);
+    mockFindFirst.mockResolvedValue(baseReservation);
+
+    try {
+      const result = await sendReservationConfirmationEmailOnce(42);
+
+      expect(result).toEqual({ success: true });
+      expect(mockSet).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          confirmationEmailClaimedAt: now,
+        }),
+      );
+      expect(mockLte).toHaveBeenCalledWith(
+        reservations.confirmationEmailClaimedAt,
+        staleClaimBefore,
+      );
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('marks failed and returns error on send failure', async () => {

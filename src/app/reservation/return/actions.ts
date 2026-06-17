@@ -15,7 +15,7 @@ export async function getReservationReturnStatus(checkoutSessionId: string) {
       sendReservationConfirmationEmailOnce(paymentStatus.reservationId),
     );
   }
-  }
+  
 
   return paymentStatus;
 }

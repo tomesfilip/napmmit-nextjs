@@ -1,4 +1,4 @@
-import { and, eq, isNull } from 'drizzle-orm';
+import { and, eq, isNull, lte, or } from 'drizzle-orm';
 import { ROUTES } from '@/lib/constants';
 import { renderReservationCreatedEmail } from '@/lib/emailTemplates/reservation-created';
 import {
@@ -31,6 +31,8 @@ type ReservationForEmail = {
     phoneNumber: string;
   } | null;
 };
+
+const CONFIRMATION_EMAIL_CLAIM_TIMEOUT_MS = 4 * 60 * 60 * 1000;
 
 export function resolveConfirmationEmailRecipient(
   reservation: Pick<
@@ -115,18 +117,27 @@ export async function sendReservationConfirmationEmailOnce(
   }
 
   const claimToken = crypto.randomUUID();
+  const claimedAt = new Date();
+  const staleClaimBefore = new Date(
+    claimedAt.getTime() - CONFIRMATION_EMAIL_CLAIM_TIMEOUT_MS,
+  );
   const [claimedReservation] = await db
     .update(reservations)
     .set({
-      confirmationEmailClaimedAt: new Date(),
+      confirmationEmailClaimedAt: claimedAt,
       confirmationEmailClaimToken: claimToken,
     })
     .where(
       and(
         eq(reservations.id, reservationId),
         isNull(reservations.confirmationEmailSentAt),
-        isNull(reservations.confirmationEmailClaimedAt),
-        isNull(reservations.confirmationEmailClaimToken),
+        or(
+          and(
+            isNull(reservations.confirmationEmailClaimedAt),
+            isNull(reservations.confirmationEmailClaimToken),
+          ),
+          lte(reservations.confirmationEmailClaimedAt, staleClaimBefore),
+        ),
       ),
     )
     .returning({ id: reservations.id });

@@ -38,21 +38,42 @@ export const HikerReservationCard = ({ reservation }: Props) => {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
 
+  const getCancelErrorMessage = (errorCode: string) => {
+    switch (errorCode) {
+      case 'unauthorized':
+        return t('Reservations.Errors.Unauthorized');
+      case 'reservation_not_found':
+        return t('Reservations.Errors.ReservationNotFound');
+      case 'cancellation_cutoff_passed':
+        return t('Reservations.Errors.CancellationCutoffPassed');
+      case 'refund_failed':
+        return t('Reservations.Errors.RefundFailed');
+      case 'invalid_dates':
+        return t('Reservations.Errors.InvalidDates');
+      default:
+        return t('Reservations.Errors.CancelFailed');
+    }
+  };
+
   const handleCancelReservation = async () => {
     setIsCancelling(true);
 
-    const result = await deleteReservation(reservation.id);
+    try {
+      const result = await deleteReservation(reservation.id);
 
-    setIsCancelling(false);
+      if ('success' in result) {
+        toast.success(t('Reservations.CancelSuccess'));
+        setIsCancelDialogOpen(false);
+        router.refresh();
+        return;
+      }
 
-    if ('success' in result) {
-      toast.success('Rezervácia bola zrušená');
-      setIsCancelDialogOpen(false);
-      router.refresh();
-      return;
+      toast.error(getCancelErrorMessage(result.error));
+    } catch {
+      toast.error(getCancelErrorMessage('reservation_deletion_failed'));
+    } finally {
+      setIsCancelling(false);
     }
-
-    toast.error(result.error);
   };
 
   return (

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AnimatedSpinner } from '@/components/icons';
+import { ROUTES } from '@/lib/constants';
 import { getReservationReturnStatus } from './actions';
 
 type ReservationReturnStatusProps = {
@@ -52,8 +53,8 @@ export function ReservationReturnStatus({
 
       if (cancelled) return;
 
-      if (status.status === 'reservation_created') {
-        router.refresh();
+      if (status.status === 'reservation_created' && status.accessToken) {
+        router.replace(ROUTES.RESERVATION.CONFIRMATION(status.accessToken));
         return;
       }
 

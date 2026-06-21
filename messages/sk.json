@@ -139,6 +139,15 @@
         "Description": "Naozaj chcete zrušiť túto rezerváciu? Ak bola platba vykonaná, bude spracovaná refundácia.",
         "ConfirmButton": "Zrušiť rezerváciu",
         "DismissButton": "Späť"
+      },
+      "CancelSuccess": "Rezervácia bola zrušená",
+      "Errors": {
+        "Unauthorized": "Nemáte oprávnenie na túto akciu.",
+        "ReservationNotFound": "Rezervácia sa nenašla.",
+        "CancellationCutoffPassed": "Zrušenie s refundáciou nie je možné menej ako 48 hodín pred príchodom.",
+        "RefundFailed": "Rezervácia bola zrušená, ale refundácia zlyhala. Kontaktujte prosím podporu.",
+        "InvalidDates": "Neplatný dátum. Skontrolujte prosím zadané termíny.",
+        "CancelFailed": "Zrušenie rezervácie sa nepodarilo. Skúste to prosím znova."
       }
     },
     "NoCottages": {

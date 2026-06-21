@@ -2,6 +2,19 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/reservation/:accessToken',
+        headers: [
+          {
+            key: 'Referrer-Policy',
+            value: 'no-referrer',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config) => {
     config.externals.push('@node-rs/argon2', '@node-rs/bcrypt');
     return config;

@@ -257,7 +257,12 @@ function ContactLink({
         : href;
 
   return (
-    <a className="underline underline-offset-4" href={linkHref}>
+    <a
+      className="underline underline-offset-4"
+      href={linkHref}
+      referrerPolicy="no-referrer"
+      rel="noreferrer"
+    >
       {href}
     </a>
   );

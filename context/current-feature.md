@@ -1,7 +1,5 @@
 # Current Feature
 
-<!-- Feature Name -->
-
 ## Status
 
 <!-- Not Started|In Progress|Completed -->
@@ -28,3 +26,4 @@ Not Started
 - Completed Stripe Integration Phase 1 core infrastructure: environment-driven Stripe config, reservation payment schema and migration, reusable checkout metadata and reservation helpers, transaction-safe reservation creation, pending/confirmed availability blocking, and focused unit tests.
 - Completed Stripe Integration Phase 2 UI flow: reservation form now opens embedded Stripe Checkout for the fixed reservation fee, signed webhooks create paid pending reservations idempotently, the return page redirects to reservations after webhook processing, and paid cancellation preserves audit rows with eligible refund handling.
 - Completed Reservation Confirmed Flow Phase 1: added confirmation email tracking columns and migration, shared `ReservationConfirmationSummary` module, idempotent `sendReservationConfirmationEmailOnce()` coordinator, expanded confirmation email template with Slovak translations, background email trigger on the Stripe return page via `after()`, and unit tests for summary formatting, recipient resolution, and send idempotency.
+- Completed Reservation Confirmed Flow Phase 2: replaced the post-payment dashboard redirect with a server-rendered confirmation page on `/reservation/return`, changed polling success to `router.refresh()`, added shared `ReservationConfirmationDetails` with post-payment and dashboard variants, linked hiker reservation cards to `/dashboard/reservations/[id]`, extended payment status helpers and summary queries, added Slovak translations, moved the Stripe webhook to `/api/webhooks/stripe`, and added focused unit tests.

@@ -114,4 +114,5 @@ export function getReservationPriceBreakdown(
 export {
   getReservationConfirmationSummaryByAccessToken,
   getReservationConfirmationSummaryByCheckoutSession,
+  getReservationConfirmationSummaryById,
 } from './summary-queries';

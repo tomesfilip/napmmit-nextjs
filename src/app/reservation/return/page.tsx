@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { after } from 'next/server';
-import { ROUTES } from '@/lib/constants';
+import { ReservationConfirmationDetails } from '@/components/reservation/reservation-confirmation-details';
 import { sendReservationConfirmationEmailOnce } from '@/lib/reservation/confirmation';
 import { getReservationPaymentStatus } from '@/lib/reservation/payment-status';
+import { getReservationConfirmationSummaryByCheckoutSession } from '@/lib/reservation/summary';
 import { ReservationReturnStatus } from './reservation-return-status';
 
 type ReservationReturnPageProps = {
@@ -17,10 +18,22 @@ export default async function ReservationReturnPage({
   const paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
 
   if (paymentStatus.status === 'reservation_created') {
-    after(() =>
-      sendReservationConfirmationEmailOnce(paymentStatus.reservationId),
-    );
-    redirect(ROUTES.DASHBOARD.RESERVATIONS);
+    if (!checkoutSessionId) {
+      notFound();
+    }
+
+    const summary =
+      await getReservationConfirmationSummaryByCheckoutSession(
+        checkoutSessionId,
+      );
+
+    if (!summary) {
+      notFound();
+    }
+
+    after(() => sendReservationConfirmationEmailOnce(summary.id));
+
+    return <ReservationConfirmationDetails summary={summary} />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import db from '@/server/db/drizzle';
 import { reservations } from '@/server/db/schema';
 import {
@@ -48,6 +48,25 @@ export async function getReservationConfirmationSummaryByAccessToken(
 ): Promise<ReservationConfirmationSummary | null> {
   const reservation = await db.query.reservations.findFirst({
     where: eq(reservations.accessToken, accessToken),
+    ...reservationSummaryQuery,
+  });
+
+  if (!reservation) {
+    return null;
+  }
+
+  return mapReservationToConfirmationSummary(reservation);
+}
+
+export async function getReservationConfirmationSummaryById(
+  reservationId: number,
+  userId: string,
+): Promise<ReservationConfirmationSummary | null> {
+  const reservation = await db.query.reservations.findFirst({
+    where: and(
+      eq(reservations.id, reservationId),
+      eq(reservations.userId, userId),
+    ),
     ...reservationSummaryQuery,
   });
 

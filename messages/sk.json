@@ -131,7 +131,14 @@
       },
       "Actions": {
         "Confirm": "Potvrdiť",
-        "Cancel": "Zrušiť rezerváciu"
+        "Cancel": "Zrušiť rezerváciu",
+        "ViewDetails": "Zobraziť detail"
+      },
+      "CancelDialog": {
+        "Title": "Zrušiť rezerváciu",
+        "Description": "Naozaj chcete zrušiť túto rezerváciu? Ak bola platba vykonaná, bude spracovaná refundácia.",
+        "ConfirmButton": "Zrušiť rezerváciu",
+        "DismissButton": "Späť"
       }
     },
     "NoCottages": {
@@ -289,6 +296,52 @@
     },
     "CreateSuccess": "Chata bola úspešne publikovaná",
     "EditSuccess": "Chata bola úspešne upravená"
+  },
+  "ReservationConfirmationPage": {
+    "PaymentConfirmed": "Platba bola potvrdená",
+    "Title": "Rezervácia bola prijatá",
+    "Subtitle": "Rezervácia je uložená a čaká na potvrdenie majiteľom chaty.",
+    "Status": {
+      "pending": "Čaká na potvrdenie majiteľom",
+      "confirmed": "Potvrdená",
+      "cancelled": "Zrušená",
+      "completed": "Dokončená"
+    },
+    "Stay": {
+      "Title": "Termín pobytu",
+      "Dates": "Termín",
+      "Nights": "Počet nocí",
+      "NightsValue": "{nights, plural, one {# noc} few {# noci} other {# nocí}}",
+      "Beds": "Rezervované lôžka",
+      "BedsValue": "{beds, plural, one {# lôžko} few {# lôžka} other {# lôžok}}"
+    },
+    "Price": {
+      "Title": "Cenový prehľad",
+      "AccommodationCalculation": "Výpočet ubytovania",
+      "AccommodationTotal": "Ubytovanie spolu",
+      "ReservationFee": "Rezervačný poplatok",
+      "PaidTotal": "Spolu zaplatené"
+    },
+    "CottageContact": {
+      "Title": "Kontakt na chatu",
+      "Name": "Chata",
+      "Address": "Adresa",
+      "Email": "E-mail",
+      "Phone": "Telefón",
+      "Website": "Web"
+    },
+    "GuestContact": {
+      "Title": "Vaše kontaktné údaje",
+      "Name": "Meno",
+      "Email": "E-mail",
+      "Phone": "Telefón"
+    },
+    "DashboardCta": "Prejsť na moje rezervácie",
+    "BackToReservations": "Späť na moje rezervácie",
+    "DetailSubtitle": "Prehľad vašej rezervácie",
+    "AnonymousFollowUp": "Potvrdenie sme odoslali na zadané kontaktné údaje. Chata vás bude kontaktovať pri potvrdení rezervácie.",
+    "BackHome": "Späť na úvod",
+    "NotProvided": "Neuvedené"
   },
   "Profile": {
     "Title": "Môj profil",

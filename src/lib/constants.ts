@@ -30,6 +30,7 @@ export const ROUTES = {
   DASHBOARD: {
     INDEX: '/dashboard',
     RESERVATIONS: '/dashboard/reservations',
+    RESERVATION_DETAIL: (id: number) => `/dashboard/reservations/${id}`,
   },
 
   EDIT_COTTAGE: '/edit',

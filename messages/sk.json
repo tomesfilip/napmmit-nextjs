@@ -131,7 +131,23 @@
       },
       "Actions": {
         "Confirm": "Potvrdiť",
-        "Cancel": "Zrušiť rezerváciu"
+        "Cancel": "Zrušiť rezerváciu",
+        "ViewDetails": "Zobraziť detail"
+      },
+      "CancelDialog": {
+        "Title": "Zrušiť rezerváciu",
+        "Description": "Naozaj chcete zrušiť túto rezerváciu? Ak bola platba vykonaná, bude spracovaná refundácia.",
+        "ConfirmButton": "Zrušiť rezerváciu",
+        "DismissButton": "Späť"
+      },
+      "CancelSuccess": "Rezervácia bola zrušená",
+      "Errors": {
+        "Unauthorized": "Nemáte oprávnenie na túto akciu.",
+        "ReservationNotFound": "Rezervácia sa nenašla.",
+        "CancellationCutoffPassed": "Zrušenie s refundáciou nie je možné menej ako 48 hodín pred príchodom.",
+        "RefundFailed": "Rezervácia bola zrušená, ale refundácia zlyhala. Kontaktujte prosím podporu.",
+        "InvalidDates": "Neplatný dátum. Skontrolujte prosím zadané termíny.",
+        "CancelFailed": "Zrušenie rezervácie sa nepodarilo. Skúste to prosím znova."
       }
     },
     "NoCottages": {
@@ -290,6 +306,53 @@
     "CreateSuccess": "Chata bola úspešne publikovaná",
     "EditSuccess": "Chata bola úspešne upravená"
   },
+  "ReservationConfirmationPage": {
+    "PaymentConfirmed": "Platba bola potvrdená",
+    "Title": "Rezervácia bola prijatá",
+    "Subtitle": "Rezervácia je uložená a čaká na potvrdenie majiteľom chaty.",
+    "Status": {
+      "pending": "Čaká na potvrdenie majiteľom",
+      "confirmed": "Potvrdená",
+      "cancelled": "Zrušená",
+      "completed": "Dokončená",
+      "unknown": "Neznámy stav"
+    },
+    "Stay": {
+      "Title": "Termín pobytu",
+      "Dates": "Termín",
+      "Nights": "Počet nocí",
+      "NightsValue": "{nights, plural, one {# noc} few {# noci} other {# nocí}}",
+      "Beds": "Rezervované lôžka",
+      "BedsValue": "{beds, plural, one {# lôžko} few {# lôžka} other {# lôžok}}"
+    },
+    "Price": {
+      "Title": "Cenový prehľad",
+      "AccommodationCalculation": "Výpočet ubytovania",
+      "AccommodationTotal": "Ubytovanie spolu",
+      "ReservationFee": "Rezervačný poplatok",
+      "PaidTotal": "Spolu zaplatené"
+    },
+    "CottageContact": {
+      "Title": "Kontakt na chatu",
+      "Name": "Chata",
+      "Address": "Adresa",
+      "Email": "E-mail",
+      "Phone": "Telefón",
+      "Website": "Web"
+    },
+    "GuestContact": {
+      "Title": "Vaše kontaktné údaje",
+      "Name": "Meno",
+      "Email": "E-mail",
+      "Phone": "Telefón"
+    },
+    "DashboardCta": "Prejsť na moje rezervácie",
+    "BackToReservations": "Späť na moje rezervácie",
+    "DetailSubtitle": "Prehľad vašej rezervácie",
+    "AnonymousFollowUp": "Potvrdenie sme odoslali na zadané kontaktné údaje. Chata vás bude kontaktovať pri potvrdení rezervácie.",
+    "BackHome": "Späť na úvod",
+    "NotProvided": "Neuvedené"
+  },
   "Profile": {
     "Title": "Môj profil",
     "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia."
@@ -325,7 +388,8 @@
         "pending": "čaká na schválenie",
         "confirmed": "potvrdená",
         "cancelled": "zrušená",
-        "completed": "dokončená"
+        "completed": "dokončená",
+        "unknown": "neznámy stav"
       },
       "StaySectionTitle": "Termín pobytu",
       "DateMessage": "Od {fromDate} do {toDate} ({nights, plural, one {# noc} few {# noci} other {# nocí}})",

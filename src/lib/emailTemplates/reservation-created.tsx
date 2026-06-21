@@ -10,6 +10,7 @@ import {
 import { render } from '@react-email/render';
 import { createTranslator } from 'next-intl';
 import { APP_TITLE } from '@/lib/constants';
+import { isReservationStatusType } from '@/lib/reservation/status';
 import {
   formatReservationSummaryDate,
   getReservationPriceBreakdown,
@@ -41,7 +42,9 @@ export default async function ReservationCreatedEmail({
 
   const priceBreakdown = getReservationPriceBreakdown(summary);
   const guestName = summary.guest.name ?? summary.guest.email ?? 'there';
-  const statusLabel = t(`Status.${summary.status}`);
+  const statusLabel = isReservationStatusType(summary.status)
+    ? t(`Status.${summary.status}`)
+    : t('Status.unknown');
   const statusMessage =
     summary.status === 'pending'
       ? t('PendingOwnerMessage')

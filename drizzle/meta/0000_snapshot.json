@@ -27,12 +27,8 @@
           "name": "cottage_services_cottage_id_cottages_id_fk",
           "tableFrom": "cottage_services",
           "tableTo": "cottages",
-          "columnsFrom": [
-            "cottage_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cottage_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -40,12 +36,8 @@
           "name": "cottage_services_service_id_services_id_fk",
           "tableFrom": "cottage_services",
           "tableTo": "services",
-          "columnsFrom": [
-            "service_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["service_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -53,10 +45,7 @@
       "compositePrimaryKeys": {
         "cottage_services_cottage_id_service_id_pk": {
           "name": "cottage_services_cottage_id_service_id_pk",
-          "columns": [
-            "cottage_id",
-            "service_id"
-          ]
+          "columns": ["cottage_id", "service_id"]
         }
       },
       "uniqueConstraints": {},
@@ -186,12 +175,8 @@
           "name": "cottages_user_id_users_id_fk",
           "tableFrom": "cottages",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -243,12 +228,8 @@
           "name": "email_verification_codes_user_id_users_id_fk",
           "tableFrom": "email_verification_codes",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -256,12 +237,8 @@
           "name": "email_verification_codes_email_users_email_fk",
           "tableFrom": "email_verification_codes",
           "tableTo": "users",
-          "columnsFrom": [
-            "email"
-          ],
-          "columnsTo": [
-            "email"
-          ],
+          "columnsFrom": ["email"],
+          "columnsTo": ["email"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -271,9 +248,7 @@
         "email_verification_codes_user_id_unique": {
           "name": "email_verification_codes_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       },
       "policies": {},
@@ -335,12 +310,8 @@
           "name": "images_cottage_id_cottages_id_fk",
           "tableFrom": "images",
           "tableTo": "cottages",
-          "columnsFrom": [
-            "cottage_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cottage_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -380,12 +351,8 @@
           "name": "password_reset_tokens_user_id_users_id_fk",
           "tableFrom": "password_reset_tokens",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -445,12 +412,8 @@
           "name": "reservation_days_reservation_id_reservations_id_fk",
           "tableFrom": "reservation_days",
           "tableTo": "reservations",
-          "columnsFrom": [
-            "reservation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["reservation_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -628,12 +591,8 @@
           "name": "reservations_user_id_users_id_fk",
           "tableFrom": "reservations",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -641,12 +600,8 @@
           "name": "reservations_cottage_id_cottages_id_fk",
           "tableFrom": "reservations",
           "tableTo": "cottages",
-          "columnsFrom": [
-            "cottage_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cottage_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -656,16 +611,12 @@
         "reservations_stripe_checkout_session_id_unique": {
           "name": "reservations_stripe_checkout_session_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "stripe_checkout_session_id"
-          ]
+          "columns": ["stripe_checkout_session_id"]
         },
         "reservations_access_token_unique": {
           "name": "reservations_access_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "access_token"
-          ]
+          "columns": ["access_token"]
         }
       },
       "policies": {},
@@ -702,9 +653,7 @@
         "services_name_unique": {
           "name": "services_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -740,12 +689,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -826,9 +771,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -840,21 +783,12 @@
     "public.payment_status": {
       "name": "payment_status",
       "schema": "public",
-      "values": [
-        "unpaid",
-        "paid",
-        "refunded",
-        "refund_failed"
-      ]
+      "values": ["unpaid", "paid", "refunded", "refund_failed"]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": [
-        "hiker",
-        "cottage_owner",
-        "admin"
-      ]
+      "values": ["hiker", "cottage_owner", "admin"]
     }
   },
   "schemas": {},

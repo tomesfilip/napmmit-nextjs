@@ -314,8 +314,7 @@ export const sendPasswordResetLink = async (
       where: (table, { eq }) => eq(table.email, parsed.data),
     });
 
-    if (!user?.isEmailVerified)
-      return { error: 'Provided email is invalid.' };
+    if (!user?.isEmailVerified) return { error: 'Provided email is invalid.' };
 
     const verificationToken = await generatePasswordResetToken(user.id);
     const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${verificationToken}`;

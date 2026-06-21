@@ -32,6 +32,13 @@ export const paymentStatusEnum = pgEnum('payment_status', [
   'refund_failed',
 ]);
 
+export const reservationStatusEnum = pgEnum('reservation_status', [
+  'pending',
+  'confirmed',
+  'cancelled',
+  'completed',
+]);
+
 export const users = pgTable('users', {
   id: varchar('id', { length: USER_ID_LENGTH }).primaryKey(),
   email: varchar('email', { length: 100 }).unique().notNull(),
@@ -111,7 +118,7 @@ export const reservations = pgTable('reservations', {
   from: date('from').notNull(),
   to: date('to').notNull(),
 
-  status: varchar('status', { length: 20 }).notNull(), // pending | confirmed | cancelled | completed
+  status: reservationStatusEnum('status').notNull().default('pending'),
 
   accessToken: varchar('access_token', { length: 64 }).unique(),
   paidAt: timestamp('paid_at'),

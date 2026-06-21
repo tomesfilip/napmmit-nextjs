@@ -3,6 +3,7 @@ import type {
   Cottage,
   ImageType,
   ReservationType,
+  reservationStatusEnum,
   Service,
   userRoleEnum,
 } from '@/server/db/schema';
@@ -28,10 +29,7 @@ export type CookieConsentType = {
 };
 
 export type ReservationStatusType =
-  | 'pending'
-  | 'confirmed'
-  | 'cancelled'
-  | 'completed';
+  (typeof reservationStatusEnum.enumValues)[number];
 export type PaymentStatusType =
   | 'unpaid'
   | 'paid'

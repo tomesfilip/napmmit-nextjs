@@ -1,5 +1,6 @@
 import { differenceInDays, format } from 'date-fns';
 import type { PaymentStatusType, ReservationStatusType } from '@/lib/appTypes';
+import { parseReservationStatus } from '@/lib/reservation/status';
 import { parseReservationDateParam } from '@/lib/reservation-date-range';
 
 export type ReservationConfirmationSummary = {
@@ -81,7 +82,7 @@ export function mapReservationToConfirmationSummary(
   return {
     id: reservation.id,
     accessToken: reservation.accessToken,
-    status: reservation.status as ReservationStatusType,
+    status: parseReservationStatus(reservation.status),
     paymentStatus: reservation.paymentStatus,
     from: reservation.from,
     to: reservation.to,

@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/lib/constants';
 import {
+  getReservationStatusBadgeClass,
+  isReservationStatusType,
+} from '@/lib/reservation/status';
+import {
   formatReservationSummaryDate,
   getReservationPriceBreakdown,
   type ReservationConfirmationSummary,
@@ -35,6 +39,9 @@ export async function ReservationConfirmationDetails({
   const toDate = formatReservationSummaryDate(summary.to);
   const notProvided = t('NotProvided');
   const isDashboard = variant === 'dashboard';
+  const statusLabel = isReservationStatusType(summary.status)
+    ? t(`Status.${summary.status}`)
+    : t('Status.unknown');
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
@@ -54,10 +61,7 @@ export async function ReservationConfirmationDetails({
                 {isDashboard ? t('DetailSubtitle') : t('Subtitle')}
               </p>
             </div>
-            <StatusBadge
-              label={t(`Status.${summary.status}`)}
-              status={summary.status}
-            />
+            <StatusBadge label={statusLabel} status={summary.status} />
           </div>
         </div>
 
@@ -183,26 +187,18 @@ export async function ReservationConfirmationDetails({
   );
 }
 
-function StatusBadge({
-  label,
-  status,
-}: {
-  label: string;
-  status: ReservationConfirmationSummary['status'];
-}) {
-  const statusClasses = {
-    pending: 'bg-yellow-500',
-    confirmed: 'bg-green-600',
-    cancelled: 'bg-red-500',
-    completed: 'bg-blue-600',
-  };
-
+function StatusBadge({ label, status }: { label: string; status: string }) {
   return (
     <Badge
       variant="outline"
       className="flex w-fit items-center gap-2 font-normal text-black"
     >
-      <span className={clsx('size-2 rounded-full', statusClasses[status])} />
+      <span
+        className={clsx(
+          'size-2 rounded-full',
+          getReservationStatusBadgeClass(status),
+        )}
+      />
       {label}
     </Badge>
   );

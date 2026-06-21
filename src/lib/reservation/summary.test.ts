@@ -135,4 +135,13 @@ describe('reservation confirmation summary', () => {
       isLoggedIn: false,
     });
   });
+
+  it('falls back to pending for invalid reservation statuses', () => {
+    const summary = mapReservationToConfirmationSummary({
+      ...baseReservation,
+      status: 'invalid-status',
+    });
+
+    expect(summary.status).toBe('pending');
+  });
 });

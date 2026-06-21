@@ -314,7 +314,8 @@
       "pending": "Čaká na potvrdenie majiteľom",
       "confirmed": "Potvrdená",
       "cancelled": "Zrušená",
-      "completed": "Dokončená"
+      "completed": "Dokončená",
+      "unknown": "Neznámy stav"
     },
     "Stay": {
       "Title": "Termín pobytu",
@@ -387,7 +388,8 @@
         "pending": "čaká na schválenie",
         "confirmed": "potvrdená",
         "cancelled": "zrušená",
-        "completed": "dokončená"
+        "completed": "dokončená",
+        "unknown": "neznámy stav"
       },
       "StaySectionTitle": "Termín pobytu",
       "DateMessage": "Od {fromDate} do {toDate} ({nights, plural, one {# noc} few {# noci} other {# nocí}})",

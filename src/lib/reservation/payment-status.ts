@@ -1,5 +1,6 @@
 import { eq } from 'drizzle-orm';
 import type { PaymentStatusType, ReservationStatusType } from '@/lib/appTypes';
+import { parseReservationStatus } from '@/lib/reservation/status';
 import db from '@/server/db/drizzle';
 import { reservations } from '@/server/db/schema';
 
@@ -38,7 +39,7 @@ export async function getReservationPaymentStatus(
   return {
     status: 'reservation_created',
     reservationId: reservation.id,
-    reservationStatus: reservation.status as ReservationStatusType,
+    reservationStatus: parseReservationStatus(reservation.status),
     paymentStatus: reservation.paymentStatus,
     accessToken: reservation.accessToken,
   };

@@ -8,6 +8,8 @@ import type { ActionResponse } from '@/lib/auth/actions';
 import { generateEmailVerificationCode } from '@/lib/auth/email-verification';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { ROUTES } from '@/lib/constants';
+import { isUniqueConstraintViolation } from '@/lib/db/postgres-errors';
+import { acquireUserWriteLock } from '@/lib/db/user-write-lock';
 import { renderVerificationCodeEmail } from '@/lib/emailTemplates/email-verification';
 import {
   getActiveReservationCount,
@@ -30,7 +32,13 @@ import {
   updateUsernameSchema,
 } from '@/lib/validators/profile';
 import db from '@/server/db/drizzle';
-import { reservations, users } from '@/server/db/schema';
+import {
+  emailVerificationCodes,
+  passwordResetTokens,
+  reservations,
+  sessions,
+  users,
+} from '@/server/db/schema';
 import { sendMail } from '@/server/db/sendMail';
 
 export type ProfileActionResponse<T> = ActionResponse<T> & {
@@ -129,14 +137,22 @@ export async function updateEmail(
     return { formError: 'email_taken' };
   }
 
-  await db
-    .update(users)
-    .set({
-      email: newEmail,
-      isEmailVerified: false,
-      updatedAt: new Date(),
-    })
-    .where(eq(users.id, user.id));
+  try {
+    await db
+      .update(users)
+      .set({
+        email: newEmail,
+        isEmailVerified: false,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, user.id));
+  } catch (error) {
+    if (isUniqueConstraintViolation(error, 'users_email_unique')) {
+      return { formError: 'email_taken' };
+    }
+
+    throw error;
+  }
 
   const verificationCode = await generateEmailVerificationCode(
     user.id,
@@ -214,15 +230,47 @@ export async function deleteAccount(
   }
 
   try {
-    await lucia.invalidateUserSessions(user.id);
+    let deletionBlocked: Exclude<
+      DeleteAccountErrorCode,
+      'confirmation_mismatch' | 'delete_failed'
+    > | null = null;
 
     await db.transaction(async (tx) => {
+      await acquireUserWriteLock(tx, user.id);
+
+      const [activeReservationCount, ownedCottageCount] = await Promise.all([
+        getActiveReservationCount(user.id, tx),
+        getOwnedCottageCount(user.id, tx),
+      ]);
+
+      const blockReason = getDeleteAccountBlockReason(
+        activeReservationCount,
+        ownedCottageCount,
+      );
+      if (blockReason) {
+        deletionBlocked = blockReason;
+        return;
+      }
+
+      await tx
+        .delete(emailVerificationCodes)
+        .where(eq(emailVerificationCodes.userId, user.id));
+      await tx
+        .delete(passwordResetTokens)
+        .where(eq(passwordResetTokens.userId, user.id));
+      await tx.delete(sessions).where(eq(sessions.userId, user.id));
       await tx
         .update(reservations)
         .set({ userId: null })
         .where(eq(reservations.userId, user.id));
       await tx.delete(users).where(eq(users.id, user.id));
     });
+
+    if (deletionBlocked) {
+      return { errorCode: deletionBlocked, formError: deletionBlocked };
+    }
+
+    await lucia.invalidateUserSessions(user.id);
 
     const sessionCookie = lucia.createBlankSessionCookie();
     const cookiesStore = await cookies();
@@ -233,7 +281,7 @@ export async function deleteAccount(
     );
   } catch (error) {
     console.error('Account deletion failed:', error);
-    return { formError: 'delete_failed' };
+    return { formError: 'delete_failed', errorCode: 'delete_failed' };
   }
 
   redirect('/');

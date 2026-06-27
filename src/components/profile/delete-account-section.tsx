@@ -38,6 +38,13 @@ import {
   deleteAccountSchema,
 } from '@/lib/validators/profile';
 
+const DELETE_ACCOUNT_ERROR_MESSAGES: Record<DeleteAccountErrorCode, string> = {
+  confirmation_mismatch: 'DeleteAccount.Errors.ConfirmationMismatch',
+  active_reservations: 'DeleteAccount.Errors.ActiveReservations',
+  owned_cottages: 'DeleteAccount.Errors.OwnedCottages',
+  delete_failed: 'DeleteAccount.Errors.Generic',
+};
+
 type DeleteAccountSectionProps = {
   email: string;
   blockReason: Exclude<DeleteAccountErrorCode, 'confirmation_mismatch'> | null;
@@ -76,28 +83,18 @@ export const DeleteAccountSection = ({
       return;
     }
 
-    const errorMessage =
-      result?.errorCode === 'confirmation_mismatch'
-        ? t('DeleteAccount.Errors.ConfirmationMismatch')
-        : result?.errorCode === 'active_reservations'
-          ? t('DeleteAccount.Errors.ActiveReservations')
-          : result?.errorCode === 'owned_cottages'
-            ? t('DeleteAccount.Errors.OwnedCottages')
-            : result?.formError === 'delete_failed'
-              ? t('DeleteAccount.Errors.Generic')
-              : null;
+    const errorMessage = result?.errorCode
+      ? t(DELETE_ACCOUNT_ERROR_MESSAGES[result.errorCode])
+      : null;
 
     if (errorMessage) {
       setServerError(errorMessage);
     }
   };
 
-  const blockMessage =
-    blockReason === 'active_reservations'
-      ? t('DeleteAccount.Errors.ActiveReservations')
-      : blockReason === 'owned_cottages'
-        ? t('DeleteAccount.Errors.OwnedCottages')
-        : null;
+  const blockMessage = blockReason
+    ? t(DELETE_ACCOUNT_ERROR_MESSAGES[blockReason])
+    : null;
 
   return (
     <Card className="border-destructive/30">

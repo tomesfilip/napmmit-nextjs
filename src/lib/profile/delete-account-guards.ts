@@ -1,7 +1,8 @@
 export type DeleteAccountErrorCode =
   | 'confirmation_mismatch'
   | 'active_reservations'
-  | 'owned_cottages';
+  | 'owned_cottages'
+  | 'delete_failed';
 
 export function confirmationEmailMatches(
   confirmationEmail: string,
@@ -15,7 +16,10 @@ export function confirmationEmailMatches(
 export function getDeleteAccountBlockReason(
   activeReservationCount: number,
   ownedCottageCount: number,
-): Exclude<DeleteAccountErrorCode, 'confirmation_mismatch'> | null {
+): Exclude<
+  DeleteAccountErrorCode,
+  'confirmation_mismatch' | 'delete_failed'
+> | null {
   if (activeReservationCount > 0) {
     return 'active_reservations';
   }

@@ -2,6 +2,7 @@
 
 import { differenceInHours } from 'date-fns';
 import { and, eq, gte, lt, or, sum } from 'drizzle-orm';
+import { acquireUserWriteLock } from '@/lib/db/user-write-lock';
 import db from '@/server/db/drizzle';
 import { cottages, reservationDays, reservations } from '@/server/db/schema';
 import { validateRequest } from '../auth/validateRequest';
@@ -133,6 +134,10 @@ async function createReservationRecord(
   },
 ): Promise<CreateReservationResult> {
   return db.transaction(async (tx) => {
+    if (data.userId) {
+      await acquireUserWriteLock(tx, data.userId);
+    }
+
     // Serialize reservation writes per cottage so availability is checked against a stable occupancy snapshot.
     const [cottage] = await tx
       .select({ totalBeds: cottages.totalBeds })

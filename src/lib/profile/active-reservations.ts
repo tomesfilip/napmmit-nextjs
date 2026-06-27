@@ -1,8 +1,11 @@
 import { and, count, eq, inArray } from 'drizzle-orm';
+import type { DbTransaction } from '@/lib/db/user-write-lock';
 import db from '@/server/db/drizzle';
 import { cottages, reservations } from '@/server/db/schema';
 
 export const ACTIVE_RESERVATION_STATUSES = ['pending', 'confirmed'] as const;
+
+type DbQueryClient = typeof db | DbTransaction;
 
 export function isActiveReservationStatus(
   status: string,
@@ -12,8 +15,9 @@ export function isActiveReservationStatus(
 
 export async function getActiveReservationCount(
   userId: string,
+  dbOrTx: DbQueryClient = db,
 ): Promise<number> {
-  const [result] = await db
+  const [result] = await dbOrTx
     .select({ count: count() })
     .from(reservations)
     .where(
@@ -26,8 +30,11 @@ export async function getActiveReservationCount(
   return result?.count ?? 0;
 }
 
-export async function getOwnedCottageCount(userId: string): Promise<number> {
-  const [result] = await db
+export async function getOwnedCottageCount(
+  userId: string,
+  dbOrTx: DbQueryClient = db,
+): Promise<number> {
+  const [result] = await dbOrTx
     .select({ count: count() })
     .from(cottages)
     .where(eq(cottages.userId, userId));

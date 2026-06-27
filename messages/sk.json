@@ -355,7 +355,52 @@
   },
   "Profile": {
     "Title": "Môj profil",
-    "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia."
+    "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia.",
+    "EmailSection": {
+      "Title": "E-mail",
+      "Description": "Zmena e-mailu vyžaduje opätovné overenie adresy.",
+      "CurrentLabel": "Aktuálny e-mail",
+      "Submit": "Zmeniť e-mail",
+      "NotVerified": "Váš e-mail ešte nie je overený.",
+      "VerifyLink": "Overiť e-mail",
+      "SameEmailError": "Zadali ste rovnaký e-mail ako aktuálny.",
+      "EmailTakenError": "Tento e-mail už používa iný účet."
+    },
+    "NameSection": {
+      "Title": "Meno",
+      "Description": "Meno zobrazené pri rezerváciách a v komunikácii.",
+      "Label": "Meno",
+      "Placeholder": "Vaše meno",
+      "Submit": "Uložiť meno",
+      "Success": "Meno bolo uložené."
+    },
+    "PhoneSection": {
+      "Title": "Telefón",
+      "Description": "Kontaktné telefónne číslo pre vaše rezervácie.",
+      "Label": "Telefón",
+      "Placeholder": "900 000 000",
+      "CountrySearch": "Hľadať krajinu...",
+      "CountryNotFound": "Krajina sa nenašla.",
+      "Submit": "Uložiť telefón",
+      "Success": "Telefónne číslo bolo uložené."
+    },
+    "DeleteAccount": {
+      "Title": "Nebezpečná zóna",
+      "Description": "Trvalé zmazanie účtu a všetkých súvisiacich údajov. Túto akciu nie je možné vrátiť späť.",
+      "Button": "Zmazať účet",
+      "ModalTitle": "Naozaj chcete zmazať účet?",
+      "ModalDescription": "Táto akcia je trvalá. Pre potvrdenie zadajte svoju e-mailovú adresu.",
+      "ConfirmationLabel": "Potvrďte e-mail",
+      "ConfirmationPlaceholder": "email@example.com",
+      "Cancel": "Zrušiť",
+      "Confirm": "Trvalo zmazať účet",
+      "Errors": {
+        "ConfirmationMismatch": "Zadaný e-mail sa nezhoduje s vaším účtom.",
+        "ActiveReservations": "Účet nie je možné zmazať, kým máte aktívne rezervácie.",
+        "OwnedCottages": "Účet nie je možné zmazať, kým vlastníte chaty.",
+        "Generic": "Zmazanie účtu zlyhalo. Skúste to znova neskôr."
+      }
+    }
   },
   "Shared": {
     "EmailField": {

@@ -36,7 +36,6 @@ export const NavHeader = async () => {
                 </li>
               )}
               <li className="flex items-center gap-4">
-                {/* TODO: add the profile page */}
                 <Link
                   href={ROUTES.PROFILE}
                   className="border-b border-b-transparent transition-all duration-200 hover:border-b-black"

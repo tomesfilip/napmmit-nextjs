@@ -1,21 +1,13 @@
 # Current Feature
 
-<!-- Feature Name -->
-
 ## Status
-
-<!-- Not Started|In Progress|Completed -->
 
 Not Started
 
 ## Goals
 
-<!-- Goals & requirements -->
-
 
 ## Notes
-
-<!-- Any extra notes -->
 
 
 ## History
@@ -29,3 +21,4 @@ Not Started
 - Completed Stripe Integration Phase 2 UI flow: reservation form now opens embedded Stripe Checkout for the fixed reservation fee, signed webhooks create paid pending reservations idempotently, the return page redirects to reservations after webhook processing, and paid cancellation preserves audit rows with eligible refund handling.
 - Completed Reservation Confirmed Flow Phase 1: added confirmation email tracking columns and migration, shared `ReservationConfirmationSummary` module, idempotent `sendReservationConfirmationEmailOnce()` coordinator, expanded confirmation email template with Slovak translations, background email trigger on the Stripe return page via `after()`, and unit tests for summary formatting, recipient resolution, and send idempotency.
 - Completed Reservation Confirmed Flow Phase 2: replaced the post-payment dashboard redirect with a server-rendered confirmation page on `/reservation/return`, changed polling success to `router.refresh()`, added shared `ReservationConfirmationDetails` with post-payment and dashboard variants, linked hiker reservation cards to `/dashboard/reservations/[id]`, extended payment status helpers and summary queries, added Slovak translations, moved the Stripe webhook to `/api/webhooks/stripe`, and added focused unit tests.
+- Completed Profile Page: extended `/profile` with react-hook-form sections for email, name, and phone; profile server actions with email re-verification and account deletion guards; searchable country phone input with E.164 validation; Slovak translations; shared email verification helper; and focused unit tests.

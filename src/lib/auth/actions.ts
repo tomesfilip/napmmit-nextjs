@@ -5,9 +5,9 @@ import { generateId, Scrypt } from 'lucia';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
-import { alphabet, generateRandomString } from 'oslo/crypto';
 import { z } from 'zod';
 import { lucia } from '@/lib/auth';
+import { generateEmailVerificationCode } from '@/lib/auth/email-verification';
 import db from '../../server/db/drizzle';
 import {
   emailVerificationCodes,
@@ -173,23 +173,6 @@ export async function logout(): Promise<void> {
   );
   return redirect('/');
 }
-
-const generateEmailVerificationCode = async (
-  userId: string,
-  email: string,
-): Promise<string> => {
-  await db
-    .delete(emailVerificationCodes)
-    .where(eq(emailVerificationCodes.userId, userId));
-  const code = generateRandomString(8, alphabet('0-9')); // 8 digit code
-  await db.insert(emailVerificationCodes).values({
-    userId,
-    email,
-    code,
-    expiresAt: createDate(new TimeSpan(10, 'm')), // 10 minutes
-  });
-  return code;
-};
 
 export const resendVerificationEmail = async (): Promise<{
   error?: string;

@@ -24,7 +24,7 @@ This document captures what is missing or incomplete before Napmmit can be consi
 
 Napmmit has a solid core: cottage listing and detail pages, multi-step cottage CRUD, Lucia auth, Stripe reservation fees with webhooks, confirmation emails, and owner/hiker reservation dashboards. Profile management and guarded account deletion are relatively mature.
 
-The gap between “features exist” and “ready for real users” is large. **P0 security holes, legal copy that contradicts the live product, and missing error boundaries** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
+The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (privacy policy, domain, advisor sign-off), and missing error boundaries** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
 
 ---
 
@@ -67,7 +67,7 @@ The gap between “features exist” and “ready for real users” is large. **
 
 | # | Done | Issue | Details |
 |---|------|-------|---------|
-| 7 | No | **Terms of use contradict the product** | `src/app/(legal)/terms-of-use/page.tsx` §2 states the operator is *not* a reservation intermediary. The app now processes paid Stripe reservations end-to-end. Terms must be updated for: reservation intermediary role; €1 reservation fee and €0.50 refund policy; Stripe as payment processor; cancellation rules (48h); data processors: Stripe, Resend, Vercel Blob, Neon. |
+| 7 | Yes | **Terms of use contradict the product** | ~~`src/app/(legal)/terms-of-use/page.tsx` §2 stated the operator is *not* a reservation intermediary while the app processes paid Stripe reservations.~~ Fixed: terms rewritten in `src/app/(legal)/terms-of-use/page.tsx` — reservation facilitation role, €1 fee / €0.50 refund (from `RESERVATION_FEE_CENTS` / `RESERVATION_REFUND_CENTS`), Stripe as payment processor, pending/confirmed/cancelled lifecycle, 48h cancellation refund rule, subprocessors (Stripe, Resend, Vercel, Vercel Blob, Neon), links to privacy/cookie policies, effective date via `src/lib/legal/constants.ts`. **Before launch:** qualified Slovak legal advisor review; update `LEGAL_DOMAIN` when production domain is registered (P0 §8). |
 | 8 | No | **Production domain not purchased yet** | No production domain is owned yet. The codebase and legal copy reference `napmmit.com` (e.g. terms of use, `noreply@napmmit.com` in `src/lib/constants.ts`), while `what-to-fix.md` targets `napmmit.sk` for the live site. **Buy and register the chosen domain before launch** (likely `.sk` for Slovakia-first positioning). Until then: `NEXT_PUBLIC_APP_URL` cannot point at a real production hostname; Resend cannot verify a sending domain; Stripe return URLs and webhooks need a stable public URL; legal pages, OG links, and sitemap URLs are placeholders. After purchase: configure DNS (Vercel or host), TLS, email SPF/DKIM (Resend), and update all hardcoded `napmmit.com` references in code and legal text. |
 | 9 | No | **Privacy policy needs payment/reservation data** | GDPR policy exists but should explicitly cover reservation data, payment metadata, and third-party processors added since reservations went live. |
 
@@ -335,7 +335,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 2. ~~Authenticate image upload route~~ — **done** (`assertCanUploadCottageImages` in `src/lib/cottage/upload-auth.ts`).
 3. ~~Add centralized route protection (`proxy.ts`)~~ — **done** (`src/proxy.ts`: login redirect for protected routes; `canManageCottages()` role gate for `/create` and `/edit`).
 4. Fix broken dashboard create CTA link.
-5. Update terms of use and privacy policy for reservations and payment processors.
+5. ~~Update terms of use~~ — **done** (`src/app/(legal)/terms-of-use/page.tsx`, `src/lib/legal/constants.ts`). Update privacy policy for reservations and payment processors (P0 §9).
 6. Add `error.tsx` (and optionally `global-error.tsx`).
 7. **Buy production domain** (P0 §8), then DNS, Resend verification, `NEXT_PUBLIC_APP_URL`, update legal copy + constants.
 
@@ -389,7 +389,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Legal text, error boundaries, rate limiting, production domain |
+| **P0** | Privacy policy, error boundaries, rate limiting, production domain; terms of use done (advisor sign-off before launch) |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

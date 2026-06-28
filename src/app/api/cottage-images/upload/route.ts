@@ -1,53 +1,51 @@
 import { type HandleUploadBody, handleUpload } from '@vercel/blob/client';
 import { NextResponse } from 'next/server';
+import { applySessionCookieToResponse } from '@/lib/auth/validateRequest';
+import {
+  assertCanUploadCottageImages,
+  isCottageImageUploadAuthError,
+} from '@/lib/cottage/upload-auth';
 
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
+  let sessionCookie: Awaited<
+    ReturnType<typeof assertCanUploadCottageImages>
+  >['sessionCookie'];
 
   try {
     const jsonResponse = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async (
-        _pathname,
-        /* clientPayload */
-      ) => {
-        // Generate a client token for the browser to upload the file
-        // Make sure to authenticate and authorize users before generating the token.
-        // Otherwise, you're allowing anonymous uploads.
+      onBeforeGenerateToken: async () => {
+        const auth = await assertCanUploadCottageImages(request);
+        sessionCookie = auth.sessionCookie;
 
         return {
           allowedContentTypes: ['image/jpeg', 'image/png', 'image/webp'],
           addRandomSuffix: true,
-          // callbackUrl: 'https://example.com/api/avatar/upload',
-          // optional, `callbackUrl` is automatically computed when hosted on Vercel
-          tokenPayload: JSON.stringify({
-            // optional, sent to your server on upload completion
-            // you could pass a user id from auth, or a value from clientPayload
-          }),
+          tokenPayload: JSON.stringify({ userId: auth.user.id }),
         };
-      },
-      onUploadCompleted: async ({ blob, tokenPayload }) => {
-        // Called by Vercel API on client upload completion
-        // Use tools like ngrok if you want this to work locally
-
-        console.log('blob upload completed', blob, tokenPayload);
-
-        // try {
-        // Run any logic after the file upload completed
-        // const { userId } = JSON.parse(tokenPayload);
-        // await db.update({ avatar: blob.url, userId });
-        // } catch (error) {
-        // throw new Error('Could not update user');
-        // }
       },
     });
 
-    return NextResponse.json(jsonResponse);
+    return applySessionCookieToResponse(
+      NextResponse.json(jsonResponse),
+      sessionCookie,
+    );
   } catch (error) {
+    if (isCottageImageUploadAuthError(error)) {
+      return applySessionCookieToResponse(
+        NextResponse.json(
+          { error: error.message },
+          { status: error.status },
+        ),
+        error.sessionCookie ?? sessionCookie,
+      );
+    }
+
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 400 }, // The webhook will retry 5 times waiting for a 200
+      { status: 400 },
     );
   }
 }

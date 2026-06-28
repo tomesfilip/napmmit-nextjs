@@ -1,6 +1,6 @@
 # Production Readiness & UX Audit
 
-**Date:** 2026-06-27  
+**Date:** 2026-06-28  
 **Scope:** Full web app review against `README.md`, `context/project-overview.md`, `docs/project-spec.md`, and live codebase.
 
 This document captures what is missing or incomplete before Napmmit can be considered production-ready with good UX. It complements the narrower checklist in [`what-to-fix.md`](./what-to-fix.md).
@@ -24,7 +24,7 @@ This document captures what is missing or incomplete before Napmmit can be consi
 
 Napmmit has a solid core: cottage listing and detail pages, multi-step cottage CRUD, Lucia auth, Stripe reservation fees with webhooks, confirmation emails, and owner/hiker reservation dashboards. Profile management and guarded account deletion are relatively mature.
 
-The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (privacy policy, domain, advisor sign-off), and missing error boundaries** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
+The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (production domain purchase, qualified advisor sign-off on terms and privacy policy), rate limiting, and missing error boundaries** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
 
 ---
 
@@ -69,7 +69,7 @@ The gap between “features exist” and “ready for real users” is large. **
 |---|------|-------|---------|
 | 7 | Yes | **Terms of use contradict the product** | ~~`src/app/(legal)/terms-of-use/page.tsx` §2 stated the operator is *not* a reservation intermediary while the app processes paid Stripe reservations.~~ Fixed: terms rewritten in `src/app/(legal)/terms-of-use/page.tsx` — reservation facilitation role, €1 fee / €0.50 refund (from `RESERVATION_FEE_CENTS` / `RESERVATION_REFUND_CENTS`), Stripe as payment processor, pending/confirmed/cancelled lifecycle, 48h cancellation refund rule, subprocessors (Stripe, Resend, Vercel, Vercel Blob, Neon), links to privacy/cookie policies, effective date via `src/lib/legal/constants.ts`. **Before launch:** qualified Slovak legal advisor review; update `LEGAL_DOMAIN` when production domain is registered (P0 §8). |
 | 8 | No | **Production domain not purchased yet** | No production domain is owned yet. The codebase and legal copy reference `napmmit.com` (e.g. terms of use, `noreply@napmmit.com` in `src/lib/constants.ts`), while `what-to-fix.md` targets `napmmit.sk` for the live site. **Buy and register the chosen domain before launch** (likely `.sk` for Slovakia-first positioning). Until then: `NEXT_PUBLIC_APP_URL` cannot point at a real production hostname; Resend cannot verify a sending domain; Stripe return URLs and webhooks need a stable public URL; legal pages, OG links, and sitemap URLs are placeholders. After purchase: configure DNS (Vercel or host), TLS, email SPF/DKIM (Resend), and update all hardcoded `napmmit.com` references in code and legal text. |
-| 9 | No | **Privacy policy needs payment/reservation data** | GDPR policy exists but should explicitly cover reservation data, payment metadata, and third-party processors added since reservations went live. |
+| 9 | Yes | **Privacy policy needs payment/reservation data** | ~~GDPR policy did not cover reservation data, payment metadata, or third-party processors.~~ Fixed: `src/app/(legal)/privacy-policy/page.tsx` extended — reservation/guest contact data, Stripe payment metadata (explicit no PAN/CVV), access tokens, transactional email metadata; purposes (reservations, fees/refunds, fraud prevention); legal bases; retention for reservations/payments/tokens; subprocessors (Stripe, Resend, Neon, Vercel, Vercel Blob); data subject rights with legal-retention limits; international transfers (SCCs); operator/domain via `src/lib/legal/constants.ts`. **Before launch:** qualified Slovak GDPR/privacy advisor review; update `LEGAL_DOMAIN` when production domain is registered (P0 §8). |
 
 ### Reliability
 
@@ -335,9 +335,10 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 2. ~~Authenticate image upload route~~ — **done** (`assertCanUploadCottageImages` in `src/lib/cottage/upload-auth.ts`).
 3. ~~Add centralized route protection (`proxy.ts`)~~ — **done** (`src/proxy.ts`: login redirect for protected routes; `canManageCottages()` role gate for `/create` and `/edit`).
 4. Fix broken dashboard create CTA link.
-5. ~~Update terms of use~~ — **done** (`src/app/(legal)/terms-of-use/page.tsx`, `src/lib/legal/constants.ts`). Update privacy policy for reservations and payment processors (P0 §9).
-6. Add `error.tsx` (and optionally `global-error.tsx`).
-7. **Buy production domain** (P0 §8), then DNS, Resend verification, `NEXT_PUBLIC_APP_URL`, update legal copy + constants.
+5. ~~Update terms of use~~ — **done** (`src/app/(legal)/terms-of-use/page.tsx`, `src/lib/legal/constants.ts`).
+6. ~~Update privacy policy for reservations and payment processors~~ — **done** (`src/app/(legal)/privacy-policy/page.tsx`, aligned with terms and `src/lib/legal/constants.ts`).
+7. Add `error.tsx` (and optionally `global-error.tsx`).
+8. **Buy production domain** (P0 §8), then DNS, Resend verification, `NEXT_PUBLIC_APP_URL`, update `LEGAL_DOMAIN` in `src/lib/legal/constants.ts`.
 
 ### Phase 2 — P1 UX
 
@@ -389,7 +390,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Privacy policy, error boundaries, rate limiting, production domain; terms of use done (advisor sign-off before launch) |
+| **P0** | Error boundaries, rate limiting, production domain; terms and privacy policy drafted (qualified legal/GDPR advisor sign-off before launch) |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

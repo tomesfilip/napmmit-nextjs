@@ -1,8 +1,9 @@
 'use server';
 
-import { and, eq, inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import type { User } from 'lucia';
 import { validateRequest } from '@/lib/auth/validateRequest';
+import { cottageOwnershipFilter } from '@/lib/cottage/ownership';
 import type { CreateCottageSchemaType } from '@/lib/formSchemas';
 import db from '@/server/db/drizzle';
 import {
@@ -32,14 +33,6 @@ async function requireAuthenticatedUser(): Promise<User> {
   const { user } = await validateRequest();
   if (!user) throw new Error('Unauthorized');
   return user;
-}
-
-function cottageOwnershipFilter(cottageId: number, user: User) {
-  if (user.role === 'admin') {
-    return eq(cottages.id, cottageId);
-  }
-
-  return and(eq(cottages.id, cottageId), eq(cottages.userId, user.id));
 }
 
 async function prepareCottageData(data: CreateUpdateDataType) {

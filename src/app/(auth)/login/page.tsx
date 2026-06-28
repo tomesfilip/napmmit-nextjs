@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getSafeReturnUrl } from '@/lib/auth/safe-return-url';
 import { validateRequest } from '@/lib/auth/validateRequest';
-import { ROUTES } from '@/lib/constants';
+import { LOCAL_DEV_APP_URL, ROUTES } from '@/lib/constants';
 import { Login } from './login';
 
 export const metadata = {
@@ -22,7 +22,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     const origin =
       (await headers()).get('origin') ??
       process.env.NEXT_PUBLIC_APP_URL ??
-      'http://localhost:3000';
+      LOCAL_DEV_APP_URL;
     const safeReturnUrl = getSafeReturnUrl(returnUrl, origin);
     if (safeReturnUrl) {
       redirect(safeReturnUrl);

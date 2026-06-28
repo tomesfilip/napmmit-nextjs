@@ -15,7 +15,7 @@ import {
   users,
 } from '../../server/db/schema';
 import { sendMail } from '../../server/db/sendMail';
-import { PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
+import { LOCAL_DEV_APP_URL, PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
@@ -91,7 +91,7 @@ export const login = async (
   const origin =
     (await headers()).get('origin') ??
     process.env.NEXT_PUBLIC_APP_URL ??
-    'http://localhost:3000';
+    LOCAL_DEV_APP_URL;
   const returnUrlField = formData.get('returnUrl');
   const safeReturnUrl = getSafeReturnUrl(
     typeof returnUrlField === 'string' ? returnUrlField : null,

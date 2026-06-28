@@ -1,6 +1,7 @@
 'use server';
 
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
+import type { User } from 'lucia';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import type { CreateCottageSchemaType } from '@/lib/formSchemas';
 import db from '@/server/db/drizzle';
@@ -26,6 +27,20 @@ type CreateUpdateDataType = Partial<CreateCottageSchemaType> & {
   description: string;
   images?: ImageInput[];
 };
+
+async function requireAuthenticatedUser(): Promise<User> {
+  const { user } = await validateRequest();
+  if (!user) throw new Error('Unauthorized');
+  return user;
+}
+
+function cottageOwnershipFilter(cottageId: number, user: User) {
+  if (user.role === 'admin') {
+    return eq(cottages.id, cottageId);
+  }
+
+  return and(eq(cottages.id, cottageId), eq(cottages.userId, user.id));
+}
 
 async function prepareCottageData(data: CreateUpdateDataType) {
   const { user } = await validateRequest();
@@ -67,15 +82,17 @@ export async function updateCottage(data: CreateUpdateDataType) {
     throw new Error('Cottage ID is required');
   }
 
+  const user = await requireAuthenticatedUser();
   const cottageData = await prepareCottageData(data);
   const cottageId = data.cottageId;
+  const { userId: _userId, ...updateFields } = cottageData;
 
   const [updatedCottage] = await db
     .update(cottages)
-    .set(cottageData)
-    .where(eq(cottages.id, cottageId))
+    .set(updateFields)
+    .where(cottageOwnershipFilter(cottageId, user))
     .returning({ id: cottages.id });
-  if (!updatedCottage?.id) throw new Error('Failed to update cottage');
+  if (!updatedCottage?.id) throw new Error('Unauthorized');
 
   if (data.services) {
     await db
@@ -167,6 +184,18 @@ export async function createCottage(data: CreateUpdateDataType) {
 
 export async function deleteCottage(cottageId: CottageDetailType['id']) {
   try {
+    const user = await requireAuthenticatedUser();
+
+    const [cottage] = await db
+      .select({ id: cottages.id })
+      .from(cottages)
+      .where(cottageOwnershipFilter(cottageId, user))
+      .limit(1);
+
+    if (!cottage) {
+      throw new Error('Unauthorized');
+    }
+
     const responseServices = await db
       .delete(cottageServices)
       .where(eq(cottageServices.cottageId, cottageId));

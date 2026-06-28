@@ -306,6 +306,13 @@
     "CreateSuccess": "Chata bola úspešne publikovaná",
     "EditSuccess": "Chata bola úspešne upravená"
   },
+  "EditCottage": {
+    "Loader": {
+      "Label": "Úprava chaty",
+      "Title": "Pripravujeme formulár…",
+      "Description": "Načítavame údaje vašej chaty, hneď budete pokračovať."
+    }
+  },
   "ReservationConfirmationPage": {
     "PaymentConfirmed": "Platba bola potvrdená",
     "Title": "Rezervácia bola prijatá",

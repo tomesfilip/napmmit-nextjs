@@ -39,7 +39,7 @@ The gap between “features exist” and “ready for real users” is large. **
 | Auth (register/login/logout) | Stage 2 | Yes | Email verification not enforced for reservations | P2 |
 | Confirmation emails | Stage 2 | Partial — guest confirmation only | Owner notification + cancellation emails missing | P2 |
 | Reservations (RMS) | Stage 3 | Yes — Stripe fee, pending → confirmed lifecycle | No owner calendar view; pricing fields underused | P2 |
-| User roles (admin/owner/hiker) | Stage 3 | Partial — roles in DB, no admin UI | Admin role unused; hikers can access `/create` | P3 |
+| User roles (admin/owner/hiker) | Stage 3 | Partial — roles in DB, no admin UI | Admin role unused; cottage management routes gated by role in `proxy.ts` | P3 |
 | Real-time availability | project-overview | Yes — `reservation_days` strategy | Good foundation | — |
 | SEO (metadata, sitemap, OG) | project-overview | Minimal root metadata only | Per-cottage metadata, sitemap, OG missing | P2 |
 | Monitoring (Sentry) | project-overview | Not integrated | Errors go to `console.error` | P2 |
@@ -59,8 +59,8 @@ The gap between “features exist” and “ready for real users” is large. **
 | 1 | Yes | **Cottage update has no ownership check** | ~~`updateCottage` in `src/lib/cottage/actions.ts` updates any cottage by ID.~~ Fixed: `updateCottage` uses `cottageOwnershipFilter()` — `WHERE id = ? AND user_id = ?` for owners, admin bypass for `role === 'admin'`. `userId` is excluded from the update payload so admins cannot reassign ownership. |
 | 2 | Yes | **Cottage delete has no authentication or ownership check** | ~~`deleteCottage` performs destructive deletes with no `validateRequest()` and no ownership guard.~~ Fixed: `deleteCottage` calls `requireAuthenticatedUser()` and verifies ownership via `cottageOwnershipFilter()` before deleting services, images, reservations, or the cottage row. |
 | 3 | Yes | **Image uploads allow anonymous access** | ~~`src/app/api/cottage-images/upload/route.ts` explicitly allows anonymous uploads.~~ Fixed: `assertCanUploadCottageImages()` in `src/lib/cottage/upload-auth.ts` runs in `onBeforeGenerateToken` — requires authenticated session; only `cottage_owner` and `admin` roles get a Blob token. Unauthenticated → 401; hikers → 403. Session cookie refresh applied on response. Covered by `upload-auth.test.ts`. |
-| 4 | No | **Edit flow loads any cottage without ownership check** | `src/app/edit/[id]/page.tsx` fetches cottage by ID and pre-fills the form with no check that the current user owns it. |
-| 5 | No | **No centralized route protection** | There is no `middleware.ts`. Dashboard pages return `null` for unauthenticated users (`src/app/dashboard/page.tsx`) instead of redirecting to login. `/create` requires login but not `cottage_owner` role — hikers can start cottage creation. |
+| 4 | Yes | **Edit flow loads any cottage without ownership check** | ~~`src/app/edit/[id]/page.tsx` fetches cottage by ID and pre-fills the form with no check that the current user owns it.~~ Fixed: server page calls `getCottageIfOwned()` in `src/lib/cottage/ownership.ts` (same SQL semantics as `cottageOwnershipFilter()`); unauthorized users get `notFound()`. Client `EditCottageLoader` hydrates Zustand from server-passed data — no unscoped `getCottage` from the browser. Covered by `ownership.test.ts`. |
+| 5 | Yes | **No centralized route protection** | ~~No `middleware.ts`; dashboard pages returned `null` for unauthenticated users; hikers could access `/create`.~~ Fixed: `src/proxy.ts` (Next.js 16 proxy convention) guards `/dashboard/*`, `/create/*`, `/edit/*`, and `/profile` — unauthenticated users redirect to `/login?returnUrl=...`; hikers blocked from cottage management paths via `canManageCottages()` in `src/lib/auth/roles.ts`. Safe same-origin `returnUrl` handled in login page and action (`getSafeReturnUrl`). Dashboard pages use `redirect('/login')` as defense-in-depth. Edit ownership remains a separate check (P0 §4). `/reservation/return` left public for post-payment access token flow. |
 | 6 | No | **No rate limiting** | Auth endpoints, reservation checkout, and image upload are unprotected against brute-force and abuse. Recommended in `context/project-overview.md` but not built. |
 
 ### Legal & compliance
@@ -109,7 +109,7 @@ The gap between “features exist” and “ready for real users” is large. **
 
 | Issue | Evidence | Impact |
 |-------|----------|--------|
-| Dashboard unauth returns blank page | `src/app/dashboard/reservations/page.tsx` | Confusing instead of login redirect |
+| ~~Dashboard unauth returns blank page~~ | ~~`src/app/dashboard/reservations/page.tsx`~~ | Fixed via `src/proxy.ts` login redirect + page-level `redirect('/login')` defense-in-depth |
 | Verify-email page in English | `src/app/(auth)/verify-email/page.tsx` — `// TODO: translations` | Breaks Slovak-first UX |
 
 ### Feedback & loading states
@@ -224,7 +224,7 @@ Today the repo has `main` and short-lived feature branches only — no long-live
 | E2E (Playwright/Cypress) | None |
 | API / webhook integration tests | None |
 
-Well-tested: reservation validation, payment status, confirmation email idempotency, account deletion guards, cottage image upload auth.  
+Well-tested: reservation validation, payment status, confirmation email idempotency, account deletion guards, cottage image upload auth, route protection role helper (`canManageCottages`), safe return URL validation, cottage edit-flow ownership (`getCottageIfOwned`).  
 Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 
 ---
@@ -243,7 +243,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 | Issue | Evidence | Impact |
 |-------|----------|--------|
 | Admin role unused — no moderation UI | Roles in DB; no admin dashboard | Content moderation manual or absent |
-| Hikers can access `/create` | `create/layout.tsx` checks login only | Role gate incomplete (also partly P0 §5) |
+| ~~Hikers can access `/create`~~ | ~~`create/layout.tsx` checked login only~~ | Fixed: `src/proxy.ts` blocks hikers from `/create` and `/edit` (P0 §5) |
 
 ### Growth & integrations
 
@@ -283,7 +283,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 ### README Stage 3
 
 - [x] Reservations management (hiker + owner dashboards, confirm/cancel)
-- [ ] User roles fully enforced — **P3** (admin UI); partial role gate is **P0** §5
+- [ ] User roles fully enforced — **P3** (admin UI); cottage management role gate done (**P0** §5)
 
 ### project-overview MVP (Phase 1)
 
@@ -331,9 +331,9 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 
 ### Phase 1 — P0 blockers
 
-1. ~~Add ownership checks to `updateCottage`, `deleteCottage`~~ — **done** (`cottageOwnershipFilter` in `src/lib/cottage/actions.ts`). Still open: ownership check on edit flow (`/edit/[id]`).
+1. ~~Add ownership checks to `updateCottage`, `deleteCottage`, and edit flow (`/edit/[id]`)~~ — **done** (`cottageOwnershipFilter` / `getCottageIfOwned` in `src/lib/cottage/ownership.ts`).
 2. ~~Authenticate image upload route~~ — **done** (`assertCanUploadCottageImages` in `src/lib/cottage/upload-auth.ts`).
-3. Add `middleware.ts` — redirect unauthenticated users from dashboard; restrict `/create` to `cottage_owner` (and `admin`).
+3. ~~Add centralized route protection (`proxy.ts`)~~ — **done** (`src/proxy.ts`: login redirect for protected routes; `canManageCottages()` role gate for `/create` and `/edit`).
 4. Fix broken dashboard create CTA link.
 5. Update terms of use and privacy policy for reservations and payment processors.
 6. Add `error.tsx` (and optionally `global-error.tsx`).
@@ -389,7 +389,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Authorization on cottage mutations and edit flow, legal text, error boundaries, rate limiting, production domain |
+| **P0** | Legal text, error boundaries, rate limiting, production domain |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

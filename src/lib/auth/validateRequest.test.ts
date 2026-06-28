@@ -112,10 +112,8 @@ describe('applySessionCookieToResponse', () => {
       attributes: { path: '/' },
     });
 
-    expect(response.cookies.set).toHaveBeenCalledWith(
-      'session',
-      'refreshed',
-      { path: '/' },
-    );
+    expect(response.cookies.set).toHaveBeenCalledWith('session', 'refreshed', {
+      path: '/',
+    });
   });
 });

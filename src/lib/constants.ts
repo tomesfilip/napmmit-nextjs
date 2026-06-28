@@ -5,6 +5,7 @@ export const USER_ID_LENGTH = 21;
 export const PASSWORD_ID_LENGTH = 40;
 
 export const APP_TITLE = 'Napmmit';
+export const LOCAL_DEV_APP_URL = 'http://localhost:3000';
 export const EMAIL_SENDER = `"${APP_TITLE}" <noreply@napmmit.com>`;
 export const EMAIL_SENDER_RESEND = 'onboarding@resend.dev';
 export const EMAIL_SUPPORT = 'support@napmmit.com';

@@ -35,10 +35,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (error) {
     if (isCottageImageUploadAuthError(error)) {
       return applySessionCookieToResponse(
-        NextResponse.json(
-          { error: error.message },
-          { status: error.status },
-        ),
+        NextResponse.json({ error: error.message }, { status: error.status }),
         error.sessionCookie ?? sessionCookie,
       );
     }

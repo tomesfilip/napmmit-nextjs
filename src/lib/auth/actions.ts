@@ -2,7 +2,7 @@
 
 import { eq } from 'drizzle-orm';
 import { generateId, Scrypt } from 'lucia';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
 import { z } from 'zod';
@@ -15,7 +15,7 @@ import {
   users,
 } from '../../server/db/schema';
 import { sendMail } from '../../server/db/sendMail';
-import { PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
+import { LOCAL_DEV_APP_URL, PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {
@@ -26,6 +26,7 @@ import {
   type SignupInput,
   signupSchema,
 } from '../validators/auth';
+import { getSafeReturnUrl } from './safe-return-url';
 import { validateRequest } from './validateRequest';
 
 export type ActionResponse<T> = {
@@ -86,6 +87,20 @@ export const login = async (
     sessionCookie.value,
     sessionCookie.attributes,
   );
+
+  const origin =
+    (await headers()).get('origin') ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    LOCAL_DEV_APP_URL;
+  const returnUrlField = formData.get('returnUrl');
+  const safeReturnUrl = getSafeReturnUrl(
+    typeof returnUrlField === 'string' ? returnUrlField : null,
+    origin,
+  );
+
+  if (safeReturnUrl) {
+    return redirect(safeReturnUrl);
+  }
 
   if (existingUser.role === 'hiker') {
     return redirect('/');

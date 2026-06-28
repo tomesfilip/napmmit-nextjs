@@ -18,7 +18,11 @@ import { Label } from '@/components/ui/label';
 import { login } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants';
 
-export const Login = () => {
+type LoginProps = {
+  returnUrl?: string;
+};
+
+export const Login = ({ returnUrl }: LoginProps) => {
   const [state, formAction] = useActionState(login, null);
 
   const t = useTranslations('LoginPage');
@@ -37,6 +41,9 @@ export const Login = () => {
           <div className="grow border-t border-muted" />
         </div>
         <form action={formAction} className="grid gap-4">
+          {returnUrl ? (
+            <input type="hidden" name="returnUrl" value={returnUrl} />
+          ) : null}
           <div className="space-y-2">
             <Label htmlFor="email">{tShared('EmailField.Label')}</Label>
             <Input

@@ -58,7 +58,7 @@ The gap between “features exist” and “ready for real users” is large. **
 |---|------|-------|---------|
 | 1 | Yes | **Cottage update has no ownership check** | ~~`updateCottage` in `src/lib/cottage/actions.ts` updates any cottage by ID.~~ Fixed: `updateCottage` uses `cottageOwnershipFilter()` — `WHERE id = ? AND user_id = ?` for owners, admin bypass for `role === 'admin'`. `userId` is excluded from the update payload so admins cannot reassign ownership. |
 | 2 | Yes | **Cottage delete has no authentication or ownership check** | ~~`deleteCottage` performs destructive deletes with no `validateRequest()` and no ownership guard.~~ Fixed: `deleteCottage` calls `requireAuthenticatedUser()` and verifies ownership via `cottageOwnershipFilter()` before deleting services, images, reservations, or the cottage row. |
-| 3 | No | **Image uploads allow anonymous access** | `src/app/api/cottage-images/upload/route.ts` explicitly allows anonymous uploads (comment acknowledges this). Authenticate and authorize before generating Vercel Blob tokens. |
+| 3 | Yes | **Image uploads allow anonymous access** | ~~`src/app/api/cottage-images/upload/route.ts` explicitly allows anonymous uploads.~~ Fixed: `assertCanUploadCottageImages()` in `src/lib/cottage/upload-auth.ts` runs in `onBeforeGenerateToken` — requires authenticated session; only `cottage_owner` and `admin` roles get a Blob token. Unauthenticated → 401; hikers → 403. Session cookie refresh applied on response. Covered by `upload-auth.test.ts`. |
 | 4 | No | **Edit flow loads any cottage without ownership check** | `src/app/edit/[id]/page.tsx` fetches cottage by ID and pre-fills the form with no check that the current user owns it. |
 | 5 | No | **No centralized route protection** | There is no `middleware.ts`. Dashboard pages return `null` for unauthenticated users (`src/app/dashboard/page.tsx`) instead of redirecting to login. `/create` requires login but not `cottage_owner` role — hikers can start cottage creation. |
 | 6 | No | **No rate limiting** | Auth endpoints, reservation checkout, and image upload are unprotected against brute-force and abuse. Recommended in `context/project-overview.md` but not built. |
@@ -224,8 +224,8 @@ Today the repo has `main` and short-lived feature branches only — no long-live
 | E2E (Playwright/Cypress) | None |
 | API / webhook integration tests | None |
 
-Well-tested: reservation validation, payment status, confirmation email idempotency, account deletion guards.  
-Untested: auth actions, cottage CRUD, upload route, Stripe webhook handler, all UI flows.
+Well-tested: reservation validation, payment status, confirmation email idempotency, account deletion guards, cottage image upload auth.  
+Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 
 ---
 
@@ -332,7 +332,7 @@ Untested: auth actions, cottage CRUD, upload route, Stripe webhook handler, all 
 ### Phase 1 — P0 blockers
 
 1. ~~Add ownership checks to `updateCottage`, `deleteCottage`~~ — **done** (`cottageOwnershipFilter` in `src/lib/cottage/actions.ts`). Still open: ownership check on edit flow (`/edit/[id]`).
-2. Authenticate image upload route.
+2. ~~Authenticate image upload route~~ — **done** (`assertCanUploadCottageImages` in `src/lib/cottage/upload-auth.ts`).
 3. Add `middleware.ts` — redirect unauthenticated users from dashboard; restrict `/create` to `cottage_owner` (and `admin`).
 4. Fix broken dashboard create CTA link.
 5. Update terms of use and privacy policy for reservations and payment processors.
@@ -389,7 +389,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Authorization on cottage mutations, unauthenticated uploads, legal text, error boundaries, production domain |
+| **P0** | Authorization on cottage mutations and edit flow, legal text, error boundaries, rate limiting, production domain |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

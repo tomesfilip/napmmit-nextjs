@@ -21,3 +21,4 @@ What changed and why.
 ## How it All Connects
 
 Brief summary of the data/control flow between these files.
+Add mermaid diagrams for better explanation.

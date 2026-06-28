@@ -26,17 +26,23 @@ function mockUser(overrides: Partial<User> = {}): User {
   } as User;
 }
 
-function mockSession(user: User) {
+function mockSession(user: User, fresh = false) {
   return {
     user,
     session: {
       id: 'session_1',
       userId: user.id,
-      fresh: false,
+      fresh,
       expiresAt: new Date(),
     },
   };
 }
+
+const blankSessionCookie = {
+  name: 'session',
+  value: '',
+  attributes: { path: '/' },
+};
 
 const request = new Request('https://example.com/api/cottage-images/upload');
 
@@ -47,20 +53,21 @@ describe('assertCanUploadCottageImages', () => {
 
   it('rejects unauthenticated requests with 401', async () => {
     mockValidateRequestFromRequest.mockResolvedValue({
-      user: null,
-      session: null,
+      result: { user: null, session: null },
+      sessionCookie: blankSessionCookie,
     });
 
     await expect(assertCanUploadCottageImages(request)).rejects.toMatchObject({
       status: 401,
       message: 'Unauthorized',
+      sessionCookie: blankSessionCookie,
     });
   });
 
   it('rejects hikers with 403', async () => {
-    mockValidateRequestFromRequest.mockResolvedValue(
-      mockSession(mockUser({ role: 'hiker' })),
-    );
+    mockValidateRequestFromRequest.mockResolvedValue({
+      result: mockSession(mockUser({ role: 'hiker' })),
+    });
 
     await expect(assertCanUploadCottageImages(request)).rejects.toMatchObject({
       status: 403,
@@ -70,16 +77,45 @@ describe('assertCanUploadCottageImages', () => {
 
   it('allows cottage owners', async () => {
     const user = mockUser({ role: 'cottage_owner' });
-    mockValidateRequestFromRequest.mockResolvedValue(mockSession(user));
+    mockValidateRequestFromRequest.mockResolvedValue({
+      result: mockSession(user),
+    });
 
-    await expect(assertCanUploadCottageImages(request)).resolves.toEqual(user);
+    await expect(assertCanUploadCottageImages(request)).resolves.toEqual({
+      user,
+      sessionCookie: undefined,
+    });
   });
 
   it('allows admins', async () => {
     const user = mockUser({ role: 'admin' });
-    mockValidateRequestFromRequest.mockResolvedValue(mockSession(user));
+    mockValidateRequestFromRequest.mockResolvedValue({
+      result: mockSession(user),
+    });
 
-    await expect(assertCanUploadCottageImages(request)).resolves.toEqual(user);
+    await expect(assertCanUploadCottageImages(request)).resolves.toEqual({
+      user,
+      sessionCookie: undefined,
+    });
+  });
+
+  it('returns session cookie updates for fresh sessions', async () => {
+    const user = mockUser({ role: 'cottage_owner' });
+    const refreshedSessionCookie = {
+      name: 'session',
+      value: 'refreshed-session',
+      attributes: { path: '/' },
+    };
+
+    mockValidateRequestFromRequest.mockResolvedValue({
+      result: mockSession(user, true),
+      sessionCookie: refreshedSessionCookie,
+    });
+
+    await expect(assertCanUploadCottageImages(request)).resolves.toEqual({
+      user,
+      sessionCookie: refreshedSessionCookie,
+    });
   });
 });
 

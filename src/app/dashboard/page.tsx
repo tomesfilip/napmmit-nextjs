@@ -1,5 +1,7 @@
+import { redirect } from 'next/navigation';
 import { CottageCard } from '@/components/cottage-card';
 import { validateRequest } from '@/lib/auth/validateRequest';
+import { ROUTES } from '@/lib/constants';
 import { getMyCottages } from '@/server/db/queries';
 import { NoCottagesContent } from './no-cottages-content';
 
@@ -7,7 +9,7 @@ const Dashboard = async () => {
   const { user } = await validateRequest();
 
   if (!user) {
-    return null;
+    redirect(ROUTES.AUTH.LOGIN);
   }
 
   const { success: cottages, error } = await getMyCottages(user.id);

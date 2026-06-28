@@ -1,4 +1,6 @@
+import { redirect } from 'next/navigation';
 import { validateRequest } from '@/lib/auth/validateRequest';
+import { ROUTES } from '@/lib/constants';
 import {
   getHikerReservations,
   getOwnerReservations,
@@ -9,7 +11,7 @@ import { OwnerReservationCard } from './owner-reservation-card';
 const Reservations = async () => {
   const { user } = await validateRequest();
   if (!user) {
-    return null;
+    redirect(ROUTES.AUTH.LOGIN);
   }
 
   const isOwner = user.role === 'cottage_owner' || user.role === 'admin';

@@ -7,9 +7,7 @@ type RequestValidationResult = Awaited<
   ReturnType<typeof lucia.validateSession>
 >;
 
-export type SessionCookieUpdate = ReturnType<
-  typeof lucia.createSessionCookie
->;
+export type SessionCookieUpdate = ReturnType<typeof lucia.createSessionCookie>;
 
 export type RequestValidationFromRequest = {
   result: RequestValidationResult;

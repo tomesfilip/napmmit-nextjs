@@ -1,10 +1,9 @@
 import type { User } from 'lucia';
+import { canManageCottages } from '@/lib/auth/roles';
 import {
   type SessionCookieUpdate,
   validateRequestFromRequest,
 } from '@/lib/auth/validateRequest';
-
-const ALLOWED_UPLOAD_ROLES = new Set<User['role']>(['cottage_owner', 'admin']);
 
 export class CottageImageUploadAuthError extends Error {
   readonly status: 401 | 403;
@@ -34,7 +33,7 @@ export async function assertCanUploadCottageImages(
     throw new CottageImageUploadAuthError(401, sessionCookie);
   }
 
-  if (!ALLOWED_UPLOAD_ROLES.has(user.role)) {
+  if (!canManageCottages(user.role)) {
     throw new CottageImageUploadAuthError(403, sessionCookie);
   }
 

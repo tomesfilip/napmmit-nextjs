@@ -7,4 +7,5 @@
   - Change H1 back to `# Current Feature`
   - Clear Goals and Notes sections
   - Set Status to "Not started"
+  - Don't remove original comments
 5. Add feature summary to the END of History

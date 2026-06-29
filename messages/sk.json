@@ -62,6 +62,15 @@
     },
     "AllRightsReserved": "Všetky práva vyhradené."
   },
+  "Error": {
+    "Title": "Niečo sa pokazilo",
+    "Description": "Pri načítaní stránky sa vyskytla chyba. Skúste to znova alebo sa vráťte na úvodnú stránku.",
+    "Retry": "Skúsiť znova",
+    "GoHome": "Úvodná stránka",
+    "Support": "Kontaktovať podporu",
+    "Digest": "Kód chyby: {digest}",
+    "Details": "Technické detaily"
+  },
   "404": {
     "Title": "Ups! Zablúdili ste mimo chodníka.",
     "Subtitle": "Nepodarilo sa nám nájsť stránku, ktorú hľadáte.",

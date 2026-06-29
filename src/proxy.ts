@@ -26,7 +26,10 @@ export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   if (!user) {
-    return applySessionCookieToResponse(redirectToLogin(request), sessionCookie);
+    return applySessionCookieToResponse(
+      redirectToLogin(request),
+      sessionCookie,
+    );
   }
 
   if (isCottageManagementPath(pathname) && !canManageCottages(user.role)) {

@@ -65,8 +65,8 @@ export default function PrivacyPolicy() {
             stav rezervácie napr. čaká na potvrdenie, potvrdená, zrušená)
           </li>
           <li>
-            Kontaktné údaje hosta pri rezervácii (meno, e-mail, telefón –
-            bez ohľadu na to, či ste prihlásený alebo rezervujete ako hosť)
+            Kontaktné údaje hosta pri rezervácii (meno, e-mail, telefón – bez
+            ohľadu na to, či ste prihlásený alebo rezervujete ako hosť)
           </li>
           <li>
             Platobné metadáta rezervačného poplatku (suma, mena, stav platby,
@@ -115,8 +115,8 @@ export default function PrivacyPolicy() {
             refundácií prostredníctvom Stripe.
           </li>
           <li>
-            Odosielanie transakčných e-mailov (potvrdenie rezervácie,
-            overenie e-mailu, obnovenie hesla a pod.).
+            Odosielanie transakčných e-mailov (potvrdenie rezervácie, overenie
+            e-mailu, obnovenie hesla a pod.).
           </li>
           <li>
             Komunikácia s používateľmi (napr. odpovede na dopyty, notifikácie).
@@ -163,8 +163,8 @@ export default function PrivacyPolicy() {
         <ul className="list-disc pl-6">
           <li>
             Účet používateľa – do jeho zrušenia; niektoré údaje môžeme uchovávať
-            aj po zrušení účtu, ak to vyžaduje zákon (napr. účtovné záznamy) alebo
-            ak máte aktívne rezervácie, ktoré bránia okamžitému vymazaniu.
+            aj po zrušení účtu, ak to vyžaduje zákon (napr. účtovné záznamy)
+            alebo ak máte aktívne rezervácie, ktoré bránia okamžitému vymazaniu.
           </li>
           <li>
             Rezervácie a platobné záznamy – po dobu potrebnú na plnenie zmluvy,
@@ -210,8 +210,7 @@ export default function PrivacyPolicy() {
             platforme)
           </li>
           <li>
-            <strong>Vercel</strong> — hosting webovej aplikácie (technické
-            logy)
+            <strong>Vercel</strong> — hosting webovej aplikácie (technické logy)
           </li>
           <li>
             <strong>Vercel Blob</strong> — ukladanie obrázkov chát nahraných
@@ -264,14 +263,16 @@ export default function PrivacyPolicy() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">9. Medzinárodné prenosy údajov</h2>
+        <h2 className="text-2xl font-semibold">
+          9. Medzinárodné prenosy údajov
+        </h2>
         <p>
-          Niektorí naši sprostredkovatelia (napr. Stripe, Vercel) môžu
-          spracúvať údaje aj mimo Európskeho hospodárskeho priestoru, najmä v
-          Spojených štátoch amerických. V takých prípadoch zabezpečujeme
-          primeranú úroveň ochrany údajov prostredníctvom štandardných
-          zmluvných doložiek schválených Európskou komisiou alebo iných
-          zákonných mechanizmov podľa GDPR.
+          Niektorí naši sprostredkovatelia (napr. Stripe, Vercel) môžu spracúvať
+          údaje aj mimo Európskeho hospodárskeho priestoru, najmä v Spojených
+          štátoch amerických. V takých prípadoch zabezpečujeme primeranú úroveň
+          ochrany údajov prostredníctvom štandardných zmluvných doložiek
+          schválených Európskou komisiou alebo iných zákonných mechanizmov podľa
+          GDPR.
         </p>
       </section>
     </div>

@@ -15,7 +15,12 @@ import {
   users,
 } from '../../server/db/schema';
 import { sendMail } from '../../server/db/sendMail';
-import { LOCAL_DEV_APP_URL, PASSWORD_ID_LENGTH, ROUTES, USER_ID_LENGTH } from '../constants';
+import {
+  LOCAL_DEV_APP_URL,
+  PASSWORD_ID_LENGTH,
+  ROUTES,
+  USER_ID_LENGTH,
+} from '../constants';
 import { renderVerificationCodeEmail } from '../emailTemplates/email-verification';
 import { renderResetPasswordEmail } from '../emailTemplates/reset-password';
 import {

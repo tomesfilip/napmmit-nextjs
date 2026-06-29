@@ -47,9 +47,9 @@ export default function TermsAndConditions() {
         <h2 className="text-2xl font-semibold">2. Predmet služby</h2>
         <p>
           Platforma Napmmit poskytuje online službu na zverejňovanie informácií
-          o horských chatách a na sprostredkovanie rezervačných požiadaviek medzi
-          návštevníkmi (turistami) a vlastníkmi chát. Prevádzkovateľ poskytuje
-          najmä:
+          o horských chatách a na sprostredkovanie rezervačných požiadaviek
+          medzi návštevníkmi (turistami) a vlastníkmi chát. Prevádzkovateľ
+          poskytuje najmä:
         </p>
         <ul className="list-disc pl-6">
           <li>zverejnenie informácií o chatách a ich vybavení,</li>
@@ -68,8 +68,7 @@ export default function TermsAndConditions() {
           Prevádzkovateľ nie je poskytovateľom ubytovania a nie je zmluvnou
           stranou zmluvy o ubytovaní medzi turistom a vlastníkom chaty. Zmluva o
           samotnom pobyte a platba za ubytovanie sa uzatvára priamo medzi
-          turistom a vlastníkom chaty, pokiaľ nie je na platforme uvedené
-          inak.
+          turistom a vlastníkom chaty, pokiaľ nie je na platforme uvedené inak.
         </p>
       </section>
 
@@ -88,9 +87,9 @@ export default function TermsAndConditions() {
           Stripe; prevádzkovateľ neukladá úplné číslo platobnej karty.
         </p>
         <p>
-          Cena ubytovania uvedená pri chate má informatívny charakter. Platba
-          za pobyt prebieha priamo medzi turistom a vlastníkom chaty, ak nie je
-          na platforme výslovne uvedené inak.
+          Cena ubytovania uvedená pri chate má informatívny charakter. Platba za
+          pobyt prebieha priamo medzi turistom a vlastníkom chaty, ak nie je na
+          platforme výslovne uvedené inak.
         </p>
         <p>Rezervácia prechádza týmito stavmi:</p>
         <ul className="list-disc pl-6">
@@ -288,15 +287,16 @@ export default function TermsAndConditions() {
           poskytovanie služby, prípadne zmeniť tieto obchodné podmienky.
           Podstatné zmeny zverejníme na stránke {LEGAL_DOMAIN} s uvedením dátumu
           nadobudnutia účinnosti. Ďalšie používanie platformy po nadobudnutí
-          účinnosti zmien znamená súhlas s upravenými podmienkami, pokiaľ
-          zákon nevyžaduje výslovný súhlas.
+          účinnosti zmien znamená súhlas s upravenými podmienkami, pokiaľ zákon
+          nevyžaduje výslovný súhlas.
         </p>
       </section>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">12. Záverečné ustanovenia</h2>
         <p>
-          Tieto obchodné podmienky nadobúdajú účinnosť dňom {TERMS_EFFECTIVE_DATE}.
+          Tieto obchodné podmienky nadobúdajú účinnosť dňom{' '}
+          {TERMS_EFFECTIVE_DATE}.
         </p>
         <p>
           Právne vzťahy medzi používateľom a prevádzkovateľom sa riadia právnym

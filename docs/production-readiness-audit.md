@@ -24,7 +24,7 @@ This document captures what is missing or incomplete before Napmmit can be consi
 
 Napmmit has a solid core: cottage listing and detail pages, multi-step cottage CRUD, Lucia auth, Stripe reservation fees with webhooks, confirmation emails, and owner/hiker reservation dashboards. Profile management and guarded account deletion are relatively mature.
 
-The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (production domain purchase, qualified advisor sign-off on terms and privacy policy), rate limiting, and missing error boundaries** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
+The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (production domain purchase, qualified advisor sign-off on terms and privacy policy), and rate limiting** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
 
 ---
 
@@ -75,7 +75,7 @@ The gap between “features exist” and “ready for real users” is large. **
 
 | # | Done | Issue | Details |
 |---|------|-------|---------|
-| 10 | No | **No global error boundaries** | No `error.tsx` or `global-error.tsx` anywhere in `src/app/`. Failures surface as raw `<p>{error}</p>` on some pages or unhandled server errors. |
+| 10 | Yes | **No global error boundaries** | ~~No `error.tsx` or `global-error.tsx` anywhere in `src/app/`. Failures surface as raw `<p>{error}</p>` on some pages or unhandled server errors.~~ Fixed: `src/app/error.tsx` (client route boundary with Slovak recovery UI via `ErrorFallback` + `next-intl`), `src/app/global-error.tsx` (root layout fallback with own `<html>`/`<body>` and hardcoded Slovak copy), `Error` namespace in `messages/sk.json`, retry/home/support actions, `console.error` logging with digest; production hides stack traces (digest only). Uncaught render/runtime throws now show branded UI; expected inline errors (e.g. dashboard query `ActionResponse`) unchanged. |
 | 11 | No | **Broken empty-dashboard CTA** | `src/app/dashboard/no-cottages-content.tsx` links to `create/step-one` (relative), resolving to `/dashboard/create/step-one` instead of `/create/step-one`. |
 | 12 | No | **Confirmation email PDF link is dead** | `src/lib/reservation/confirmation.ts` builds a URL to `/reservation/{token}/confirmation.pdf`, but no such route exists. Either implement PDF generation or remove the link from the email template. |
 
@@ -337,7 +337,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 4. Fix broken dashboard create CTA link.
 5. ~~Update terms of use~~ — **done** (`src/app/(legal)/terms-of-use/page.tsx`, `src/lib/legal/constants.ts`).
 6. ~~Update privacy policy for reservations and payment processors~~ — **done** (`src/app/(legal)/privacy-policy/page.tsx`, aligned with terms and `src/lib/legal/constants.ts`).
-7. Add `error.tsx` (and optionally `global-error.tsx`).
+7. ~~Add `error.tsx` (and optionally `global-error.tsx`)~~ — **done** (`src/app/error.tsx`, `src/app/global-error.tsx`, `src/components/error/error-fallback.tsx`, `messages/sk.json` `Error` namespace).
 8. **Buy production domain** (P0 §8), then DNS, Resend verification, `NEXT_PUBLIC_APP_URL`, update `LEGAL_DOMAIN` in `src/lib/legal/constants.ts`.
 
 ### Phase 2 — P1 UX
@@ -390,7 +390,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Error boundaries, rate limiting, production domain; terms and privacy policy drafted (qualified legal/GDPR advisor sign-off before launch) |
+| **P0** | Rate limiting, production domain; terms and privacy policy drafted (qualified legal/GDPR advisor sign-off before launch) |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

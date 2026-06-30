@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { canManageCottages } from '@/lib/auth/roles';
 import { isCottageManagementPath } from '@/lib/auth/route-guards';
+import { ROUTE_NOTICE } from '@/lib/auth/route-notices';
 import {
   applySessionCookieToResponse,
   validateRequestFromRequest,
@@ -33,8 +34,11 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isCottageManagementPath(pathname) && !canManageCottages(user.role)) {
+    const redirectUrl = new URL(ROUTES.DASHBOARD.RESERVATIONS, request.url);
+    redirectUrl.searchParams.set('notice', ROUTE_NOTICE.OWNER_ONLY);
+
     return applySessionCookieToResponse(
-      NextResponse.redirect(new URL(ROUTES.DASHBOARD.INDEX, request.url)),
+      NextResponse.redirect(redirectUrl),
       sessionCookie,
     );
   }

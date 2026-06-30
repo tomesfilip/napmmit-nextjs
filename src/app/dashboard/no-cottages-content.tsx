@@ -1,15 +1,13 @@
-'use client';
-
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { ROUTES } from '@/lib/constants';
 
 type Props = {
   canCreateCottage: boolean;
 };
 
-export const NoCottagesContent = ({ canCreateCottage }: Props) => {
-  const t = useTranslations('Dashboard');
+export async function NoCottagesContent({ canCreateCottage }: Props) {
+  const t = await getTranslations('Dashboard');
 
   if (!canCreateCottage) {
     return (
@@ -46,4 +44,4 @@ export const NoCottagesContent = ({ canCreateCottage }: Props) => {
       </Link>
     </div>
   );
-};
+}

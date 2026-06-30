@@ -20,6 +20,7 @@ export const ROUTES = {
   },
   COTTAGE_DETAIL: '/cottage',
   CREATE_COTTAGE: {
+    INDEX: '/create',
     STEP_ONE: 'step-one',
     STEP_TWO: 'step-two',
     STEP_THREE: 'step-three',

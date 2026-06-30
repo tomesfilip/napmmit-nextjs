@@ -1,4 +1,6 @@
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { RouteNotice } from '@/components/shared/route-notice';
 import { validateRequest } from '@/lib/auth/validateRequest';
 import { ROUTES } from '@/lib/constants';
 import {
@@ -21,6 +23,9 @@ const Reservations = async () => {
 
   return (
     <main className="py-4">
+      <Suspense fallback={null}>
+        <RouteNotice />
+      </Suspense>
       {error && <p className="text-red-500">{error}</p>}
       {reservations && reservations.length < 1 ? (
         <div className="text-center text-gray-500">

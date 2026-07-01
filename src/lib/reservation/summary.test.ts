@@ -16,6 +16,8 @@ const baseReservation = {
   pricePerNight: 40,
   totalPrice: 40,
   reservationFeeCents: 100,
+  paidAt: null,
+  stripePaymentIntentId: null,
   userId: null,
   guestEmail: 'guest@example.com',
   guestPhone: null,

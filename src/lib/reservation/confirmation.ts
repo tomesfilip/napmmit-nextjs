@@ -2,6 +2,10 @@ import { and, eq, isNull, lte, or } from 'drizzle-orm';
 import { ROUTES } from '@/lib/constants';
 import { renderReservationCreatedEmail } from '@/lib/emailTemplates/reservation-created';
 import {
+  getReservationConfirmationPdfFilename,
+  renderReservationConfirmationPdf,
+} from '@/lib/pdf/render-reservation-confirmation-pdf';
+import {
   mapReservationToConfirmationSummary,
   type ReservationConfirmationSummary,
 } from '@/lib/reservation/summary';
@@ -24,6 +28,8 @@ type ReservationForEmail = {
   pricePerNight: number;
   totalPrice: number;
   reservationFeeCents: number;
+  paidAt: Date | null;
+  stripePaymentIntentId: string | null;
   cottage: ReservationConfirmationSummary['cottage'];
   user: {
     username: string;
@@ -60,7 +66,7 @@ function getConfirmationEmailUrls(summary: ReservationConfirmationSummary) {
     ? `${appUrl}${ROUTES.DASHBOARD.RESERVATIONS}`
     : undefined;
   const pdfUrl = summary.accessToken
-    ? `${appUrl}/reservation/${summary.accessToken}/confirmation.pdf`
+    ? `${appUrl}${ROUTES.RESERVATION.CONFIRMATION_PDF(summary.accessToken)}`
     : undefined;
 
   return { dashboardUrl, pdfUrl };
@@ -86,6 +92,8 @@ export async function sendReservationConfirmationEmailOnce(
       pricePerNight: true,
       totalPrice: true,
       reservationFeeCents: true,
+      paidAt: true,
+      stripePaymentIntentId: true,
     },
     with: {
       cottage: {
@@ -176,6 +184,8 @@ export async function sendReservationConfirmationEmailOnce(
   try {
     const summary = mapReservationToConfirmationSummary(reservation);
     const { dashboardUrl, pdfUrl } = getConfirmationEmailUrls(summary);
+    const pdfBuffer = await renderReservationConfirmationPdf(summary);
+    const pdfFilename = getReservationConfirmationPdfFilename(summary);
     const { data, error } = await sendMail({
       to: recipient,
       subject: `Potvrdenie rezervácie – ${summary.cottage.name}`,
@@ -184,6 +194,13 @@ export async function sendReservationConfirmationEmailOnce(
         dashboardUrl,
         pdfUrl,
       }),
+      attachments: [
+        {
+          filename: pdfFilename,
+          content: pdfBuffer,
+          contentType: 'application/pdf',
+        },
+      ],
     });
 
     if (error) {

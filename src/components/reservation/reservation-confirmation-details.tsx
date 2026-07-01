@@ -161,21 +161,30 @@ export async function ReservationConfirmationDetails({
         </div>
 
         <div className="mt-8 flex flex-col gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
-          {isDashboard ? (
-            <Button asChild>
-              <Link href={ROUTES.DASHBOARD.RESERVATIONS}>
-                {t('BackToReservations')}
-              </Link>
-            </Button>
-          ) : summary.guest.isLoggedIn ? (
-            <Button asChild>
-              <Link href={ROUTES.DASHBOARD.RESERVATIONS}>
-                {t('DashboardCta')}
-              </Link>
-            </Button>
-          ) : (
-            <p className="text-sm text-gray-600">{t('AnonymousFollowUp')}</p>
-          )}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            {isDashboard ? (
+              <Button asChild>
+                <Link href={ROUTES.DASHBOARD.RESERVATIONS}>
+                  {t('BackToReservations')}
+                </Link>
+              </Button>
+            ) : summary.guest.isLoggedIn ? (
+              <Button asChild>
+                <Link href={ROUTES.DASHBOARD.RESERVATIONS}>
+                  {t('DashboardCta')}
+                </Link>
+              </Button>
+            ) : (
+              <p className="text-sm text-gray-600">{t('AnonymousFollowUp')}</p>
+            )}
+            {getPdfDownloadHref(summary, variant) ? (
+              <Button asChild variant="outline">
+                <a href={getPdfDownloadHref(summary, variant) ?? '#'}>
+                  {t('PdfDownload')}
+                </a>
+              </Button>
+            ) : null}
+          </div>
           {!isDashboard && (
             <Button asChild variant="outline">
               <Link href="/">{t('BackHome')}</Link>
@@ -185,6 +194,21 @@ export async function ReservationConfirmationDetails({
       </section>
     </main>
   );
+}
+
+function getPdfDownloadHref(
+  summary: ReservationConfirmationSummary,
+  variant: 'post_payment' | 'dashboard',
+) {
+  if (variant === 'dashboard') {
+    return ROUTES.DASHBOARD.RESERVATION_PDF(summary.id);
+  }
+
+  if (!summary.accessToken) {
+    return null;
+  }
+
+  return ROUTES.RESERVATION.CONFIRMATION_PDF(summary.accessToken);
 }
 
 function StatusBadge({ label, status }: { label: string; status: string }) {

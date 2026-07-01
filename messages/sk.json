@@ -373,7 +373,8 @@
     "DetailSubtitle": "Prehľad vašej rezervácie",
     "AnonymousFollowUp": "Potvrdenie sme odoslali na zadané kontaktné údaje. Chata vás bude kontaktovať pri potvrdení rezervácie.",
     "BackHome": "Späť na úvod",
-    "NotProvided": "Neuvedené"
+    "NotProvided": "Neuvedené",
+    "PdfDownload": "Stiahnuť potvrdenie (PDF)"
   },
   "Profile": {
     "Title": "Môj profil",
@@ -476,7 +477,8 @@
       "GuestEmailLabel": "E-mail: {email}",
       "GuestPhoneLabel": "Telefón: {phoneNumber}",
       "DashboardButton": "Prejsť na moje rezervácie",
-      "PdfButton": "Stiahnuť potvrdenie (PDF)",
+      "PdfAttachedMessage": "Potvrdenie rezervácie vo formáte PDF je priložené k tejto správe.",
+      "PdfFallbackButton": "Stiahnuť potvrdenie (PDF)",
       "GoodbyeMessage": "Pekný deň!"
     },
     "ResetPassword": {

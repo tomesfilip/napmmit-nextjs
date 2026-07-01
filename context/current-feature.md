@@ -4,8 +4,6 @@
 
 ## Status
 
-<!-- Not Started|In Progress|Completed -->
-
 Not Started
 
 ## Goals
@@ -35,3 +33,4 @@ Not Started
 - Completed Privacy Policy — Reservations & Payment Data (P0 §9): extended Zásady ochrany osobných údajov with reservation/payment data categories, Stripe metadata (no PAN storage), subprocessors (Stripe, Resend, Neon, Vercel), retention rules, data subject rights, international transfers, and shared legal constants; GDPR advisor review still required before launch.
 - Completed Global Error Boundaries (P0 §10): added root `error.tsx` and `global-error.tsx` with Slovak recovery UI (retry, home, support), shared `ErrorFallback` component, `Error` translations in `messages/sk.json`, and `console.error` logging for uncaught render/runtime failures.
 - Completed Dashboard Empty State Create CTA Fix (P0 §11): fixed empty-dashboard create link to use `CREATE_COTTAGE.INDEX` absolute path, redirect hikers from `/dashboard` to reservations, `RouteNotice` toast when proxy blocks `/create`/`/edit`, and Slovak copy for owner-only access.
+- Completed Reservation Confirmed Flow Phase 3 (P0 §12): implemented shared PDF confirmation generation with `@react-pdf/renderer` (reservation summary, invoice, legal appendix), added public and dashboard `confirmation.pdf` routes, attached PDF to confirmation emails, added download buttons on confirmation surfaces, and added return-page fallback fulfillment (`fulfillPaidCheckoutSession`) when webhook delivery is delayed in local/dev scenarios.

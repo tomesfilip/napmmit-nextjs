@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { after } from 'next/server';
-import { ROUTES } from '@/lib/constants';
 import { sendReservationConfirmationEmailOnce } from '@/lib/reservation/confirmation';
 import { getReservationPaymentStatus } from '@/lib/reservation/payment-status';
+import { fulfillPaidCheckoutSession } from '@/lib/stripe/fulfill-checkout-session';
+import { ReservationReturnRedirect } from './reservation-return-redirect';
 import { ReservationReturnStatus } from './reservation-return-status';
 
 type ReservationReturnPageProps = {
@@ -14,7 +15,12 @@ export default async function ReservationReturnPage({
   searchParams,
 }: ReservationReturnPageProps) {
   const { session_id: checkoutSessionId } = await searchParams;
-  const paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
+  let paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
+
+  if (paymentStatus.status === 'not_found' && checkoutSessionId) {
+    await fulfillPaidCheckoutSession(checkoutSessionId);
+    paymentStatus = await getReservationPaymentStatus(checkoutSessionId);
+  }
 
   if (paymentStatus.status === 'reservation_created') {
     if (!paymentStatus.accessToken) {
@@ -25,7 +31,13 @@ export default async function ReservationReturnPage({
       sendReservationConfirmationEmailOnce(paymentStatus.reservationId),
     );
 
-    redirect(ROUTES.RESERVATION.CONFIRMATION(paymentStatus.accessToken));
+    return (
+      <main className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-6 py-16 text-center">
+        <div className="rounded-lg border bg-white p-8 shadow-xs">
+          <ReservationReturnRedirect accessToken={paymentStatus.accessToken} />
+        </div>
+      </main>
+    );
   }
 
   return (

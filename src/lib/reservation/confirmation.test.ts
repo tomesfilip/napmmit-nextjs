@@ -61,6 +61,13 @@ vi.mock('@/lib/emailTemplates/reservation-created', () => ({
   renderReservationCreatedEmail: vi.fn(async () => '<p>email</p>'),
 }));
 
+vi.mock('@/lib/pdf/render-reservation-confirmation-pdf', () => ({
+  renderReservationConfirmationPdf: vi.fn(async () => Buffer.from('%PDF-1.4')),
+  getReservationConfirmationPdfFilename: vi.fn(
+    () => 'napmmit-rezervacia-42.pdf',
+  ),
+}));
+
 const baseReservation = {
   id: 42,
   confirmationEmailSentAt: null,
@@ -76,6 +83,8 @@ const baseReservation = {
   pricePerNight: 30,
   totalPrice: 60,
   reservationFeeCents: 100,
+  paidAt: new Date('2024-07-10T10:00:00.000Z'),
+  stripePaymentIntentId: 'pi_123',
   cottage: {
     id: 1,
     name: 'Chata',
@@ -174,7 +183,15 @@ describe('sendReservationConfirmationEmailOnce', () => {
 
     expect(result).toEqual({ success: true });
     expect(mockSendMail).toHaveBeenCalledWith(
-      expect.objectContaining({ to: 'guest@example.com' }),
+      expect.objectContaining({
+        to: 'guest@example.com',
+        attachments: [
+          expect.objectContaining({
+            filename: 'napmmit-rezervacia-42.pdf',
+            contentType: 'application/pdf',
+          }),
+        ],
+      }),
     );
     expect(mockUpdate).toHaveBeenCalledTimes(2);
     expect(mockSet).toHaveBeenLastCalledWith(

@@ -16,6 +16,8 @@ export type ReservationConfirmationSummary = {
   accommodationTotal: number;
   reservationFeeCents: number;
   grandTotal: number;
+  paidAt: string | null;
+  stripePaymentIntentId: string | null;
   cottage: {
     id: number;
     name: string;
@@ -43,6 +45,8 @@ export type ReservationSummarySource = {
   pricePerNight: number;
   totalPrice: number;
   reservationFeeCents: number;
+  paidAt: Date | null;
+  stripePaymentIntentId: string | null;
   userId: string | null;
   guestEmail: string | null;
   guestPhone: string | null;
@@ -92,6 +96,8 @@ export function mapReservationToConfirmationSummary(
     accommodationTotal,
     reservationFeeCents: reservation.reservationFeeCents,
     grandTotal: accommodationTotal + reservationFee,
+    paidAt: reservation.paidAt?.toISOString() ?? null,
+    stripePaymentIntentId: reservation.stripePaymentIntentId ?? null,
     cottage: reservation.cottage,
     guest: {
       name: reservation.user?.username ?? null,

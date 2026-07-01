@@ -33,9 +33,13 @@ export const ROUTES = {
     INDEX: '/dashboard',
     RESERVATIONS: '/dashboard/reservations',
     RESERVATION_DETAIL: (id: number) => `/dashboard/reservations/${id}`,
+    RESERVATION_PDF: (id: number) =>
+      `/dashboard/reservations/${id}/confirmation.pdf`,
   },
   RESERVATION: {
     CONFIRMATION: (accessToken: string) => `/reservation/${accessToken}`,
+    CONFIRMATION_PDF: (accessToken: string) =>
+      `/reservation/${accessToken}/confirmation.pdf`,
   },
 
   EDIT_COTTAGE: '/edit',

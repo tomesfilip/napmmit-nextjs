@@ -1,6 +1,6 @@
 # Production Readiness & UX Audit
 
-**Date:** 2026-06-28  
+**Date:** 2026-06-28 (updated 2026-06-30)  
 **Scope:** Full web app review against `README.md`, `context/project-overview.md`, `docs/project-spec.md`, and live codebase.
 
 This document captures what is missing or incomplete before Napmmit can be considered production-ready with good UX. It complements the narrower checklist in [`what-to-fix.md`](./what-to-fix.md).
@@ -16,7 +16,7 @@ This document captures what is missing or incomplete before Napmmit can be consi
 | **P2** | Important for production quality — emails, SEO, monitoring, staging, owner tooling |
 | **P3** | Nice to have or post-MVP — improves the product but not required for a cautious first launch |
 
-**Done column (P0 tables):** `Yes` = fixed and merged; `No` = still open.
+**Done column (P0 tables):** `Yes` = fixed (merged, or implemented on an open feature branch pending merge); `No` = still open.
 
 ---
 
@@ -25,6 +25,8 @@ This document captures what is missing or incomplete before Napmmit can be consi
 Napmmit has a solid core: cottage listing and detail pages, multi-step cottage CRUD, Lucia auth, Stripe reservation fees with webhooks, confirmation emails, and owner/hiker reservation dashboards. Profile management and guarded account deletion are relatively mature.
 
 The gap between “features exist” and “ready for real users” is large. **P0 security holes, remaining legal gaps (production domain purchase, qualified advisor sign-off on terms and privacy policy), and rate limiting** are the main blockers. **P1 UX** (mobile nav, real listing images) matters for trust. **P2** (SEO, Sentry, develop environment, owner emails, owner calendar) should be in place before marketing push. **P3** items (price filters, admin UI, social sharing) can wait.
+
+Guest confirmation emails now include a generated PDF (reservation summary, Napmmit fee invoice, terms appendix) with on-demand download routes — P0 §12 resolved on branch `feature/confirmation-email-pdf` (pending merge).
 
 ---
 
@@ -37,7 +39,7 @@ The gap between “features exist” and “ready for real users” is large. **
 | Filtering | Stage 1 — price, location, … | Partial — mountain area + services only | No price or availability filters | P3 |
 | CMS / cottage CRUD | Stage 2 | Yes — 6-step create + edit flow | No post-create availability calendar in dashboard | P2 |
 | Auth (register/login/logout) | Stage 2 | Yes | Email verification not enforced for reservations | P2 |
-| Confirmation emails | Stage 2 | Partial — guest confirmation only | Owner notification + cancellation emails missing | P2 |
+| Confirmation emails | Stage 2 | Yes — guest confirmation + PDF attachment and download | Owner notification + cancellation emails missing | P2 |
 | Reservations (RMS) | Stage 3 | Yes — Stripe fee, pending → confirmed lifecycle | No owner calendar view; pricing fields underused | P2 |
 | User roles (admin/owner/hiker) | Stage 3 | Partial — roles in DB, no admin UI | Admin role unused; cottage management routes gated by role in `proxy.ts` | P3 |
 | Real-time availability | project-overview | Yes — `reservation_days` strategy | Good foundation | — |
@@ -76,8 +78,9 @@ The gap between “features exist” and “ready for real users” is large. **
 | # | Done | Issue | Details |
 |---|------|-------|---------|
 | 10 | Yes | **No global error boundaries** | ~~No `error.tsx` or `global-error.tsx` anywhere in `src/app/`. Failures surface as raw `<p>{error}</p>` on some pages or unhandled server errors.~~ Fixed: `src/app/error.tsx` (client route boundary with Slovak recovery UI via `ErrorFallback` + `next-intl`), `src/app/global-error.tsx` (root layout fallback with own `<html>`/`<body>` and hardcoded Slovak copy), `Error` namespace in `messages/sk.json`, retry/home/support actions, `console.error` logging with digest; production hides stack traces (digest only). Uncaught render/runtime throws now show branded UI; expected inline errors (e.g. dashboard query `ActionResponse`) unchanged. |
-| 11 | No | **Broken empty-dashboard CTA** | `src/app/dashboard/no-cottages-content.tsx` links to `create/step-one` (relative), resolving to `/dashboard/create/step-one` instead of `/create/step-one`. |
-| 12 | No | **Confirmation email PDF link is dead** | `src/lib/reservation/confirmation.ts` builds a URL to `/reservation/{token}/confirmation.pdf`, but no such route exists. Either implement PDF generation or remove the link from the email template. |
+| 11 | Yes | **Broken empty-dashboard CTA** | ~~`src/app/dashboard/no-cottages-content.tsx` links to `create/step-one` (relative), resolving to `/dashboard/create/step-one` instead of `/create/step-one`.~~ Fixed: empty-state create link uses `ROUTES.CREATE_COTTAGE.INDEX` (`/create`) + step segment in `src/lib/constants.ts` and `no-cottages-content.tsx` (async server component, `getTranslations`). Hikers no longer land on owner-only empty state — `/dashboard` redirects to `/dashboard/reservations`; proxy blocks on `/create`/`/edit` redirect to reservations with `?notice=owner_only` and Slovak toast via `src/components/shared/route-notice.tsx`. |
+| 12 | Yes | **Confirmation email PDF link is dead** | ~~`confirmation.ts` built a URL to `/reservation/{token}/confirmation.pdf` with no route.~~ Fixed (Path B — full Phase 3, branch `feature/confirmation-email-pdf`): `@react-pdf/renderer` shared generator in `src/lib/pdf/`; public route `src/app/reservation/[accessToken]/confirmation.pdf/route.ts`; authenticated route `src/app/dashboard/reservations/[id]/confirmation.pdf/route.ts`; PDF attached in `sendReservationConfirmationEmailOnce()` via Resend; download buttons on `ReservationConfirmationDetails` (post-payment + dashboard); email body notes attachment with link as fallback. **Before launch:** qualified legal/tax review of Slovak invoice wording and PDF terms appendix in `src/lib/pdf/reservation-confirmation-legal-copy.ts`. |
+| 13 | Yes | **Return page depends on webhook only** | ~~If Stripe webhook does not reach the app (e.g. local dev without `stripe listen`), paid checkout completed but no reservation row was created; `/reservation/return` polled until timeout.~~ Fixed (branch `feature/confirmation-email-pdf`): `fulfillPaidCheckoutSession()` in `src/lib/stripe/fulfill-checkout-session.ts` — shared with webhook handler; return page and polling call it when DB has no row yet, retrieve paid session from Stripe API, create reservation idempotently. **Local dev:** still run `stripe listen --forward-to localhost:3000/api/webhooks/stripe` for webhook-path testing; return-page sync is a fallback, not a replacement. |
 
 ---
 
@@ -140,7 +143,7 @@ The gap between “features exist” and “ready for real users” is large. **
 | Cancellation email not sent | Template at `src/lib/emailTemplates/reservation-cancelled.tsx` never imported in actions | Users get no confirmation of cancel/refund |
 | Signup continues if verification email fails | `src/lib/auth/actions.ts` — only `console.error` | User may think they are verified when they are not |
 
-Guest reservation confirmation email works (idempotent send after payment).
+Guest reservation confirmation email works (idempotent send after payment) with PDF attachment and working download routes.
 
 ### Owner calendar & availability
 
@@ -219,13 +222,13 @@ Today the repo has `main` and short-lived feature branches only — no long-live
 
 | Type | Count / status |
 |------|----------------|
-| Unit tests (Vitest) | 13 files under `src/lib/` |
+| Unit tests (Vitest) | 25+ files under `src/lib/` and route handlers |
 | Component tests | None |
 | E2E (Playwright/Cypress) | None |
 | API / webhook integration tests | None |
 
-Well-tested: reservation validation, payment status, confirmation email idempotency, account deletion guards, cottage image upload auth, route protection role helper (`canManageCottages`), safe return URL validation, cottage edit-flow ownership (`getCottageIfOwned`).  
-Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
+Well-tested: reservation validation, payment status, confirmation email idempotency (+ PDF attachment), account deletion guards, cottage image upload auth, route protection role helper (`canManageCottages`), safe return URL validation, cottage edit-flow ownership (`getCottageIfOwned`), PDF filename/invoice/legal copy helpers, public and dashboard PDF route guards, checkout session fulfillment fallback (`fulfillPaidCheckoutSession`).  
+Untested: auth actions, cottage CRUD, Stripe webhook handler end-to-end, all UI flows.
 
 ---
 
@@ -278,7 +281,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 
 - [x] Cottage CMS (CRUD + multi-step UI)
 - [x] Register, login, logout
-- [x] Confirmation email (guest) — **P2** for owner + cancellation gaps
+- [x] Confirmation email (guest) with PDF — **P2** for owner + cancellation gaps
 
 ### README Stage 3
 
@@ -310,7 +313,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 |-------|----------|-------|----------|
 | Email verification OTP | Yes | Yes | — |
 | Password reset | Yes | Yes | — |
-| Reservation confirmed (guest) | Yes | Yes (idempotent) | — |
+| Reservation confirmed (guest) | Yes | Yes (idempotent) + PDF attachment | — |
 | Reservation cancelled | Yes | **No** — template unused | **P2** |
 | Owner: new reservation | No | **No** | **P2** |
 | Account deletion confirmation | Yes | Yes | — |
@@ -334,32 +337,34 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 1. ~~Add ownership checks to `updateCottage`, `deleteCottage`, and edit flow (`/edit/[id]`)~~ — **done** (`cottageOwnershipFilter` / `getCottageIfOwned` in `src/lib/cottage/ownership.ts`).
 2. ~~Authenticate image upload route~~ — **done** (`assertCanUploadCottageImages` in `src/lib/cottage/upload-auth.ts`).
 3. ~~Add centralized route protection (`proxy.ts`)~~ — **done** (`src/proxy.ts`: login redirect for protected routes; `canManageCottages()` role gate for `/create` and `/edit`).
-4. Fix broken dashboard create CTA link.
+4. ~~Fix broken dashboard create CTA link~~ — **done** (`CREATE_COTTAGE.INDEX`, `no-cottages-content.tsx`, hiker redirect + `RouteNotice` toast).
 5. ~~Update terms of use~~ — **done** (`src/app/(legal)/terms-of-use/page.tsx`, `src/lib/legal/constants.ts`).
 6. ~~Update privacy policy for reservations and payment processors~~ — **done** (`src/app/(legal)/privacy-policy/page.tsx`, aligned with terms and `src/lib/legal/constants.ts`).
 7. ~~Add `error.tsx` (and optionally `global-error.tsx`)~~ — **done** (`src/app/error.tsx`, `src/app/global-error.tsx`, `src/components/error/error-fallback.tsx`, `messages/sk.json` `Error` namespace).
 8. **Buy production domain** (P0 §8), then DNS, Resend verification, `NEXT_PUBLIC_APP_URL`, update `LEGAL_DOMAIN` in `src/lib/legal/constants.ts`.
+9. ~~Implement or remove confirmation email PDF link (P0 §12)~~ — **done** on `feature/confirmation-email-pdf` (full PDF: `src/lib/pdf/`, routes, email attachment, UI download).
+10. ~~Return-page checkout fulfillment fallback when webhook is delayed (P0 §13)~~ — **done** on `feature/confirmation-email-pdf` (`src/lib/stripe/fulfill-checkout-session.ts`).
+11. Add rate limiting (P0 §6).
 
 ### Phase 2 — P1 UX
 
-8. Show real cottage images on listing cards.
-9. Mobile hamburger navigation.
-10. Loading skeletons on dashboard, profile, auth routes.
-11. i18n sweep (verify-email, auth errors, empty states).
-12. Reservation calendar “clear dates” button.
-13. Remove or implement PDF link in confirmation email (P0 §12 — can ship with removal).
+12. Show real cottage images on listing cards.
+13. Mobile hamburger navigation.
+14. Loading skeletons on dashboard, profile, auth routes.
+15. i18n sweep (verify-email, auth errors, empty states).
+16. Reservation calendar “clear dates” button.
 
 ### Phase 3 — P2 production quality
 
-14. Wire owner notification email on new reservation.
-15. Wire cancellation confirmation email.
-16. Enforce email verification before reservation.
-17. Owner calendar + post-create availability management in dashboard.
-18. Per-cottage `generateMetadata` + OG tags; `sitemap.ts` and `robots.ts`.
-19. Integrate Sentry.
-20. Set up develop environment: `develop` Git branch, Neon develop DB, Vercel staging deploy, test-mode Stripe webhook, separate env vars.
-21. Add CI: `bun test`, `bun lint-format`, `bun build`.
-22. Expand README with env setup, migrations, Stripe webhook, and deploy steps.
+17. Wire owner notification email on new reservation.
+18. Wire cancellation confirmation email.
+19. Enforce email verification before reservation.
+20. Owner calendar + post-create availability management in dashboard.
+21. Per-cottage `generateMetadata` + OG tags; `sitemap.ts` and `robots.ts`.
+22. Integrate Sentry.
+23. Set up develop environment: `develop` Git branch, Neon develop DB, Vercel staging deploy, test-mode Stripe webhook, separate env vars.
+24. Add CI: `bun test`, `bun lint-format`, `bun build`.
+25. Expand README with env setup, migrations, Stripe webhook, and deploy steps.
 
 ### Phase 4 — P3 (post-launch)
 
@@ -380,6 +385,7 @@ Untested: auth actions, cottage CRUD, Stripe webhook handler, all UI flows.
 | [`project-spec.md`](./project-spec.md) | Feature spec and business rules |
 | [`reservations.md`](./reservations.md) | Reservation lifecycle detail |
 | [`context/project-overview.md`](../context/project-overview.md) | Vision, architecture, MVP phases |
+| [`reservation-confirmed-phase-3-pdf-spec.md`](../context/features/reservation-confirmed-phase-3-pdf-spec.md) | PDF confirmation spec (P0 §12) |
 | [`README.md`](../README.md) | Stage 1–3 feature list (partially outdated) |
 
 ---
@@ -390,7 +396,7 @@ Napmmit is past prototype stage for reservations and cottage management, but **n
 
 | Priority | Focus |
 |----------|-------|
-| **P0** | Rate limiting, production domain; terms and privacy policy drafted (qualified legal/GDPR advisor sign-off before launch) |
+| **P0** | Rate limiting, production domain; terms and privacy policy drafted (qualified legal/GDPR advisor sign-off before launch); PDF invoice/terms appendix in confirmation PDF needs same legal review |
 | **P1** | Listing images, mobile nav, loading states, i18n polish |
 | **P2** | Owner/guest emails, owner calendar, SEO, Sentry, develop/staging environment, CI |
 | **P3** | Price/availability filters, admin UI, social sharing, analytics |

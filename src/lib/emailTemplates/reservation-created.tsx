@@ -146,9 +146,10 @@ export default async function ReservationCreatedEmail({
                 {t('DashboardButton')}
               </Button>
             )}
+            {pdfUrl && <Text style={text}>{t('PdfAttachedMessage')}</Text>}
             {pdfUrl && (
               <Button style={secondaryButton} href={pdfUrl}>
-                {t('PdfButton')}
+                {t('PdfFallbackButton')}
               </Button>
             )}
 

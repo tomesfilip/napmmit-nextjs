@@ -376,6 +376,9 @@
     "NotProvided": "Neuvedené",
     "PdfDownload": "Stiahnuť potvrdenie (PDF)"
   },
+  "ReservationReturnPage": {
+    "Redirecting": "Presmerúvame na potvrdenie rezervácie…"
+  },
   "Profile": {
     "Title": "Môj profil",
     "Description": "Tu môžete upraviť svoje osobné údaje a nastavenia.",
